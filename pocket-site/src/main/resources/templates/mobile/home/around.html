@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('home')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div th:replace="mobile/layout :: home-select"></div>
+
+            <hr class="separator" />
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div th:replace="mobile/layout :: home-title ('around')"></div>
+                </div>
+                <div class="col-xs-6 my-select-container">
+                    <div th:replace="mobile/home/layout :: home-select ('around')"></div>
+                </div>
+            </div>
+
+            <div class="row home-results  home-search-result-list search-result-list">
+                <div th:each="currentSite,iterStat : ${sitesResponseDto.sites}" class="col-xs-4 search-result"
+                     th:attr="data-id=${currentSite.id}, data-name=${currentSite.siteName}, data-lat=${currentSite.location.x}, data-lng=${currentSite.location.y}">
+                    <a th:href="@{${currentSite.detailsUrl}}" th:if="${iterStat.count le 3}"
+                       th:title="${currentSite.siteName}" class="thumbnail">
+                        <div class="thumbnail-card"
+                             th:with="schedulesData=${currentSite.getSchedulesData(searchParams.dateTime)},
+                                                    distance=${currentSite.getDistanceFrom(searchParams.city.location)},
+                                                    mileage=${distance lt 1 ? #messages.msg('search.results.distance.short') : #numbers.formatDecimal(distance, 1, 0) + ' Km'}">
+                            <div class="free-ribbon">
+                                <img th:src="${currentSite.displayImageUrl}" src="/img/result-dummy.png"
+                                     class="search-result-img"/>
+
+                                <p th:if="${currentSite.free}"><span
+                                        th:utext="#{search.results.free.ribbon}">FREE<br/>ADMISSION</span>
+                                </p>
+
+                                <div class="caption small">
+                                    <div th:text="${currentSite.address.city}"
+                                         class="search-result-city">Paris
+                                    </div>
+                                    <div class="search-result-distance text-center"
+                                         th:text="${mileage}">
+                                        18 Km
+                                    </div>
+                                    <div th:if="${!schedulesData.closed}" class="search-result-schedules"
+                                         th:text="${schedulesData.remainingHours lt 1} ? #{search.results.closing.short} : #{search.results.closing(${schedulesData.remainingHours})}">
+                                        Open All Day
+                                    </div>
+                                </div>
+                                <div th:if="${schedulesData.closed}" class="closed">
+                                    <span th:if="${!schedulesData.willOpen}" th:text="#{search.results.closed}">
+                                        Closed
+                                    </span>
+                                    <span th:if="${schedulesData.willOpen} and ${schedulesData.remainingHours lt 1}" th:utext="#{search.results.opening.short}">
+                                        Openning soon
+                                    </span>
+                                    <span th:if="${schedulesData.willOpen} and ${schedulesData.remainingHours ge 1} and ${schedulesData.remainingHours lt 24}"
+                                          th:utext="#{search.results.opening(${schedulesData.remainingHours})}">
+                                        Open in 6 hours
+                                    </span>
+                                    <span th:if="${schedulesData.willOpen} and ${schedulesData.remainingHours ge 1} and ${schedulesData.remainingHours ge 24}"
+                                          th:utext="${schedulesData.remainingDays == 1} ?
+                                            #{search.results.opening.long.one} :
+                                            #{search.results.opening.long(${schedulesData.remainingDays})}">
+                                        Open in 6 days
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h4>
+                            <div class="search-result-name" th:text="${currentSite.name}">Musée Grévin</div>
+                        </h4>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row home-need-assistance-help" th:if="${#lists.size(sitesResponseDto.sites) > 3}">
+                <div class="col-xs-12 text-center">
+                    <a th:href="@{/search/site/around}" class="btn btn-orange btn-more-choices"
+                       th:text="#{'home.more.choices'}">More Choices</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="mobile/home/layout :: articles"></div>
+
+
+    <div th:include="mobile/layout :: select-popup"></div>
+    <div th:include="mobile/layout :: home-geocoding"></div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        $(document).ready(function () {
+            initHomeCategories();
+//            initWeatherWidget();
+            initHomePopup();
+            initHomeSelect();
+        });
+        // ]]>
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${true})"></footer>
+
+</body>
+</html>

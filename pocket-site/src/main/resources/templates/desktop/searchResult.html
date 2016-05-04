@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:attr="lang=${countryParam.language}" itemscope=""
+	itemtype="http://schema.org/Other">
+<head>
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/css/desktop/style.css" rel="stylesheet" />
+ <link href="/css/mobile/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="/js/desktop/searchResult.js"></script>
+<script src="/js/libs/jquery.min.js"></script>
+
+	
+<script src="/js/libs/moment.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+ <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.0.2/jquery.simpleWeather.min.js"></script> 
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+<script src="/js/libs/bootstrap-datepicker.min.js"></script>	
+</head>
+<body>
+	<div class="header clearfix">
+		<div class="col-md-5">
+			<a href="/" class="logo"><img src="img/logo.png" alt="Logo" /></a>
+		</div>
+		<div class="col-md-5">
+			<div class="search col-md-8">
+				<form role="form">
+					<input class="search-form" type="text" th:attr="placeholder=#{search.new.input.placeholder}"
+						autocomplete="off" /> <i class="fa fa-search"></i>
+				</form>
+			</div>
+
+			<div class="lang col-md-4">
+
+				<div class="navbar-language">
+					<a href="javascript: void(0);" data-toggle="dropdown"
+						class="language">
+						 <div  id="displayDefaultLang" class="language-line">
+							<div id="displayRemoveDefaultLang" class="language-option">
+								<span>English <img src="/img/newiv/english-flag.png" class="flag-img"/> </span>
+							</div>  <div><img src="/img/newiv/down-arrow.png" class="flagImg"/></div>
+							
+						</div> 
+					</a>
+					<div class="language-select dropdown-menu" 
+						aria-labelledby="dropdownMenu2" href="javascript: void(0);">
+						<div class="select-container">
+							<div  class="select-option">
+								<div id="aarfre" class="select-row">
+									 <a href="http://localhost:10190/searchResult"> 
+									 <span id="frenchTag" style="margin-right: 2px" class="text-option">FranÃ§ais <img width="31" src="/img/newiv/french-flag.png" class="flag-img-option" />
+								   </span>
+								   </a>
+								</div>
+							</div>
+							<div class="select-option">
+								<div id="aareng" class="select-row">
+									<!-- <a href="http://www.citibreak.com/searchResult" class="active"> -->
+									<a  href="http://localhost:10190/searchResult"> <span
+										style="margin-right: 10px" class="text-option">English</span>
+										<img width="31" src="/img/newiv/english-flag.png" class="flag-img-option" />
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="col-md-2 pull-right">
+			<div class="profile pull-right">
+				<a href="#" class="user pull-left"><span>Sandeep</span><span>India</span></a>
+				<img src="img/user.png" alt="Logo" class="pull-right" />
+			</div>
+		</div>
+	</div>
+	<div class="search-bar">
+		<div class="container">
+			<div class="col-md-1 home-menu">
+				<a href="/"><i class="fa fa-home"></i> Home</a>
+			</div>
+			<div class="col-md-4">
+				<div class="input-append city-append">
+					<input id="searchCity" size="16" type="text"
+						th:attr="placeholder=#{search.result.text.city}"
+						onkeyup="findCity()" class=" form-control" />
+					<ul id="city"></ul>
+				</div>
+			</div>
+			<div class="col-md-6 date-wrapper">
+				<div id="datepicker" class="input-daterange">
+	                <form method="post" id="notefilter_form" name="notefilter_form">
+	                	<div class="col-md-6 date">
+	                		<span class="input-group-addon">From</span>
+	                		<input type="text" id="startDate" name="start_date" placeholder="" class="input-sm form-control"  th:readonly="true"/>
+	                		<label for="start_date"><img src="img/date.png" /></label>
+	                	</div>
+	                    <div class="col-md-6 date">
+	                		<span class="input-group-addon">To</span>
+	                		<input type="text" id="endDate" name="end_date" placeholder="" class="input-sm form-control"  th:readonly="true"/>
+	                		<label for="end_date"><img src="img/date.png"/></label>
+	                	</div>	              
+	                    <!-- <button id="filter_notes" name="filter_notes" type="button">Select</button> -->
+	                </form>
+	            </div>
+	        </div>
+			
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default" onClick="search()"
+					th:utext="#{search.result.button.search}">SEARCH</button>
+			</div>
+		</div>
+	</div>
+	<div class="section" onClick="selTypeSection()">
+		<div class="container">
+			<div class="col-md-3">
+				<div class="map">
+
+					<a href="#" class="view-map" data-toggle="modal"
+						data-target="#largeModal">
+						<div id="map-t-thumb" style="width: 253px; height: 253px;"></div>
+						<span th:text = "#{search.result.text.view.map}">Localisation <img src="img/zoom-icon.png" /></span>
+					</a>
+					<div class="modal fade" id="largeModal" tabindex="-1" role="dialog"
+						aria-labelledby="largeModal" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<button type="button" class="cross" data-dismiss="modal">X</button>
+							<div class="modal-content">
+								<div class="mod-body">
+									<div id="map-t" style="width: 897px; height: 400px;"></div>
+
+								</div>
+								<!-- mod-body -->
+								<div class="modal-footer">
+									<!--map div is starting-->
+									<div class="col-md-1 custom-box">
+										<input class="rad" id="r1" type="radio"
+											onClick="filterOnMap()" value="Venues" name="radio" /> <label
+											for="r1"><span></span>Venues</label>
+									</div>
+									<div class="col-md-1 custom-box">
+										<input class="rad" id="r2" type="radio"
+											onClick="filterOnMap()" value="Exhibitions" name="radio" />
+										<label for="r2"><span></span> Exhibitions</label>
+									</div>
+									<div class="col-md-2 custom-box">
+										<input class="chk" id="cc1" type="checkbox"
+											value="Free Admission" onClick="filterOnMap()"
+											name="freeadmission" /> <label for="cc1"><span></span>
+											Free Admission</label>
+									</div>
+									<div class="col-md-2 custom-box">
+										<input class="chk" id="cc2" type="checkbox"
+											value="For the kids" onClick="filterOnMap()"
+											name="forthekids" /> <label for="cc2"><span></span>
+											For the kids</label>
+									</div>
+									<div class="col-md-3" id="typeDivInMap">
+										Types
+										<div class="dropdown">
+											<select class="custom-design form-control" id="typesInMap"
+												onChange="filterOnMap()">
+												<option>Toutes</option>
+												<option>Château et Palais</option>
+												<option>Grotte et Gouffre</option>
+												<option>Architecture civile</option>
+												<option>Centre culturel</option>
+												<option>Centre d’exposition</option>
+												<option>Galerie</option>
+												<option>Parc d’attraction</option>
+												<option>Mémorial et Cimetière</option>
+												<option>Architecture militaire</option>
+												<option>Musée</option>
+												<option>Autre</option>
+												<option>Parc et Jardin</option>
+												<option>Edifice religieux</option>
+												<option>Parc animalier et Zoo</option>
+												<option>Sitearchéologique</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="col-md-3" id="preferenceDivInMap"
+										style="display: none;">
+										Preference
+										<div class="dropdown">
+											<select class="custom-design form-control"
+												id="preferenceInMap" onChange="filterOnMap()">
+												<option>Toutes</option>
+												<option>Authenticite</option>
+												<option>Belles formes</option>
+												<option>Bon gout</option>
+												<option>Changer de metier</option>
+												<option>Changer d horizons</option>
+												<option>Changer d horizons</option>
+												<option>Decoller</option>
+												<option>Decouvrir mes racines</option>
+												<option>Devenir un geek</option>
+												<option>Elegance</option>
+												<option>Emotions</option>
+												<option>En decoudre</option>
+												<option>En voir de toutes les couleurs</option>
+												<option>Enchantement</option>
+												<option>Faire des decouvertes</option>
+												<option>Faire travailler ma memoire</option>
+												<option>Gourmandise</option>
+												<option>Grandeur</option>
+												<option>Insolite</option>
+												<option>Jouer</option>
+												<option>Me faire une toile</option>
+												<option>M'enivrer</option>
+												<option>Passer un bon moment en famille</option>
+												<option>Prendre l air</option>
+												<option>Remonter le temps</option>
+											</select>
+										</div>
+									</div>
+
+								</div>
+								<!-- modal-footer -->
+							</div>
+						</div>
+					</div>
+					<!-- modal -->
+					<!--map div is end-->
+					<div class="venue-info clearfix">
+						<div id="climateImage"></div>
+						<div id="cityWithDate"></div>
+						<div id="temperature"></div>
+					</div>
+					<div>
+						<input class="rad" id="destination" type="radio"
+							value="Destination" name="radio2" checked="true" /> <label
+							for="destination" th:text="#{home.search.bydestionation}"><span></span></label>
+					</div>
+					<div>
+						<input class="rad" id="preferences" type="radio" value="Prefrences"
+							name="radio2" /> <label for="preferences" th:text="#{home.search.bypreference}"><span></span>
+							</label>
+					</div>
+					<div th:text="${mileage}">18 Km</div>
+					<div class="search-filter">
+						<h3 th:text="#{search.result.search.filter}">Filter Your
+							Results by destination</h3>
+						<ul>
+							<li><input id="c1" class="chk" type="checkbox" name="venues"
+								onClick="filterOnVenAndExh()" checked="true" /><label for="c1"><span></span>
+									<b th:text="#{search.result.search.filter.venu}">Venues</b></label></li>
+							<li class="prefer" id="prefer" style="display: none">
+								<div class="dropdown destContainer" onClick="selType()">
+								<span>
+								<span class="txt">Type</span>
+								<span class="selContainer" id="selValue">All</span>
+								  <ul  id="liContainer" class="displayValue">		
+								 </ul>
+								</span>
+							</div>
+						</li>
+							<li><input id="c2" class="chk" type="checkbox"
+								name="exhibitions" onClick="filterOnVenAndExh()" checked="true" /><label
+								for="c2"><span></span> <b
+									th:text="#{search.result.search.filter.exhibition}">Exhibitions</b></label>
+							</li>
+							<li><input id="c3" class="chk" type="checkbox"
+								name="freeaddmission" onClick="freeAdmissionOne()" /><label
+								for="c3"><span></span> <b
+									th:text="#{search.result.search.filter.freeadmission}">Free Venues/Exhibitions</b></label></li>
+							<li><input id="c4" class="chk" type="checkbox" name="kids"
+								onClick="forTheKids()" /><label for="c4"><span></span>
+									<b th:text="#{search.result.search.forthekids}">Kids Venues/Exhibitions</b></label></li>
+							<li class="prefer" id="prefrence" style="display: none">
+								<div class="dropdown preferContainer" onClick="selPref()">
+								
+							   <span>
+								<span class="txtP">Preference</span>
+								<span class="prefContainer" id="prefType">All</span>
+								  <ul  id="liPrefContainer" class="displayValuePref">
+                                  </ul>
+								</span>
+							   </div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="clearfix no-result" id="noResult">
+	              <h1 class="noresult-title"><img class="pull-left" src="img/error-icon.png" />We did not find any results for your search!</h1>
+	              <div class="clearfix">
+	                <div class="col-md-8">
+	                  Click one of the 3 options to relaunch your search
+	                  <ul>
+	                    <li><a id="modify" href="#">Modify the dates</a></li>
+	                    <li><a href="#" onClick = "resetFilters()">Reset the filters</a></li>
+	                    <li><a href="http://dev.citibreak.com/">Go back to the Home Page</a></li>
+	                  </ul>
+	                </div>
+	                <div class="col-md-4"><img class="pull-left" src="img/no-result.png" /></div>
+	              </div>
+	           </div>
+				<div class="search-title" id="totalNumberOfRecords"></div>
+
+				<div class="search_tabs" id="search_tabs">
+					 <a class="exhib search_t" id="exhibD"
+						onClick="showAllExhibitionList()" href="javascript:void(0);">
+						<span class="roll-arrow" th:text="#{search.result.search.filter.exhibition}"></span> 
+					</a>
+						<div class="search-result res exi" style="display:none">
+						<div id="searchResultExhib"></div>
+						</div>
+					 <a class="venue search_t" id="venueD" onClick="showAllVenuesList()"
+						href="javascript:void(0);" style="display:block"><span class="roll-arrow" th:text="#{search.result.search.filter.venu}"></span>
+						</a>
+						<div class="search-result res ven" style="display:none">
+						<div id="searchResultVenue"></div>
+						</div>
+				</div>
+
+				<div class="search-result res def">
+					<div id="searchResult"></div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3 col-sm-6">
+						<h4 th:text="#{footer.you.and.pocket}"></h4>
+						<ul>
+							<li><a href="#" th:text="#{contact.title}"></a></li>
+							<li><a href="#" th:text="#{footer.personal.data}"></a></li>
+							<li><a href="#" th:text="#{footer.legal.mention}"></a></li>
+						</ul>
+					</div>
+					<div class="col-md-2 col-sm-6">
+						<h4 th:text="#{footer.about.us}"></h4>
+						<ul>
+							<li><a href="#" th:text="#{footer.presentation}"></a></li>
+							<li><a href="#" th:text="#{footer.blog}"> </a></li>
+
+
+						</ul>
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<h4 th:text="#{account.general.newsletter.subscribe}"></h4>
+						<div class="sch-box clearfix">
+							<input id="search" type="search" th:attr="placeholder=#{account.general.newsletter.subscribe}"/> <label
+								for="search">GO</label>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-6">
+					 <div class="footer_logo_area">
+					 	<a href="#" class="footer-logo"></a>
+					 	<div class="footer_date_day" id="footerDate">					 		
+							Thursday, 21st May 
+						 <label>Paris</label>
+					 	</div>
+					 </div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<p>Â© Copyright 2015 Citibreak.All Right Reserved.</p>
+					</div>
+					<div class="col-md-4 pull-right text-right">
+						<div class="social">
+							<a class="fb" href="#"><i class="fa fa-facebook"></i></a> <a
+								class="tw" href="#"><i class="fa fa-twitter"></i></a> <a
+								class="gp" href="#"><i class="fa fa-google-plus"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+ 	$(document).ready(function() {
+        temperature();
+        onPageLoad();
+        urlRead();
+        });
+    
+   
+    
+</script>
+
+	<script>
+	
+	jQuery(document).ready(function () {
+
+
+		$(".selContainer").click(function(event){
+		    event.stopPropagation();
+		    if ($('#liContainer').hasClass('displayValue')) {
+				
+			    $('#liContainer').removeClass('displayValue');
+			}
+			else{
+				 $('#liContainer').addClass('displayValue');
+			}
+		   
+		});
+
+		$(".prefContainer").click(function(event){
+		    event.stopPropagation();
+		    if ($('#liPrefContainer').hasClass('displayValuePref')) {
+				
+			    $('#liPrefContainer').removeClass('displayValuePref');
+			}
+			else{
+				 $('#liPrefContainer').addClass('displayValuePref');
+			}
+		   
+		});	
+
+		var nowDate = new Date();
+		var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+
+
+		jQuery('.input-daterange').datepicker({
+		        setDate: new Date(),
+		    	startDate: today, 
+		        format: 'dd-mm-yyyy',
+		        autoclose: true,
+		        language:userLang
+		     
+		    });
+		
+	});
+	
+	jQuery(document).ready(function() {
+		jQuery('#startDate').datepicker({
+	        format: 'dd-mm-yyyy',
+	        autoclose: true,
+	        language:userLang
+	    })
+	    //Listen for the change even on the input
+	    .change(dateChanged)
+	    .on('changeDate', dateChanged);
+	});
+		
+   $(document).on("click", "#preferences" ,function (e) { 
+
+		$('#prefer').css("display", "none");
+		$('#prefrence').css("display", "block");
+	
+	});
+
+	function dateChanged(ev) {
+		var startDate = jQuery('#startDate').val();
+		jQuery('#endDate').datepicker('setStartDate', startDate);
+	}
+
+	function resetFilters() {
+      
+        $('#c1').prop('checked', true);
+        $('#c2').prop('checked', true);
+        $('#c3').prop('checked', false);
+        $('#c4').prop('checked', false);
+	}
+
+ $('body').on('click','.search_tabs a', function(){	 
+	  $('a.search_t').removeClass('current');
+	  $(this).addClass('current'); 
+});
+
+
+
+	var flag1=0;
+	var flag2=0;
+$(document).on("click", "#exhibD" ,function (e) {
+	
+	if ( $(this).hasClass("current")) {
+			flag1++;
+			if(flag1==2)
+			{
+				 $(this).removeClass("current");
+				 flag1=0;
+			 }
+		
+	 }
+	});
+
+$(document).on("click", "#venueD" ,function (e) {
+	
+	if ( $(this).hasClass("current")) {
+			flag2++;
+			if(flag2==2)
+			{
+				 $(this).removeClass("current");
+				 flag2=0;
+			 }
+		
+	 }
+	 	
+});
+
+
+$('#modify').click(function () {
+    $('#startDate').datepicker('show');
+});	
+</script>
+	<!--   commented by sandeep -->
+	<!-- <script type="text/javascript">
+$('#largeModal').on('shown.bs.modal', function () {
+  });
+
+    var splittedUrl = window.location.href.toString().split("?");
+    if(splittedUrl[1] != undefined) {
+        var param = splittedUrl[1].split("=")[1];
+        if(param!= undefined){
+            init(param);
+        }
+    }
+  </script> -->
+</body>
+</html>

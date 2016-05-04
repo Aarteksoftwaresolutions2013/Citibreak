@@ -1,0 +1,187 @@
+<form>
+    <div class="row"
+         xmlns:th="http://www.thymeleaf.org">
+        <div class="col-xs-1">
+            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                <img src="/img/cancel-popup.png" width="32" height="32"/>
+            </a>
+        </div>
+        <div class="col-xs-10 article-header-container">
+            <div class="row article-header">
+                <div class="col-xs-3 article-date text-center">
+                    <p th:text="${article.creation}" id="creationDate"></p>
+                </div>
+                <div class="col-xs-9 article-title">
+                    <h3 class="no-margin" th:text="${article.headline1.getText(countryParam.language)}" id="mainTitle">Au Palais de Tokyo, l'atlas démesuré de George</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <p th:text="#{article.label.essentials}">A ne pas manquer :</p>
+                </div>
+                <div class="col-xs-9 article-info-subtitle">
+                    <p th:text="${article.essentials.getText(countryParam.language)}">Le tableau intitulé "Paradis"</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <p th:text="#{article.label.extra}">Les plus :</p>
+                </div>
+                <div class="col-xs-9 article-info-subtitle">
+                    <p th:text="${article.extra.getText(countryParam.language)}">Nocture tard le soir</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <p th:text="#{article.label.price}">Prix :</p>
+                </div>
+                <div class="col-xs-9 article-info-subtitle" th:if="${event == null}">
+                    <span th:if="${site.closed}" th:utext="#{details.price.closed}">SITE CLOSED</span>
+                    <div th:unless="${site.closed}">
+                        <div th:if="${#bools.isFalse(site.free) and site.lowestPrice != null and site.highestPrice != null}">
+                            <span th:text="${site.formattedLowestPrice}">5.5 €</span> - <span
+                                th:text="${site.formattedHighestPrice}">7.5 €</span>
+                        </div>
+                        <div th:if="${#bools.isFalse(site.free) and site.lowestPrice == null and site.highestPrice != null}">
+                            <span th:text="${site.formattedHighestPrice}">5.5 €</span>
+                        </div>
+                        <div th:if="${#bools.isFalse(site.free) and site.lowestPrice != null and site.highestPrice == null}">
+                            <span th:utext="#{details.price.unavailable}">PRICE UNAVAILABLE</span>
+                        </div>
+                        <div th:if="${#bools.isFalse(site.free) and site.lowestPrice == null and site.highestPrice == null}">
+                            <span th:utext="#{details.price.unavailable}">PRICE UNAVAILABLE</span>
+                        </div>
+                        <div th:if="${#bools.isTrue(site.free)}">
+                            <span th:utext="#{details.price.free}">FREE ADMISSION</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-9 article-info-subtitle" th:if="${event != null}">
+                    <span th:if="${event.closed}" th:utext="#{details.price.closed}">SITE COSED</span>
+                    <div th:unless="${event.closed}">
+                        <div th:if="${#bools.isFalse(event.free) and event.lowestPrice != null and event.highestPrice != null}">
+                            <span th:text="${event.formattedLowestPrice}">5.5 €</span> - <span
+                                th:text="${event.formattedHighestPrice}">7.5 €</span>
+                        </div>
+                        <div th:if="${#bools.isFalse(event.free) and event.lowestPrice == null and event.highestPrice != null}">
+                            <span th:text="${event.formattedHighestPrice}">5.5 €</span>
+                        </div>
+                        <div th:if="${#bools.isFalse(event.free) and event.lowestPrice != null and event.highestPrice == null}">
+                            <span th:utext="#{details.price.unavailable}">PRICE UNAVAILABLE</span>
+                        </div>
+                        <div th:if="${#bools.isFalse(event.free) and event.lowestPrice == null and event.highestPrice == null}">
+                            <span th:utext="#{details.price.unavailable}">PRICE UNAVAILABLE</span>
+                        </div>
+                        <div th:if="${#bools.isTrue(event.free)}">
+                            <span th:utext="#{details.price.free}">FREE ADMISSION</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row article-media">
+                <div class="col-xs-12 article-map-container" id="articleMap">
+                    <div class="article-map" id="article-map-canvas"></div>
+                    <button type="button" class="btn btn-orange" id="articleShowImage" th:text="${#strings.isEmpty(article.videoUrl)}
+                            ? #{article.button.image} : #{article.button.video}">Image</button>
+                </div>
+                <div class="col-xs-12 article-media-container" id="articleMedia">
+                    <div class="article-video" id="detailsVideo" th:unless="${#strings.isEmpty(article.videoUrl)}">
+                        <div id="articleVideoPlayer" class="details-video-player"></div>
+                        <div id="detailsActionsVideo" class="details-actions-video">
+                            <div class="details-action details-share-twitter" id="detailsShareTwitter">
+                            </div>
+                            <div class="details-action details-share-facebook" id="detailsShareFacebook">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="article-image" th:if="${#strings.isEmpty(article.videoUrl)}" th:style="'background-image: url(' + ${article.displayImageUrl} + ');'"></div>
+                    <button type="button" class="btn btn-orange" id="articleShowMap" th:text="#{article.button.map}">Map</button>
+                </div>
+            </div>
+            <div class="row jsShowWithMap" style="display: none;">
+                <div class="col-xs-12">
+                    <div class="details-info-address"
+                         th:with="websiteMissing=${#strings.isEmpty(site.website)}, wikipediaMissing=${#strings.isEmpty(site.wikipedia)}">
+                        <h5 th:text="${site.name}">Palais de Tokyo</h5>
+                        <p th:text="${site.address.street}">1, rue de Bellechasse -75007 Paris -France</p>
+                        <p th:text="${site.address.formattedZipCityAndCountry}">1, rue de Bellechasse -75007 Paris -France</p>
+                        <p th:text="${site.phone}">(33) 014 0494 814</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row jsShowWithMap" style="display: none;">
+                <div class="col-xs-12">
+                    <div class="details-info-schedules">
+                        <h5 th:if="${event != null}" th:utext="${event.displaySchedules}">Mon, Wed, Fri - Sun: 9:30 –18:00 ;
+                            Thurs: 9:30 –21:45<br/>
+                            Closed on 1st January, 1st of May and 25th of December.</h5>
+                        <h5 th:if="${event == null}" th:utext="${site.displaySchedules}">Mon, Wed, Fri - Sun: 9:30 –18:00 ;
+                            Thurs: 9:30 –21:45<br/>
+                            Closed on 1st January, 1st of May and 25th of December.</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="row jsShowWithImage">
+                <div class="col-xs-12 article-description">
+                    <div id="articleDescriptionText" class="article-description-container" th:utext="${article.text.getText(countryParam.language)}">
+                        Dummy Description
+                    </div>
+                </div>
+            </div>
+            <div class="row jsShowWithImage">
+                <div class="col-xs-12">
+                    <b th:text="${article.author}">Author</b>
+                </div>
+            </div>
+            <div class="row article-more-info" th:unless="${#strings.isEmpty(article.url)}">
+                <div class="col-xs-12">
+                    <div class="form-group text-left">
+                        <a type="submit" class="btn btn-orange" th:text="#{article.button.more}" th:href="${article.url}" target="_blank">More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </div>
+</form>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function getArticleLatLng() {
+        var articleSearchLat = /*[[${site.location.y}]]*/ -34.397;
+        var articleSearchLng = /*[[${site.location.x}]]*/ 150.644;
+        return new google.maps.LatLng(articleSearchLat, articleSearchLng);
+    }
+
+    var articleVideoUrl = /*[[${article.videoUrl}]]*/ "";
+    var videoId = initAndGetVideoId(articleVideoUrl);
+    function initVideo() {
+        if (isYoutubeVideo(articleVideoUrl)) {
+            return new YT.Player('articleVideoPlayer', {
+                height: 370,
+                width: $('#articleMedia').width(),
+                videoId: videoId,
+                playerVars: {
+                    controls: 1,
+                    autohide: 1,
+                    modestbranding: 0,
+                    showinfo: 0,
+                    autoplay: 1
+                }
+            });
+        } else if(isDailyMotionVideo(articleVideoUrl)) {
+            return DM.player("articleVideoPlayer", {
+                height: 370,
+                width: $('#articleMedia').width(),
+                video: videoId,
+                params: {
+                    logo: 0,
+                    info: 0,
+                    autoplay: 1
+                }
+            });
+        }
+    }
+    /*]]>*/
+</script>

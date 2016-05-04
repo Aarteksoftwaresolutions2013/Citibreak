@@ -1,0 +1,274 @@
+.search-result-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search-result-title a {
+    color: rgba(255, 255, 255, 0.5);
+}
+.search-result-title a:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-result-title a.active {
+    color: rgba(255, 255, 255, 1);
+}
+.search-result-title a.active:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.search-col-list {
+    margin: 15px -5px;
+}
+.search-col-list .search-col {
+    padding-right: 5px;
+    padding-left: 5px;
+    background: url('/img/triangle.png') no-repeat right 5px bottom;
+}
+.search-col-list .search-col a {
+    display: block;
+    height: 56px;
+    width: 100%;
+    color: white;
+    padding: 8px 15px;
+    background: rgba(42, 116, 112, 0.8);
+    cursor: pointer;
+    overflow: hidden;
+}
+.search-col-list .search-col a:hover {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.2);
+}
+.search-col-list .search-col a div {
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+}
+.search-col-list .search-col a div span {
+    line-height: 40px;
+}
+
+.search-tags-list {
+    margin: 15px -5px;
+}
+
+.search-tags-list .search-tags {
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+.search-tags-list .search-tags > a {
+    display: block;
+    height: 56px;
+    width: 100%;
+    color: white;
+    /*padding: 8px 15px;*/
+    /*Less padding to avoid truncating words*/
+    padding: 8px 6px;
+    background: rgba(42, 116, 112, 0.8);
+    /*cursor: pointer;*/
+    overflow: hidden;
+    border-left: 4px solid #f7931e;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+.search-tags-list .search-tags a:hover {
+    text-decoration: none;
+}
+.search-tags-list .search-tags a div {
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+}
+.search-tags-list .search-tags a div span {
+    line-height: 40px;
+}
+.search-tags-list .search-tags img {
+    float: right;
+}
+
+.search-maps {
+    margin-bottom: 25px;
+}
+
+.search-result-separator {
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-result-list {
+    padding: 0 10px;
+}
+.search-result-list {
+    height: 620px;
+    overflow: hidden;
+}
+.search-result-list .search-result {
+    padding-right: 5px;
+    padding-left: 5px;
+    height: 310px;
+}
+.search-result-list .search-result .thumbnail {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+.search-result-list .search-result .thumbnail-card {
+    width: 100%;
+    height: 232px;
+    padding: 4px;
+}
+.search-result-list .search-result.hover .thumbnail-card,
+.search-result-list .search-result .thumbnail-card:hover {
+    background: #9ac1c1;
+}
+.search-result-list .search-result .thumbnail-card:hover .caption {
+    background: #327c73;
+}
+.search-result-list .search-result .thumbnail .search-result-img {
+    width: 100%;
+    height: 170px;
+    border-bottom: none;
+}
+.search-result-list .search-result .thumbnail .caption {
+    background: rgba(255, 255, 255, 0.1) padding-box;
+    border-top: none;
+    line-height: 18px;
+    color: white;
+    height: 54px;
+}
+.search-result-list .search-result .thumbnail:hover {
+    text-decoration: none;
+}
+.search-result-list .search-result-rating-star {
+    background: url('/img/rating-star.png') no-repeat center;
+    height: 29px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+.search-result-list .search-result h4 {
+    height: 54px;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 18px;
+    padding: 0 4px;
+}
+.search-result-list .search-result-schedules {
+    background: url('/img/details-schedules-small.png') no-repeat center left;
+    padding-left: 15px;
+}
+.search-result-list .search-result-distance {
+    white-space: nowrap;
+    text-align: right;
+    padding-left: 5px;
+}
+.search-result-list .search-result-city {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.search-result-list .free-ribbon {
+    width: 100%;
+    position: relative;
+    color: #fff;
+    display: inline-block;
+    overflow: hidden;
+}
+.search-result-list .free-ribbon p {
+    display: inline;
+}
+.search-result-list .free-ribbon p span {
+    position: absolute;
+    display: inline-block;
+    right: -40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2), inset 0 5px 30px rgba(255,255,255,0.2);
+    text-align: center;
+    text-transform: uppercase;
+    top: 10px;
+    background: #f05a23;
+    width: 150px;
+    padding: 3px 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+.search-result-list .closed {
+    position: absolute;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5) url('/img/closed.png') center 40px no-repeat;
+    width: 100%;
+    height: 224px;
+    padding: 90px 10px 60px 10px;
+    top: 0;
+    left: 0;
+}
+.search-result-list .closed span {
+    line-height: 16px;
+    height: 16px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#map-canvas {
+    height: 350px;
+}
+
+.favorite-categories h1 {
+    margin-bottom: 40px;
+}
+.favorite-categories h3 {
+    margin: 15px 0;
+}
+.favorite-categories .favorite-tags-container {
+    height: 170px;
+    overflow: hidden;
+    margin-left: -23px;
+}
+.favorite-categories .favorite-tags-container p {
+    width: 95%;
+}
+.favorite-categories .favorite-tags-container p:last-child {
+    margin-bottom: 0;
+}
+.favorite-categories .favorite-tags-container p.active {
+    background: url('/img/input-valid.png') left center no-repeat;
+    font-weight: bold;
+    margin-left: 0;
+}
+.favorite-categories .favorite-tags-container a {
+    color: white;
+    margin-left: 23px;
+}
+.favorite-categories .favorite-tags-container p.active a {
+    text-decoration: underline;
+}
+.favorite-categories a:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.search-result .favorite-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.dayout-remove {
+    font-size: 9px;
+    border: 1px solid #555;
+    border-radius: 10px;
+    background-color: #555;
+    color: #ddd;
+    top: 0;
+    padding: 2px;
+    margin-left: 2px;
+}

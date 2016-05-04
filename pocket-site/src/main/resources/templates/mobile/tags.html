@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('assistant')" class="row navbar-citybreak"></div>
+
+    <form th:action="@{/tags/update}" method="post">
+        <input type="hidden" value="" id="source" name="source" />
+        <div class="row">
+            <div class="col-xs-2 col-xs-2-back">
+                <a class="previous-page-button js-submit-form" data-source="back" href="javascript:void(0);">
+                    <img src="/img/cancel-popup.png" width="30" height="30"/>
+                </a>
+            </div>
+            <div class="col-xs-10">
+                <h1 class="no-margin-top" th:text="#{tags.title}">You Want ?</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="tagsSelectList" class="tags-select-list"
+                        th:with="tagEntries=${tags.entrySet()}, tagSize=${#sets.size(tagEntries)}">
+                    <div th:each="data, row : ${tagEntries}" th:if="${row.index} % 4 == 0" class="row">
+                        <div th:each="tagIndex : ${#numbers.sequence(row.index , row.index + 3)}"
+                             th:with="tagEntry=${tagEntries[tagIndex]}" th:if="${tagIndex} lt ${tagSize}"
+                             class="col-xs-12 tags-select">
+                            <a href="javascript:void(0);" class="thumbnail" data-th-value="${tag}"
+                               th:with="tagName=${#strings.toLowerCase(tagEntry.getKey())}">
+                                <div class="tags-select-img-container">
+                                    <img th:src="${'/img/tags/' + tagName + '/' + tagsParams.getIndex(tagName) + '.jpg'}" class="tags-select-img" width="225" height="144"/>
+                                    <span class="tags-select-checkbox"
+                                          th:classappend="${#strings.contains(searchParams.tags, tagEntry.getKey())} ? 'tags-select-checkbox-checked' : 'tags-select-checkbox-unchecked'">
+                                        <img src="/img/tags-add.png" class="tags-select-checkbox-img-unchecked" height="20" width="20"/>
+                                        <img src="/img/tags-selected.png" class="tags-select-checkbox-img-checked" height="20" width="20"/>
+                                    </span>
+                                    <input type="checkbox" name="tags" class="hide" th:value="${tagEntry.getKey()}"
+                                           th:checked="${#strings.contains(searchParams.tags, tagEntry.getKey())}"/>
+                                </div>
+                                <div class="h4">
+                                    <span class="tags-select-count img-circle pull-left"
+                                          th:text="${tagEntry.getValue()}">9</span>
+                                    <div class="tag-name auto-resize-line">
+                                        <div>
+                                            <span th:text="#{${'tags.name.' + tagName}}">Adventure</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <a href="javascript:void(0);" class="home-go js-submit-form"
+                                th:text="#{tags.go}">GO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-1">
+            </div>
+        </div>
+    </form>
+
+    <div class="tags-select-toomany " id="tagsTooMany">
+        <div class="tags-select-toomany-title" th:text="#{tags.limit.title}">Please choose your option</div>
+        <p th:utext="#{tags.limit.text}">you cannot select more than<br />5 experiences at a time</p>
+    </div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        initTags();
+        // ]]>
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${false})"></footer>
+
+</body>
+</html>

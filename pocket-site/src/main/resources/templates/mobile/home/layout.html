@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head></head>
+<body>
+
+<div th:fragment="articles">
+    <div class="row">
+        <div class="col-xs-12 home-carousel-container" th:if="${searchParams.city.filled}">
+            <div id="home-carousel-less" class="home-carousel-less">
+                <img src="/img/mobile/less.png"/>
+            </div>
+            <div id="homeCarousel" class="home-carousel">
+                <a th:each="article : ${articlesResponseDto.articles}" th:attr="data-url=@{'/article/' + ${article.id}}" href="javascript:void(0);">
+                    <img th:src="${article.displayImageUrl}"/>
+                    <span class="home-carousel-cover text-center" th:text="${article.headline1.getText(countryParam.language)}">News title</span>
+                </a>
+            </div>
+            <div id="home-carousel-more" class="home-carousel-more">
+                <img src="/img/mobile/more.png"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade article-popup" id="articlePopup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    <div class="hide">
+        <div class="row" id="articlePopupLoading">
+            <div class="col-lg-offset-1 col-lg-10 text-center">
+                <h3 th:text="#{common.button.loading}">Loading</h3>
+                <br />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyDNOsH5rMWbdH7iU9okNch9HOJexnJVDKw&amp;sensor=false"></script>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initArticles();
+        /*]]>*/
+    </script>
+</div>
+
+<div th:fragment="home-select (current)">
+    <button type="button" class="btn btn-orange btn-my-select"
+            id="mySelectButton" th:text="#{${'home.select.' + current}}">Special Events</button>
+    <div class="home-select-options" id="mySelectChoices">
+        <div class="home-select-options-title">
+            <span th:text="#{home.select.title}">Please choose your option</span>
+            <a href="javascript:void(0);" class="delete pull-right">
+                <img src="/img/close_black.png" width="21" height="21" />
+            </a>
+        </div>
+        <div class="radio" th:if="${hasSpecialEvent}">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/home/specials/}" th:checked="${current == 'special'}" />
+                <span th:text="#{'home.select.special'}">Special Events</span>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/home/buzz/}" th:checked="${current == 'buzz'}" />
+                <span th:text="#{'home.select.buzz'}">Weekly Buzz</span>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/home/recent/}" th:checked="${current == 'recent'}"  />
+                <span th:text="#{'home.select.recent'}">What’s New</span>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/home/free/}" th:checked="${current == 'free'}"  />
+                <span th:text="#{'home.select.free'}">Free it’s even better</span>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/home/family/}" th:checked="${current == 'family'}"  />
+                <span th:text="#{'home.select.family'}">Have a great time with the kids</span>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/home/around/}" th:checked="${current == 'around'}"  />
+                <span th:text="#{'home.select.around'}">Around you</span>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="homeSelectOption" th:attr="data-href=@{/assistant}" />
+                <span th:text="#{'home.select.assistant'}">Need Assistance</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

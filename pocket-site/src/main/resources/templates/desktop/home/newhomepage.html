@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/newlayout :: head"></head>
+<body class="newhome">
+
+<div class="bgTop">
+    <div class="container" >
+
+        <div th:replace="desktop/newlayout :: header ('home')"></div>
+
+        <div class="row">
+            <div class="col-xs-12 main-title">
+                <h2 class="main-title-head" th:text="#{home.main.title}">Main title</h2>
+
+                <h3 class="main-title-sub" th:text="#{home.main.subtitle}">Main title</h3>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-xs-12 preference-search">
+                <div class="destination-search-container">
+                    <div class="row">
+                        <div class="col-xs-offset-2 col-xs-10 preference">
+                            <span class="search-type-preference" th:text="#{home.search.main.search}">Search</span>
+
+                            <div class="radio-search-pref">
+                                <input id="byDest" type="radio" checked="checked" class="radio-search-pref"
+                                       name="search-type" onclick="preference()">
+                            <span class="text-search"
+                                  th:text="#{home.search.bydestionation}">By destination</span></input>
+                            </div>
+                            <div class="radio-search-pref">
+                                <input id="byPref" type="radio" class="radio-search-pref" name="search-type"
+                                       onclick="destination()">
+                                <span class="text-search"
+                                      th:text="#{home.search.bypreference}">By preference</span></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row central-row-search">
+                        <div class="col-xs-offset-1 col-xs-11 preference">
+                            <input class="form-control orange-text-twitter" id="homeSelectCityInput"
+                                   th:placeholder="#{assistant.search.select.city.placeholder}"
+                                   name="name"
+                                   th:value="(${searchParams.city.filled} ? ${searchParams.city.name} : #{assistant.search.city.empty})"/>
+
+                            <div class="calendar-font">
+                                <img class="arrows" src="/img/newiv/up-small-arrow.png"/>
+                                <img class="arrows" src="/img/newiv/down-small-arrow.png"/>
+                            </div>
+                            <div class="input-daterange" id="datepicker">
+                                <span class="orange-text-label label-one" th:text="#{search.new.input.from.label}">From</span>
+                                <div class="input-group date">
+                                    <input id="homeSelectDatePicker" class="date-field orange-text" name="start"
+                                           type="text"
+                                           th:readonly="true"/>
+                                <span class="input-group-addon custom-input-group-addon"><img
+                                        class="calendar-picto ui-datepicker-trigger"
+                                        src="/img/newiv/calendar.png"/></span>
+                                </div>
+
+                                <span class="orange-text-label label-two" th:text="#{search.new.input.to.label}">To</span>
+
+                                <div class="input-group date">
+                                    <input id="homeSelectDatePickerEnd" class="date-field orange-text" name="end"
+                                           type="text" th:readonly="true"/>
+                                <span class="input-group-addon custom-input-group-addon"><img
+                                        class="calendar-picto ui-datepicker-trigger"
+                                        src="/img/newiv/calendar.png"/></span>
+                                </div>
+                            </div>
+                            <button onclick="submitForm()" type="submit" class="btn btn-orange" th:text="#{home.search.button}">Connexion
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row preference-select">
+                        <div class="col-xs-offset-2 col-xs-10 select-block">
+                            <div class="col-xs-offset-1 col-xs-4">
+                                <span class="search-type-destination" th:text="#{home.search.main.want}">Search</span>
+                            </div>
+                            <div class="col-xs-6 select-dropdown">
+                                <a class="form-control orange-text-select" href="javascript:void(0);"
+                                   data-toggle="dropdown"><span id="ref-select-value"
+                                                                th:text="#{${'tags.name.' + #strings.toLowerCase(firstTags.getKey())}}"> test</span></a>
+
+                                <div class="arrowSelect">
+                                    <img class="arrows" src="/img/newiv/up-small-arrow.png"/>
+                                    <img class="arrows" src="/img/newiv/down-small-arrow.png"/>
+                                </div>
+                                <img class="img-select" src="/img/newiv/triangle-up-white.png" height="10" width="17"/>
+                                <ul class="dropdown-menu customs-drops mCustomScrollbar" aria-labelledby="dLabel">
+                                    <li class="select-line" th:each="value: ${tags.entrySet()}" onclick="getByName(this)">
+                                        <a href="javascript:void(0);"> › <span class="select-value"
+                                                                               th:text="#{${'tags.name.' + #strings.toLowerCase(value.getKey())}}">Account Settings</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div th:replace="desktop/layout :: select-popup"></div>
+        <div th:replace="desktop/layout :: home-geocoding"></div>
+    </div>
+</div>
+
+<div class="bgDown">
+    <div class="container">
+        <div class="row explore">
+            <div class="col-xs-12">
+                <h2 class="explore-title"><span th:text="#{home.main.explore.title}" style="color: black">Expore</span>
+                    <span th:text="#{home.main.world.title}" style="color: #f58425">the world</span></h2>
+
+                <div class="describe-explore"><span th:text="#{home.explore.describe}">Describe</span></div>
+            </div>
+
+            <div class="row">
+                <!--Slider carousel-->
+                <div class="col-xs-12 text-center whitebg">
+                    <div id="slider" class="carousel slide" data-ride="carousel">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div th:each="data,row : ${exploreItems}" th:class="${row.index} == 0 ? 'item active' : 'item'">
+                                <div th:if="${#lists.size(data)} > 0" class="col-xs-6 sData Rpadded cube"> <a href="">
+                                    <figure class="tint"><img th:src="${data[0].displayImageUrl}" width="665px" height="500px"/>
+                                    <h1 class="" th:text="${data[0].city.getText(countryParam.language)}">carcassone france</h1></figure></a>
+                                </div>
+                                <div th:if="${#lists.size(data)} > 1" class="col-xs-6 Rpadded">
+                                    <div class="col-sm-6 Rdata Lpadded firstline">
+                                        <a href="" >
+                                            <figure class="tint"><img class="caroussel-img" th:src="${data[1].displayImageUrl}" width="314px" height="234px"
+                                                 alt="France"/>
+
+                                            <h2 class="" th:text="${data[1].city.getText(countryParam.language)}" >triumpharch in paris</h2></figure></a>
+                                    </div>
+                                    <div th:if="${#lists.size(data)} > 2" class="col-sm-6 Rdata Lpadded firstline">
+                                        <a href="" >
+                                            <figure class="tint"> <img th:src="${data[2].displayImageUrl}" width="314px" height="234px"
+                                                 alt="France"/>
+                                            <h3 class="" th:text="${data[2].city.getText(countryParam.language)}">port of sete</h3></figure>
+                                        </a>
+                                    </div>
+                                    <div th:if="${#lists.size(data)} > 3" class="col-sm-12 Rdata Lpadded lastLine">
+                                        <a href="" >
+                                            <figure class="tint"> <img th:src="${data[3].displayImageUrl}" width="648px" height="250px"
+                                                  alt="France"/>
+                                            <h4 class="" th:text="${data[3].city.getText(countryParam.language)}">tower bridge, london</h4></figure>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#slider" role="button" data-slide="prev">
+                            <img class="carousel-arrow" width="22" height="45" src="/img/newiv/arrowLeftCarousel.png"/>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#slider" role="button" data-slide="next">
+                            <img class="carousel-arrow" width="22" height="45" src="/img/newiv/arrowRigthCarousel.png"/>
+                            <span class="sr-only">Next</span>
+                        </a>
+
+                    </div>
+                </div>
+                <!--End Slider carousel-->
+            </div>
+
+        </div>
+
+
+        <script type="text/javascript">
+            // <![CDATA[
+            $(document).ready(function () {
+                initHomeCategories();
+                initWeatherWidget();
+                initHomePopup();
+                initHomeSelect();
+                initBuzz();
+                $('#dp3').datepicker();
+                $('customs-drops').mCustomScrollbar({
+                    theme: "dark",
+                    scrollInertia: 0,
+                });
+            });
+
+            function preference() {
+                var pref = $(".preference .search-type-destination");
+                pref.removeClass("search-type-destination");
+                pref.addClass("search-type-preference");
+                $(".preference-select").hide();
+            }
+
+            function destination() {
+                var pref = $(".preference .search-type-preference");
+                pref.removeClass("search-type-preference");
+                pref.addClass("search-type-destination");
+                $(".preference-select").show();
+            }
+
+            function getByName(args) {
+                var text = args.getElementsByClassName("select-value")[0].innerHTML;
+                $("#ref-select-value")[0].innerHTML = text;
+            }
+            function submitForm() {
+                var beginDate = formattedDate($("#homeSelectDatePicker").val());
+                var endDate = formattedDate($("#homeSelectDatePickerEnd").val());
+                var city = $("#homeSelectCityInput").val();
+                window.location.replace("/searchResult?urldata=" + city +","+beginDate +","+ endDate);
+            }
+
+            function formattedDate(date){
+                var from = date.split("-");
+                return from[0] + "-" + from[1] + "-" + from[2]; //Index values changed by sandeep
+            }
+            // ]]>
+        </script>
+    </div>
+</div>
+<footer th:replace="desktop/newlayout :: footer (${true})"></footer>
+<footer th:replace="desktop/newlayout :: iAdvize ('homepage')"></footer>
+
+</body>
+</html>

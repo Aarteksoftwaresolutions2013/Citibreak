@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('favorites')" class="row navbar-citybreak"></div>
+
+    <div class="row" th:with="sites=${favoritesResponseDto.getActiveFilteredList(indexType, tag)},
+                    sitesSize=${#lists.size(favoritesResponseDto.sites)},
+                    eventsSize=${#lists.size(favoritesResponseDto.events)},
+                    daysOutSize=${#lists.size(favoritesResponseDto.daysOut)},
+                    displaySize=${#lists.size(sites)},
+                    displaySitesSize=${#lists.size(favoritesResponseDto.sites)},
+                    displayEventsSize=${#lists.size(favoritesResponseDto.events)},
+                    displayDaysOutSize=${#lists.size(favoritesResponseDto.daysOut)}">
+        <div class="col-xs-offset-1 col-xs-4 favorite-categories">
+            <h1 class="no-margin-top">
+                <span th:text="#{favorites.title}">My Favorites</span><br/>
+            </h1>
+            <div th:if="${sitesSize} > 0">
+                <h3 class="search-result-title">
+                    <a class="active" th:href="@{/favorites/site/}" th:text="#{favorites.sites}">Venues</a>
+                    <span class="pull-right" th:text="${displaySitesSize}">10</span>
+                </h3>
+            </div>
+
+            <div th:if="${eventsSize} > 0">
+                <h3 class="search-result-title">
+                    <a class="active" th:href="@{/favorites/event/}" th:text="#{favorites.events}">Exhibitions</a>
+                    <span class="pull-right" th:text="${displayEventsSize}">10</span>
+                </h3>
+            </div>
+
+            <div th:if="${daysOutSize} > 0">
+                <h3 class="search-result-title">
+                    <a class="active" th:href="@{/favorites/dayOut/}" th:text="#{favorites.daysOut}">Days Out</a>
+                    <span class="pull-right" th:text="${displayDaysOutSize}">10</span>
+                </h3>
+                <div id="favoriteTagsContainerEvent" class="favorite-tags-container">
+                    <p th:each="dayOut : ${favoritesResponseDto.daysOut}"
+                       th:with="dayOutId=${dayOut.id},dayOutName=${dayOut.name}"
+                       th:classappend="${#strings.equalsIgnoreCase(indexType, 'dayOut') and #strings.equalsIgnoreCase(dayOutId, tag) ? 'active' : ''}">
+
+                        <a th:if="${#strings.equalsIgnoreCase(dayOutId, tag)}"
+                           th:href="@{/favorites/dayOut/}"
+                           th:text="${dayOutName}">Untitled day out</a>
+                        <a th:unless="${#strings.equalsIgnoreCase(dayOutId, tag)}"
+                           th:href="@{/favorites/dayOut/(tag=${dayOutId})}"
+                           th:text="${dayOutName}">Untitled day out</a>
+                        <span id="dayOutRemoveButton" th:if="${#strings.equalsIgnoreCase(dayOutId, tag)}"
+                              class="dayout-remove glyphicon glyphicon-remove"></span>
+
+                    <form id="dayOutRemoveForm" th:if="${#strings.equalsIgnoreCase(dayOutId, tag)}" th:action="@{/dayout/delete}"
+                          method="post" role="form">
+                        <input type="hidden" name="id" th:value="${dayOutId}"/>
+                    </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-7 search-result-separator">
+            <div class="row">
+
+                <div th:unless="${#strings.equals(indexType, 'dayOut')}" class="col-xs-11">
+                    <div id="home-carousel-less" class="home-carousel-less">
+                        <img src="/img/less.png"/>
+                    </div>
+                    <div class="search-result-list" id="favoritesResultsCarousel">
+                    <div th:each="data, row : ${sites}" th:if="${row.index} % 3 == 0" class="row">
+                            <div th:each="siteIndex : ${#numbers.sequence(row.index , row.index + 2)}"
+                                 th:if="${siteIndex} lt ${displaySize}" th:with="currentSite=${sites[siteIndex]}"
+                                 class="col-xs-4 search-result"
+                                 th:attr="data-id=${currentSite.id}, data-name=${currentSite.siteName}, data-lat=${currentSite.location.x},data-lng=${currentSite.location.y}">
+                                <a th:href="@{${currentSite.detailsUrl}}" th:title="${currentSite.siteName}" class="thumbnail">
+                                    <div class="thumbnail-card"
+                                         th:with="schedulesData=${currentSite.getSchedulesData(searchParams.dateTime)},
+                                                    distance=${currentSite.getDistanceFrom(searchParams.city.location)},
+                                                    mileage=${distance lt 1 ? #messages.msg('search.results.distance.short') : #numbers.formatDecimal(distance, 1, 0) + ' Km'}">
+                                        <div class="free-ribbon">
+                                            <img th:src="${currentSite.displayImageUrl}" src="/img/result-dummy.png" class="search-result-img"/>
+                                            <p th:if="${currentSite.free}"><span th:utext="#{search.results.free.ribbon}">FREE<br />ADMISSION</span></p>
+                                            <div class="caption small">
+                                                <div>
+                                                    <div class="pull-right search-result-distance"
+                                                         th:text="${mileage}">
+                                                        18 Km
+                                                    </div>
+                                                    <div th:text="${currentSite.address.city}" class="search-result-city">Paris</div>
+                                                </div>
+                                                <div  th:if="${!schedulesData.closed}" class="search-result-schedules"
+                                                     th:text="${schedulesData.remainingHours lt 1} ? #{search.results.closing.short} : #{search.results.closing(${schedulesData.remainingHours})}">
+                                                    Open All Day
+                                                </div>
+                                            </div>
+                                            <div th:if="${schedulesData.closed}" class="closed">
+                                                <span th:utext="${schedulesData.remainingHours lt 1} ?
+                                                #{search.results.opening.short} :
+                                                (${schedulesData.remainingHours gt 24} ?
+                                                    #{search.results.opening.long(${schedulesData.remainingDays})} :
+                                                    #{search.results.opening(${schedulesData.remainingHours})}
+                                                )">
+                                                    Open All Day
+                                                </span>
+                                            </div>
+                                            <form th:action="@{/subjects/favorites}" method="post" role="form">
+                                                <input type="hidden" name="id" th:value="${currentSite.id}"/>
+                                                <input type="hidden" name="favorite" value="false" />
+                                                <span class="favorite-remove glyphicon glyphicon-remove"></span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <div class="search-result-rating-star pull-right"
+                                             th:if="${currentSite.rating.average}"
+                                             th:text="${currentSite.rating.average ?: '&nbsp;'}">9
+                                        </div>
+                                        <div class="search-result-name" th:text="${currentSite.name}">Musée Grévin</div>
+                                    </h4>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="home-carousel-more" class="home-carousel-more">
+                        <img src="/img/more.png"/>
+                    </div>
+                </div>
+                <div th:if="${#strings.equals(indexType, 'dayOut')}" class="col-xs-11">
+                    <div id="home-carousel-less" class="home-carousel-less">
+                        <img src="/img/less.png"/>
+                    </div>
+                    <div class="search-result-list" id="favoritesResultsCarousel">
+                        <div th:each="data, row : ${sites}" th:if="${row.index} % 3 == 0" class="row">
+                            <div th:each="siteIndex : ${#numbers.sequence(row.index , row.index + 2)}"
+                                 th:if="${siteIndex} lt ${displaySize}" th:with="currentSite=${sites[siteIndex]}"
+                                 class="col-xs-4 search-result"
+                                 th:attr="data-id=${currentSite.id}, data-name=${currentSite.siteName}">
+                                <a th:href="@{${currentSite.detailsUrl}}" th:title="${currentSite.siteName}" class="thumbnail">
+                                    <div class="thumbnail-card">
+                                        <div class="free-ribbon">
+                                            <img th:src="${currentSite.displayImageUrl}" src="/img/result-dummy.png" class="search-result-img"/>
+                                            <div class="caption small">
+                                                <div>
+                                                    <div th:utext="${currentSite.formattedAddress}" class="search-result-city">Paris</div>
+                                                </div>
+                                            </div>
+                                            <form th:action="@{/subjects/favorites}" method="post" role="form">
+                                                <input type="hidden" name="id" th:value="${currentSite.id}"/>
+                                                <input type="hidden" name="favorite" value="false" />
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <div class="search-result-name" th:text="${currentSite.siteName}">Musée Grévin</div>
+                                    </h4>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="home-carousel-more" class="home-carousel-more">
+                        <img src="/img/more.png"/>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initFavorites();
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

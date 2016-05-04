@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('home')"></div>
+
+    <div class="row">
+        <div class="col-xs-10">
+            <div class="row">
+
+                <div th:replace="desktop/home/layout :: articles"></div>
+
+                <div class="col-xs-9">
+                    <div th:replace="desktop/layout :: home-select"></div>
+
+                    <hr class="separator" />
+
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div th:replace="desktop/layout :: home-title ('buzz')"></div>
+                        </div>
+                        <div class="col-xs-4 my-select-container">
+                            <div th:replace="desktop/home/layout :: home-select ('buzz')"></div>
+                        </div>
+                    </div>
+                    <div class="row home-need-assistance">
+                        <div class="col-xs-12" id="addWrapper">
+                            <!-- Home_Page Desktop 711x300 -->
+                            <div id="div-gpt-ad-1414965066621-0">
+                                <script type="text/javascript">
+                                    googletag.display('div-gpt-ad-1414965066621-0');
+                                </script>
+                            </div>
+                        </div>
+                        <img src="/img/next.png" width="41" height="41" class="next-buzz" id="buzzNextAdd" />
+                    </div>
+                    <div class="row home-buzz-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="desktop/layout :: select-popup"></div>
+    <div th:replace="desktop/layout :: home-geocoding"></div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        $(document).ready(function () {
+            initHomeCategories();
+            initWeatherWidget();
+            initHomePopup();
+            initHomeSelect();
+            initBuzz();
+        });
+        // ]]>
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${true})"></footer>
+<footer th:replace="desktop/layout :: iAdvize ('homepage')"></footer>
+
+</body>
+</html>

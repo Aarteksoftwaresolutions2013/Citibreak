@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('home')"></div>
+
+    <div class="row">
+        <div class="col-xs-10">
+            <div class="row">
+
+                <div th:replace="desktop/home/layout :: articles"></div>
+
+                <div class="col-xs-9">
+                    <div th:replace="desktop/layout :: home-select"></div>
+
+                    <hr class="separator" />
+
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div th:replace="desktop/layout :: home-title ('special')"></div>
+                        </div>
+                        <div class="col-xs-4 my-select-container">
+                            <div th:replace="desktop/home/layout :: home-select ('special')"></div>
+                        </div>
+                    </div>
+                    <div class="row home-need-assistance">
+                        <div class="col-xs-12">
+                            <img th:src="${specialEvent.displayImageUrl}" class="home-specials-image" />
+                        </div>
+                    </div>
+                    <div class="row home-need-assistance-help">
+                        <div class="col-xs-10 text-center">
+                            <p th:text="${specialEvent.headline1.getText(countryParam.language)}">Find now, the sites open and close to your location</p>
+                        </div>
+                        <div class="col-xs-2">
+                            <a th:href="@{/search/site/specials}" class="home-go" th:text="#{home.go}">GO</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="desktop/layout :: select-popup"></div>
+    <div th:replace="desktop/layout :: home-geocoding"></div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        $(document).ready(function () {
+            initHomeCategories();
+            initWeatherWidget();
+            initHomePopup();
+            initHomeSelect();
+        });
+        // ]]>
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${true})"></footer>
+<footer th:replace="desktop/layout :: iAdvize ('homepage')"></footer>
+
+</body>
+</html>

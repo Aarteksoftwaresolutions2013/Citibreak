@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('home')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div th:replace="mobile/layout :: home-select"></div>
+
+            <hr class="separator" />
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div th:replace="mobile/layout :: home-title ('special')"></div>
+                </div>
+                <div class="col-xs-6 my-select-container">
+                    <div th:replace="mobile/home/layout :: home-select ('special')"></div>
+                </div>
+            </div>
+            <div class="row home-need-assistance">
+                <div class="col-lg-12">
+                    <img th:src="${specialEvent.displayImageUrl}" class="home-specials-image" />
+                </div>
+            </div>
+            <div class="row home-need-assistance-help">
+                <div class="col-lg-10 text-center">
+                    <h4 th:text="${specialEvent.headline1.getText(countryParam.language)}">Find now, the sites open and close to your location</h4>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <a th:href="@{/search/site/specials}" class="home-go" th:text="#{home.go}">GO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="mobile/home/layout :: articles"></div>
+
+
+    <div th:include="mobile/layout :: select-popup"></div>
+    <div th:include="mobile/layout :: home-geocoding"></div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        $(document).ready(function () {
+            initHomeCategories();
+//            initWeatherWidget();
+            initHomePopup();
+            initHomeSelect();
+        });
+        // ]]>
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${true})"></footer>
+
+</body>
+</html>

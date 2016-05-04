@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('legals')" class="row navbar-citybreak"></div>
+
+    <div class="row" th:switch="${countryParam.language}">
+        <div class="col-xs-1 col-xs-1-back">
+            <a th:href="@{${navigationParam.lastPath}(history='remove')}">
+                <img src="/img/cancel-popup.png" width="41" height="42" />
+            </a>
+        </div>
+        <div class="col-xs-9" th:case="'fr'">
+            <h1>MENTIONS LEGALES</h1>
+            <p>Les présentes mentions légales sont applicables au site Internet www.citibreak.com.</p>
+
+            <br />
+            <h3><span style="text-decoration: underline;">Coordonnées</span></h3>
+            <p>Little Red Dot est une société par actions simplifiées au capital de 5 000 euros, dont le siège social est 12 rue
+                Vivienne - 75002 Paris - France, immatriculée sous le numéro RCS Paris 752 488 239.</p>
+            <p>Little Red Dot est l'éditeur du site Internet www.citibreak.com.</p>
+            <p>Le site www.citibreak.com est hébergé par la société Linode – Galloway, New Jersey – Etats Unis. Téléphone : +(1) 609 – 380-7100</p>
+            <p>Pour toute question concernant le site www.citibreak.com nous vous remercions de bien vouloir vous adresser à notre Service Relations <Clientèle></Clientèle>:</p>
+            <ul>
+                <li>par courrier : en écrivant à Little Red Dot - Service Relations Clientèle – 12 rue Vivienne, 75002 Paris, France</li>
+                <li>par e-mail : en remplissant le formulaire “contactez nous” sur le site www.citibreak.com</li>
+            </ul>
+
+            <br />
+            <p>L'accès au Site ainsi que l'utilisation de son contenu s'effectue dans le cadre des mentions d'utilisation décrites
+            ci-après. Le fait d'accéder et de naviguer sur le Site constitue de votre part une acceptation sans réserve des
+            précisions suivantes:</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">1. Données personnelles</span></h4>
+            <p>Lisez notre <a th:href="@{/privacy}">Politique de confidentialité</a>, qui régit la manière dont nous gérons les renseignements personnels que
+            vous nous fournissez.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">2. Droits de propriété intellectuelle</span></h4>
+            <p>Little Red Dot est titulaire des noms de domaine www.citibreak.com, www.citibreak.fr, www.citibreak.de,
+            www.citibreak.co.uk, www.citibreak.es, www.citibreak.it. Le Site est une œuvre de l'esprit protégée par les lois de
+            la propriété intellectuelle. Le Site dans son ensemble et chacun des éléments qui le composent (tels que textes,
+            arborescences, logiciels, animations, illustrations, schémas, logos, marques, dessins et modèles) sont la
+            propriété exclusive de Little Red Dot, qui est seule habilitée à utiliser les droits de propriété intellectuelle y
+            afférents.</p>
+            <p>L'usage de tout ou partie du Site, notamment par téléchargement, reproduction, transmission, représentation ou
+            diffusion à d'autres fins que pour votre usage personnel et privé dans un but commercial ou non est strictement
+            interdit. La violation de ces dispositions vous soumet aux sanctions prévues par la loi.<br />
+            Tous les sites ayant un lien hypertexte vers le Site ne sont pas sous le contrôle de Little Red Dot et celle-ci
+            décline par conséquent toute responsabilité (notamment éditoriale) concernant l'accès et le contenu à ces sites.</p>
+            <p>Little Red Dot est libre de modifier, à tout moment et sans préavis, le contenu du Site.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">3. Garanties et Responsabilité</span></h4>
+            <p>Little Red Dot s'efforce d'assurer au mieux que les informations accessibles par l'intermédiaire du Site sont
+            exactes et mises à jour. Cependant, Little Red Dot ne garantit en aucune manière que ces informations soient
+            exactes, complètes et à jour. Little Red Dot n'assure aucune garantie, expresse ou tacite, concernant tout ou
+            partie du Site.</p>
+            <p>En aucun cas, Little Red Dot ne peut être tenue pour responsable d'un quelconque dommage direct ou indirect,
+            quelle qu'en soit la cause, origine, nature et conséquence, découlant de la consultation ou de l'utilisation du Site.
+            Notamment, Little Red Dot décline toute responsabilité en cas d'interruption ou d'inaccessibilité du Site, de
+            survenance de bogues, de tout dommage résultant d'actes frauduleux de tiers (tels que intrusion) à partir du Site.</p>
+            <p>Little Red Dot met en œuvre des moyens destinés à assurer la sécurité des fichiers constitués à partir des
+            données à caractère personnel collectées sur le Site. Little Red Dot ne maîtrise pas les risques liés au
+            fonctionnement d'Internet et attire votre attention sur l'existence d'éventuels risques en terme de confidentialité
+            des données transitant via ce réseau.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">4. Affichage des prix</span></h4>
+            <p>Le cas échéant, les prix affichés sur le Site sont indiqués en Euros ou en Livres Sterling et s'entendent toutes
+            taxes comprises (TTC). Les prix indiqués sont communiqués à titre indicatif et n'ont pas valeur contractuelle.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">5. Modification des Mentions légales</span></h4>
+            <p>Little Red Dot vous informe que les présentes mentions peuvent être modifiées à tout moment. Ces modifications
+            sont publiées par leur mise en ligne et sont réputées acceptées sans réserve lorsque vous accédez au Site
+            postérieurement à leur mise en ligne. Nous vous recommandons de consulter régulièrement la présente page.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">6. Litiges</span></h4>
+            <p>Les présentes mentions sont établies en conformité avec le droit français et notamment les dispositions de la loi
+            n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique ainsi que la loi n°78-17 du 6 janvier
+            1978 modifiée par la loi n°2004-801 du 6 août 2004 Informatique et Libertés. Les juridictions françaises
+            parisiennes sont territorialement compétentes pour connaître de tout litige afférent au Site.</p>
+
+            <br />
+            <p>EN UTILISANT LES SITES, VOUS SIGNIFIEZ VOTRE COMPRÉHENSION ET VOTRE ACCORD DE VOUS
+            CONFORMER AUX TERMES ET AUX CONDITIONS D'UTILISATION.</p>
+
+            <br />
+            <div class="text-center"><small>Dernière mise à jour : Juin 2014<br />
+                Copyright © Little Red Dot 2014</small></div>
+        </div>
+        <div class="col-xs-9" th:case="*">
+            <h1>LEGAL STATEMENT</h1>
+            <br />
+
+            <p>Please carefully read the following terms and conditions (“Terms”) governing your use (including access,
+                browsing and/or use of any interactive features) of those portions of the citibreak website accessible at www.citibreak.com,
+                as well as and including any other citibreak websites or web pages accessible through the citibreak website or
+                pages on third party social networking services, directed at consumers.</p>
+            <p>Use of the Sites is subject to these legally binding Terms and constitutes your agreement to be bound by and to
+                act in accordance with these Terms. We reserve the right to change the Terms at any time. Any such changes will
+                be posted on the Sites and you agree to be bound by such changes.</p>
+            <br />
+
+            <h4><span style="text-decoration: underline;">1. Privacy</span></h4>
+            <p>Please read our <a th:href="@{/privacy}">Privacy Policy</a>, which governs the manner in which we handle any personal information that you
+                provide to us.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">2. Ownership Rights/Use of Sites Materials</span></h4>
+            <p>The Little Red Dot company own all right, title and interest in and to the
+                applications on the Sites (including on social network websites).</p>
+            <p>Little Red Dot owns all copyrights for all material on the Sites or has a valid right from a third party to use the
+                material on the Sites. Little Red Dot also owns all trademarks, service marks, trade names, logos and domain
+                names used on or in connection with the Sites or has a valid right from a third party to use any such material. Any
+                modification or use of the materials from the Sites for any purpose not explicitly permitted is a violation of Little
+                Red Dot's copyright and other proprietary rights.</p>
+            <p>No part of the Sites may be copied, reproduced, republished, uploaded, posted, transmitted or distributed in any
+                manner whatsoever, except for viewing purposes, without the prior written consent of Little Red Dot. This
+                prohibition also includes framing any content from the Sites, as well as unauthorized linking.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">3. Disclaimer/Limitation on Liability</span></h4>
+            <p>Use of and browsing in the Sites are at your own risk. Neither Little Red Dot nor any party representing or
+                otherwise affiliated with Little Red Dot in creating or presenting the Sites are liable for any direct, indirect, special,
+                punitive, incidental, exemplary or consequential damages arising out of your use of the Sites. To the extent
+                permitted by law and without limiting any of the foregoing, everything on the Sites is provided to you on as “as is”
+                basis, without warranty, either express or implied, of any kind, including, but not limited to, the implied warranties
+                of merchantability, fitness for a specific purpose, freedom from computer virus, or non-infringement.</p>
+            <p>Solicited information that you submit to Little Red Dot by email in order to register or sign up, to submit
+                appropriate questions to the Sites, are subject to our Privacy Policy. All unsolicited reviews, comments or other
+                submissions, including ideas and the like, shall not be treated as confidential by Little Red Dot and Little Red Dot
+                may use such materials in any manner that it deems appropriate. For more information on this topic, please see
+                our Privacy Policy.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">4. Price information</span></h4>
+            <p>Prices displayed on the Little Red Dot website are shown in pounds sterling (£), or in Euros (€), include
+                appropriate Value Added Tax (VAT) at the rate prevailing when the website was last up-dated.</p>
+            <p>Prices shown are Recommended Retail Price (RRP), inclusive of VAT. As such, they are provided for indicative
+                purposes only, have no contractual value, and are subject to change without notice.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">5. Links</span></h4>
+            <p>Little Red Dot is not responsible for third party websites that link to or from the Sites. Little Red Dot disclaims all
+                responsibility for the accuracy of any of the information provided on such linked sites and any goods or services
+                provided or purchased from such sites. Little Red Dot shall not be held liable or responsible for the content of any
+                sites that link to or from the Sites.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">6. Accuracy of Information</span></h4>
+            <p>Little Red Dot takes reasonable steps to ensure the accuracy of the information included in the Sites. However,
+                Little Red Dot takes no responsibility for errors or omissions in the content of the Sites and does not guarantee
+                the accuracy, completeness or timeliness of information provided on the Sites. Information provided on the Sites
+                is subject to change at any time without prior notice.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">7. No Waiver</span></h4>
+            <p>The failure on the part of Little Red Dot to enforce any part of these Terms shall not constitute a waiver of any of
+                Little Red Dot's rights hereunder for past or future actions.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">8. Jurisdiction</span></h4>
+            <p>Any dispute over the content or use of the Sites shall be governed by the substantive laws of France, and the
+                jurisdiction and venue of any such action shall be vested solely in the courts of France.</p>
+
+            <br />
+            <p>BY USING THE SITES, YOU SIGNIFY YOUR UNDERSTANDING AND AGREEMENT TO COMPLY WITH THE
+                TERMS &amp; CONDITIONS OF USE.</p>
+
+            <br />
+            <div class="text-center"><small>Last updated : June 2014<br />
+                Little Red Dot, All Rights Reserved</small></div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

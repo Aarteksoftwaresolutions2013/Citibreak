@@ -1,0 +1,241 @@
+.home-col-list {
+    margin: 20px -5px 15px -5px;
+}
+
+.home-col-list .home-col {
+    padding-right: 5px;
+    padding-left: 5px;
+    background: url('/img/triangle.png') no-repeat right 5px bottom;
+}
+
+.home-col-list .home-col a {
+    font-size: 11px;
+    color: white;
+    padding: 6px 12px;
+    display: block;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    height: 40px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.home-col-list .home-col a:hover {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.4);
+}
+.home-col-list .home-col a div {
+    width: 100%;
+    height: 30px;
+    overflow: hidden;
+}
+.home-col-list .home-col a div span {
+    line-height: 30px;
+}
+
+.home-tags-list {
+    margin: 0 -5px;
+    position: relative;
+}
+
+.home-tags-list .home-tags {
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+.home-tags-list .home-tags div.show {
+    display: block;
+    height: 46px;
+    width: 100%;
+    color: white;
+    padding: 8px 6px 8px 6px;
+    background: rgba(255, 255, 255, 0.2);
+    /*cursor: pointer;*/
+    overflow: hidden;
+    border-left: 4px solid #7f8c8d;
+    font-size: 11px;
+}
+.home-tags-list .home-tags div.show div {
+    width: 100%;
+    height: 33px;
+    overflow: hidden;
+}
+.home-tags-list .home-tags div.show div span {
+    line-height: 33px;
+}
+.home-tags-list .home-tags div a.delete {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    height: 16px;
+    line-height: 16px;
+}
+.home-tags-list .home-tags-first div.show {
+    background: #f15a24;
+    border-left: 4px solid #f15a24;
+    padding: 6px 8px;
+}
+.home-tags-list .home-tags-first div.show:hover {
+    background: #f15a24;
+}
+.home-tags-more {
+    margin-bottom: 15px;
+}
+.home-tags-more a {
+    cursor: pointer;
+    border: none;
+    background: rgba(0, 0, 0, 0.2);
+    line-height: 30px;
+    font-size: 14px;
+    padding: 7px;
+
+}
+.home-tags-more img {
+    float: none;
+    vertical-align: text-top;
+}
+
+.home-carousel-container {
+    padding: 0 30px;
+    margin-top: 40px;
+}
+.home-carousel {
+    overflow: hidden;
+}
+.home-carousel > a {
+    display: block;
+    color: white;
+    width: 33.3333%;
+    float: left;
+    padding-right: 5px;
+    padding-left: 5px;
+    overflow: hidden;
+}
+.home-carousel > a .home-carousel-cover {
+    font-size: 10px;
+    width: 100%;
+    display: block;
+    padding: 6px 2px;
+    line-height: 10px;
+    overflow: hidden;
+}
+.home-carousel img {
+    width: 100%;
+    /*max-height: 50px;*/
+}
+.home-carousel-less, .home-carousel-more {
+    cursor: pointer;
+    height: 35px;
+    width: 15px;
+    position: absolute;
+    top: 5px;
+}
+.home-carousel-less {
+    left: 13px;
+}
+.home-carousel-more {
+    right: 13px;
+}
+.home-carousel-less.disabled, .home-carousel-more.disabled {
+    visibility: hidden;
+}
+
+.home-go {
+    font-family: Helvetica,Arial,sans-serif;;
+    font-size: 18px;
+    border-radius: 50%;
+    background: #009245;
+    line-height: 60px;
+    text-align: center;
+    color: white;
+    padding: 18px 15px;
+}
+
+.home-go:hover {
+    color: white;
+    text-decoration: none;
+    background: #00A34C;
+}
+
+.home-select-popup h3 {
+    color: #ffffff;
+    background: #f15a24;
+    text-align: center;
+    padding: 10px;
+    margin: 15px 0 10px 0;
+    font-size: 16px;
+}
+
+.home-select-popup h4 {
+    margin: 10px 0 20px 0;
+}
+
+.home-select-popup .home-go-container {
+    margin: 20px 0;
+}
+
+.home-select-cancel {
+    display: block;
+    margin: 20px 10px;
+}
+
+.home-select-time .home-select-time-date {
+    font-family: HelveticaNeueLTStd-Lt, sans-serif;
+    font-size: 21px;
+}
+.home-select-time .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.search-popup .tt-input,
+.search-popup .tt-hint,
+.home-select-city .tt-input,
+.home-select-city .tt-hint {
+    font-size: 18px;
+    line-height: normal;
+}
+
+.home-select-city .tt-hint {
+    color: #ccc;
+}
+
+.home-select-city .twitter-typeahead {
+    width: 100%;
+}
+
+.home-select-city .tt-dropdown-menu {
+    width: 100%;
+    margin-top: 15px;
+    list-style: none;
+    font-size: 18px;
+    position: relative !important;
+    display: block !important;
+    height: 252px;
+    overflow: hidden;
+}
+
+.home-select-city .tt-suggestion > p {
+    display: block;
+    padding: 8px 12px;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap;
+}
+.home-select-city .tt-suggestion .small {
+    margin-left: 10px;
+    color: #999;
+}
+
+.home-select-city .tt-suggestion > p:hover,
+.home-select-city .tt-suggestion > p:focus,
+.home-select-city .tt-suggestion.tt-cursor p {
+    text-decoration: none;
+    outline: 0;
+    cursor: pointer;
+    background: #ccc;
+}
+

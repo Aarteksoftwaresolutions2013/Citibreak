@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}">
+
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="verification" content="655042677870f9b0b86da27af01ff352"/>
+    <meta name="description" th:attr="content=${__#{'head.meta.description.' + ${metaPageName}}__}"/>
+    <meta property="fb:app_id" th:attr="content=${facebookAppId}"/>
+    <meta property="og:url"
+          th:attr="content='http://' + @{__${#httpServletRequest.serverName}__} + @{__#{'head.meta.og.url.' + ${metaPageName}}__}"/>
+    <meta property="og:title" itemprop="name" th:attr="content=${__#{'head.meta.og.title.' + ${metaPageName}}__}"/>
+    <meta property="og:description" itemprop="description"
+          th:attr="content=${__#{'head.meta.og.description.' + ${metaPageName}}__}"/>
+    <meta property="og:image" itemprop="image"
+          th:attr="content='http://www.citibreak.fr' + ${__#{'head.meta.og.image.' + ${metaPageName}}__}"/>
+    <meta property="og:type" th:attr="content=${__#{'head.meta.og.type.' + ${metaPageName}}__}"/>
+
+    <meta th:if="${placeLatitude} != null" property="place:location:latitude" th:attr="content=${placeLatitude}"/>
+    <meta th:if="${placeLatitude} != null" property="place:location:longitude" th:attr="content=${placeLongitude}"/>
+
+    <title th:text="${__#{'head.meta.title.' + ${metaPageName}}__}">Citibreak</title>
+
+    <link rel="icon" type="image/jpg" href="/img/favicon.jpg"/>
+    <link rel="alternate" href="http://www.citibreak.com/" hreflang="en-US"/>
+    <link rel="alternate" href="http://www.citibreak.fr/" hreflang="fr-fr"/>
+
+    <link href="/css/helvetica.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/typeahead.css" rel="stylesheet"/>
+    <link href="/css/datepicker.css" rel="stylesheet"/>
+    <link href="/css/mCustomScrollbar.css" rel="stylesheet"/>
+    <link href="/css/desktop/application.css" rel="stylesheet"/>
+    <link href="/css/desktop/newiv.css" rel="stylesheet"/>
+    <link href="/css/desktop/newhome.css" rel="stylesheet"/>
+    <link href="/css/desktop/assistant.css" rel="stylesheet"/>
+    <link href="/css/desktop/tags.css" rel="stylesheet"/>
+    <link href="/css/desktop/search.css" rel="stylesheet"/>
+    <link href="/css/desktop/details.css" rel="stylesheet"/>
+    <link href="/css/desktop/account.css" rel="stylesheet"/>
+    <link href="/css/desktop/home.css" rel="stylesheet"/>
+
+    <script src="/js/libs/jquery.min.js"></script>
+    <script src="/js/libs/jquery.mousewheel.min.js"></script>
+    <script src="/js/libs/jquery.typeahead.js"></script>
+    <script src="/js/libs/jquery.carouFredSel.min.js"></script>
+    <script src="/js/libs/jquery.validate.min.js"></script>
+    <script src="/js/libs/jquery.velocity.min.js"></script>
+    <script src="/js/libs/jquery.dotdotdot.min.js"></script>
+    <script src="/js/libs/jquery.scrolltofixed.min.js"></script>
+    <script src="/js/libs/jquery.form.min.js"></script>
+    <script src="/js/libs/bootstrap.min.js"></script>
+    <script src="/js/libs/date-format.js"></script>
+    <script src="/js/libs/bootstrap-datepicker.js"></script>
+    <script th:src="'/js/libs/locales/bootstrap-datepicker.' + ${countryParam.language} + '.js'" src=""></script>
+    <script src="/js/libs/jquery.mCustomScrollbar.min.js"></script>
+    <script src="/js/libs/hogan.min.js"></script>
+    <script src="/js/libs/moment.js"></script>
+    <script src="/js/desktop/main.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="/js/libs/respond.min.js"></script>
+    <![endif]-->
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var loggedInUser = /*[[${user != null} ? ${user.name} : null]]*/"user";
+        var country = /*[[${countryParam.language}]]*/ "en";
+        moment.lang(country);
+
+        $.validator.messages.completed = /*[[#{common.validation.completed}]]*/ "Completed.";
+        $.validator.messages.creditcard = /*[[#{common.validation.creditcard}]]*/ "Please enter a valid credit card number.";
+        $.validator.messages.date = /*[[#{common.validation.date}]]*/ "Please enter a valid date.";
+        $.validator.messages.dateISO = /*[[#{common.validation.dateISO}]]*/ "Please enter a valid date (ISO).";
+        $.validator.messages.digits = /*[[#{common.validation.digits}]]*/ "Please enter only digits.";
+        $.validator.messages.email = /*[[#{common.validation.email}]]*/ "Please enter a valid email address.";
+        $.validator.messages.equalTo = /*[[#{common.validation.equalTo}]]*/ "Please enter the same value again.";
+        $.validator.messages.number = /*[[#{common.validation.number}]]*/ "Please enter a valid number.";
+        $.validator.messages.remote = /*[[#{common.validation.remote}]]*/ "Please fix this field.";
+        $.validator.messages.required = /*[[#{common.validation.required}]]*/ "This field is required.";
+        $.validator.messages.url = /*[[#{common.validation.url}]]*/ "Please enter a valid URL.";
+
+        var noResultsFoundText = /*[[#{search.no.results}]]*/ "No results founds";
+        var noRecentActivityText = /*[[#{search.stream.no.activity}]]*/ "No recent activity";
+        var noRecentActivityHintText = /*[[#{search.stream.no.activity.hint}]]*/ "No search done yet";
+        var noRecentActivityModalHintText = /*[[#{search.stream.no.activity.modal.hint}]]*/ "No search done yet";
+        var noCommentsText = /*[[#{details.comments.empty}]]*/ "No comments";
+        var alertText = /*[[#{contact.field.subject.alert}]]*/ "Alert";
+        var detailsVenuesHint = /*[[#{details.venues.hint}]]*/ "Click on a line to get detailed information";
+        var detailsTicketsEmpty = /*[[#{details.tickets.empty}]]*/ "No offer available";
+
+        var existingDayOutText = /*[[#{dayout.existing.caption}]]*/  "Existing days out";
+
+        var shareButtonText = /*[[#{dayout.create.share}]]*/ "Share";
+        var finishButtonText = /*[[#{dayout.create.finish}]]*/ "Finish";
+
+        var agendaEmailSubject = /*[[#{dayout.share.email.subject}]]*/ "added you as a guest to his day out";
+        var agendaEmailBodyTemplate = /*[[#{dayout.share.email.body}]]*/ "Check out all the details below or online at www.citibreak.com.\r\n\r\nMessage from {{user}}: I've organized a day out on Citibreak.com and want you to see it.\r\n\r\n{{#venues}} - {{type}} - {{name}} / {{address}}\r\n{{/venues}}\r\n\r\n{{url}}";
+
+        var venueTypeTitles = {};
+        venueTypeTitles['CULTURAL'] = /*[[#{search.stream.venue.type.CULTURAL}]]*/ "Cultural";
+        venueTypeTitles['RESTAURANT'] = /*[[#{search.stream.venue.type.RESTAURANT}]]*/ "Restaurant";
+        venueTypeTitles['BAR'] = /*[[#{search.stream.venue.type.BAR}]]*/ "Bar";
+        venueTypeTitles['SHOPPING'] = /*[[#{search.stream.venue.type.SHOPPING}]]*/ "Shopping";
+
+        var sessionId = /*[[${sessionId}]]*/"sessionId";
+        if (document.cookie.indexOf("citibreak.session") == -1) {
+            document.cookie = document.cookie + "; citibreak.session=" + sessionId;
+        }
+
+        /*]]>*/
+    </script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script th:inline="javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', /*[[#{head.google.analytic.account}]]*/ 'UA-00000000-0', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type='text/javascript'>
+        /*<![CDATA[*/
+        (function () {
+            var useSSL = 'https:' == document.location.protocol;
+            var src = (useSSL ? 'https:' : 'http:') +
+                    '//www.googletagservices.com/tag/js/gpt.js';
+            document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        })();
+        /*]]>*/
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        var adsAccount = /*[[#{head.google.ads.account}]]*/ "/37249290/CB_HP_Desk_711x300";
+        var adsSize = /*[[#{head.google.ads.size}]]*/ 711;
+        googletag.pubads().enableAsyncRendering();
+        centerSlot = googletag.defineSlot(adsAccount, [parseInt(adsSize, 10), 416], 'div-gpt-ad-1414965066621-0').addService(googletag.pubads());
+        googletag.enableServices();
+    </script>
+    <!-- Start Alexa Certify Javascript -->
+    <script type="text/javascript">
+        _atrk_opts = {atrk_acct: "0Y4Zk1ao6C52cv", domain: "citibreak.com", dynamic: true};
+        (function () {
+            var as = document.createElement('script');
+            as.type = 'text/javascript';
+            as.async = true;
+            as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js";
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(as, s);
+        })();
+    </script>
+    <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=0Y4Zk1ao6C52cv" style="display:none"
+                   height="1" width="1" alt=""/></noscript>
+    <!-- End Alexa Certify Javascript -->
+</head>
+
+<body>
+
+<div th:fragment="header (currentTab)" class="row navbar-citybreak">
+    <div class="row new-header">
+        <div class="col-xs-6">
+            <div class="row">
+                <a th:href="@{/}">
+                    <img class="navbar-logo" src="/img/logo.png" width="142" height="60"/>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-2 navbar-newsearch">
+            <div class="search">
+                <input class="search-input" id="headerPopupSearchInput" type="text"
+                       th:attr="placeholder=#{search.new.input.placeholder}"/>
+
+                <div class="loop-background">
+                    <img class="search-icon" src="/img/newiv/search-icon.png"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2 navbar-language">
+            <a class="language" th:switch="${countryParam.language}" data-toggle="dropdown" href="javascript: void(0);">
+                <div th:case="fr" class="language-line">
+                    <div class="language-option">
+                        <span th:text="#{common.language.french}">Français</span>
+                        <img class="flag-img" src="/img/newiv/french-flag.png"/>
+                        <img src="/img/newiv/down-arrow.png"/>
+                    </div>
+                </div>
+                <div th:case="en" class="language-line">
+                    <div class="language-option">
+                        <span th:text="#{common.language.english}">English</span>
+                        <img class="flag-img" src="/img/newiv/english-flag.png"/>
+                        <img src="/img/newiv/down-arrow.png"/>
+                    </div>
+                </div>
+            </a>
+
+            <div class="language-select navbar-dropdown">
+                <div class="select-container">
+                    <div class="select-option">
+                        <div class="select-row">
+                            <a th:class="${countryParam.language == 'fr'} ? 'active'"
+                               th:href="@{'http://dev.citibreak.fr' + ${navigationParam.currentPath}}">
+                                <span class="text-option" style="margin-right: 2px" th:text="#{common.language.french}">Français</span>
+                                <img class="flag-img-option" width="31" src="/img/newiv/french-flag.png"/>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="select-option">
+                        <div class="select-row">
+                            <a th:class="${countryParam.language == 'en'} ? 'active'"
+                               th:href="@{'http://dev.citibreak.com' + ${navigationParam.currentPath}}">
+                                <span class="text-option" style="margin-right: 10px"
+                                      th:text="#{common.language.english}">English</span>
+                                <img class="flag-img-option" width="31" src="/img/newiv/english-flag.png"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1 login-section" sec:authorize="isAnonymous()">
+            <a class="btn-header btn-login" data-toggle="dropdown" href="javascript: void(0);">
+                <img class="login-img" src="/img/newiv/lock-connection.png"/>
+                <span th:text="#{head.navbar.login.sign-up}">Login / Sign Up</span>
+            </a>
+            <div class="new-login-form navbar-dropdown"
+                 th:attr="style=${#strings.isEmpty(param.error) ? '' : 'display:block'}">
+                <img class="login-arrow" src="/img/newiv/triangle-up.png" />
+                <form th:action="@{/login}" method="post" role="form">
+                    <div class="form-group login-error" th:if="${param.error}" th:text="#{head.navbar.login.error}">
+                        Invalid email and / or password.
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-text" th:attr="placeholder=#{head.navbar.login.email}"
+                               name="email"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-text" th:attr="placeholder=#{head.navbar.login.password}"
+                               name="password"/>
+                    </div>
+                    <div class="form-group-check">
+                        <input type="checkbox" class="checkbox-login" name="remember"> <span th:text="#{head.register.label.rememberme}"> Remeber me</span></input>
+                    </div>
+                    <button type="submit" class="btn btn-orange" th:text="#{head.navbar.login.signin}">Sign In</button>
+                    <a class="forgot-password" data-toggle="modal" data-target="#forgotPasswordModal"
+                       th:text="#{head.navbar.login.reset.password}">Vous avez oublier votre mot de passe</a>
+                </form>
+                <div class="bottom-login"/>
+            </div>
+        </div>
+        <div class="col-xs-1 login-section" sec:authorize="isAnonymous()">
+            <a class="btn-header btn-register" data-toggle="modal" data-target="#registerModal"
+               href="javascript: void(0);">
+                <img class="login-img" src="/img/newiv/register.png"/>
+                <span th:text="#{head.navbar.login.register}">Register</span>
+            </a>
+
+
+            <div class="modal fade register-popup" id="registerModal" tabindex="-1" role="dialog" aria-hidden="true"
+                 th:attr="data-facebook=@{/account/facebook}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form th:action="@{/register}" method="post" role="form" id="registerForm"
+                              class="validating-form">
+                            <div class="row" id="registerPictureFormContent">
+                                <div class="col-xs-1">
+                                </div>
+                                <div class="col-xs-10">
+                                    <div class="row register-popup-header">
+                                        <div class="col-xs-12 text-center">
+                                            <h2 th:text="#{head.register.picture.title}">Select your picture</h2>
+                                            <h5 th:utext="#{head.register.picture.subtitle}">Choose from our list of
+                                                avatars or import your file</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row register-picture-images">
+                                        <div class="col-xs-5 register-picture-display">
+                                            <img src="/img/avatar/empty.jpg"
+                                                 class="pull-right img-circle register-select-avatar-img"
+                                                 id="accountCurrentAvatarImage" width="158" height="158"/>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <img src="/img/avatar/default-0.jpg"
+                                                 class="pull-left account-default-avatar" width="74" height="74"/>
+                                            <img src="/img/avatar/default-1.jpg"
+                                                 class="pull-left account-default-avatar" width="74" height="74"/>
+                                            <img src="/img/avatar/default-2.jpg"
+                                                 class="pull-left account-default-avatar" width="74" height="74"/>
+                                            <img src="/img/avatar/default-3.jpg"
+                                                 class="pull-left account-default-avatar" width="74" height="74"/>
+                                            <img src="/img/avatar/default-4.jpg"
+                                                 class="pull-left account-default-avatar" width="74" height="74"/>
+                                            <img src="/img/avatar/empty.jpg" class="pull-left account-default-avatar"
+                                                 width="74" height="74" id="registerFacebookPictureUrl"/>
+
+                                            <div class="register-picture-browse">
+                                                <button type="button" class="btn btn-account-select-avatar"
+                                                        id="accountSelectAvatarButton"
+                                                        th:text="#{account.profile.picture.browse}">Browse
+                                                </button>
+                                                <input type="file" class="hidden" id="accountSelectAvatarInput"
+                                                       accept="image/*" name="avatar"/>
+                                                <input type="hidden" name="defaultAvatar"
+                                                       id="accountDefaultAvatarInput"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                            <a class="btn btn-orange btn-register-submit" id="registerPictureSaveButton"
+                                               th:text="#{head.register.picture.save}">Save
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+                            <div class="row" id="registerMainFormContent">
+                                <div class="col-xs-1">
+                                    <a href="javascript:void(0);" class="register-popup-cancel js-modal-close">
+                                        <img src="/img/cancel-popup.png" width="41" height="41"/>
+                                    </a>
+                                </div>
+                                <div class="col-xs-10">
+                                    <div class="row register-popup-header">
+                                        <div class="col-xs-12 text-center">
+                                            <img class="register-popup-title" src="/img/register-title.png"/>
+                                            <h5 th:utext="#{head.register.title}">Create your account and start
+                                                sharing<br/>
+                                                your visits with your friends</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <img src="/img/avatar/empty.jpg"
+                                                 class="pull-right img-circle register-select-avatar-img"
+                                                 id="registerSelectedAvatar" width="50" height="50"/>
+                                            <a href="javascript:void(0);" class="register-select-avatar-link"
+                                               id="registerSelectAvatarLink"
+                                               th:text="#{head.register.picture.add}">Add Photo</a>
+                                        </div>
+                                        <div class="col-xs-9">
+                                            <div class="row">
+                                                <div class="col-xs-8 form-group">
+                                                    <label for="registerUsername">
+                                                        <span th:text="#{head.register.username}">Username</span>
+                                                        <span class="register-help-block"
+                                                              th:text="#{head.register.username.help}">(Name that will be displayed with your photo)</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="registerUsername"
+                                                           name="name"/>
+                                                </div>
+                                                <div class="col-xs-4 error-container">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-8 form-group">
+                                                    <label for="registerPassword">
+                                                        <span th:text="#{head.register.password}">Password</span>
+                                                        <span class="register-help-block"
+                                                              th:text="#{head.register.password.help}">(4-15 characters)</span>
+                                                    </label>
+                                                    <input type="password" class="form-control" id="registerPassword"
+                                                           name="password"/>
+                                                </div>
+                                                <div class="col-xs-4 error-container">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-8 form-group">
+                                                    <label for="registerConfirmPassword"
+                                                           th:text="#{head.register.confirm.password}">Confirm
+                                                        Password</label>
+                                                    <input type="password" class="form-control"
+                                                           id="registerConfirmPassword"
+                                                           name="confirmPassword"/>
+                                                </div>
+                                                <div class="col-xs-4 error-container"
+                                                     id="registerConfirmPasswordErrorContainer">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-8 form-group">
+                                                    <label for="registerEmail"
+                                                           th:text="#{head.register.email}">Email</label>
+                                                    <input type="text" class="form-control" id="registerEmail"
+                                                           name="email"/>
+                                                </div>
+                                                <div class="col-xs-4 error-container" id="registerEmailErrorContainer">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-8 form-group">
+                                                    <label for="registerLanguage" th:text="#{head.register.language}">Language</label>
+                                                    <select class="form-control" name="language" id="registerLanguage">
+                                                        <option value="fr_FR" th:text="#{common.language.french}">
+                                                            Français
+                                                        </option>
+                                                        <option value="en_EN" th:text="#{common.language.english}">
+                                                            English
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-4 error-container">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-8 form-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" name="terms" value="true"/> <span
+                                                                th:utext="#{head.register.terms}">By signing up, you are accepting Citibreak Terms and Conditions</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-4 error-container checkbox-error-container"
+                                                     id="registerTermsErrorContainer">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                            <button type="submit" class="btn btn-orange btn-register-submit"
+                                                    th:text="#{head.register.submit}">Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row facebook-item">
+                                        <div class="col-xs-12 form-group text-center">
+                                            <div class="register-popup-or" th:text="#{head.register.or}">or</div>
+                                        </div>
+                                    </div>
+                                    <div class="row facebook-item">
+                                        <div class="col-xs-offset-4 col-xs-4 form-group text-center">
+                                            <button type="button" class="btn btn-register-facebook"
+                                                    id="registerWithFacebook"
+                                                    th:text="#{head.register.signup.with.facebook}">Signup with Facebook
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+                        </form>
+                        <form th:action="@{/account/connect/facebook}" method="POST" id="registerWithFacebookForm"
+                              class="col-no-padding">
+                            <input type="hidden" name="scope" value="email"/>
+                            <input type="hidden" name="origin" th:value="${#httpServletRequest.requestURI}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade register-popup" id="registerCompleteModal" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form method="get" role="form" id="registerSuccessForm">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <a href="javascript:void(0);" class="register-popup-cancel js-modal-close">
+                                        <img src="/img/cancel-popup.png" width="41" height="41"/>
+                                    </a>
+                                </div>
+                                <div class="col-xs-10">
+                                    <div class="row register-popup-header">
+                                        <div class="col-xs-12 text-center">
+                                            <img class="register-popup-title" src="/img/register-title.png"/>
+
+                                            <h3 th:utext="#{head.register.success.title}">Welcome to Citibreak! You are
+                                                now
+                                                registered.</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-1">
+                                        </div>
+                                        <div class="col-xs-10 text-center form-group register-popup-complete-image">
+                                        </div>
+                                        <div class="col-xs-1">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                            <button type="button"
+                                                    class="btn btn-orange btn-register-login js-register-login"
+                                                    th:text="#{head.register.success.login}">Login
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade forgot-password-popup" id="forgotPasswordModal" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form th:action="@{/reset-password}" method="post" role="form" id="resetPasswordForm"
+                              class="validating-form">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <a href="javascript:void(0);" class="register-popup-cancel js-modal-close">
+                                        <img src="/img/cancel-popup.png" width="41" height="41"/>
+                                    </a>
+                                </div>
+                                <div class="col-xs-10">
+                                    <div class="row register-popup-header">
+                                        <div class="col-xs-12 text-center">
+                                            <img class="register-popup-title" src="/img/forgot-password.jpg" width="250"
+                                                 height="192"/>
+
+                                            <h3 th:text="#{head.forgot.password.title}">Ce n'est pas grave</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-1">
+                                        </div>
+                                        <div class="col-xs-10 text-center form-group">
+                                            <p th:utext="#{head.forgot.password.message}"></p>
+                                        </div>
+                                        <div class="col-xs-1">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-3 col-xs-6 form-group">
+                                            <label for="forgotPasswordEmail">
+                                                <span th:text="#{head.forgot.password.email}">Email</span>
+                                            </label>
+                                            <input type="email" class="form-control" id="forgotPasswordEmail"
+                                                   name="email"/>
+                                        </div>
+                                        <div class="col-xs-3 error-container" id="resetEmailErrorContainer">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                            <a href="javascript:void(0);" class="home-go" th:text="#{home.go}"
+                                               id="resetPasswordSubmit">GO</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-2" sec:authorize="isAuthenticated()">
+
+            <div class="row" data-toggle="dropdown">
+                <div class="col-xs-8 logout-section">
+                    <a class="btn-header btn-login"
+                       href="javascript: void(0);">
+                        <span th:text="${user.name}">James</span>
+                    </a>
+
+                    <form th:action="@{/logout}" method="post" role="form">
+                        <a href="javascript:void(0);" class="js-submit-form btn-header btn-register"
+                           th:text="#{head.menu.sign.out}">Sign out</a>
+                    </form>
+                </div>
+                <div class="col-xs-4 login-avatar-container">
+                    <a class="btn-header btn-login"
+                       href="javascript: void(0);">
+                        <img th:src="${user.avatarUrl}" src="/img/login.png" class="login-avatar" width="42"
+                             height="42"/>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-xs-4 settings navbar-dropdown">
+                <div class="settings-container  ">
+                    <div class="settings-line">
+                        <img class="settings-img" src="/img/newiv/setting-gear.png"/>
+                        <a class ="setting-link" th:href="@{/account/general}" th:text="#{head.menu.account.settings}">Account Settings</a>
+                    </div>
+                    <div class="settings-line">
+                        <img class="settings-img" src="/img/newiv/setting-start.png"/>
+                        <a class ="setting-link" th:href="@{/favorites/site/}" th:text="#{head.navbar.my-favorites}">My Favorites</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="searchStream" class="search-stream">
+        <a href="javascript:void(0);" id="searchStreamButton"
+           class="search-stream-button search-stream-inactive-button"></a>
+
+        <div id="searchActivityHint" class="search-stream-inactive-button-hint" th:utext="#{search.stream.hint}">
+        </div>
+    </div>
+
+    <div id="detailsActions" class="details-actions" th:if="${site != null} or ${event != null}">
+        <div id="applicationsButton" class="details-action icons-bar-applications"
+             th:if="${not #maps.isEmpty(applications)}">
+            <div id="applicationsButtonHint" class="icons-bar-hint-message"
+                 th:utext="#{details.applications.button.hint}">
+                Applications available
+            </div>
+        </div>
+        <div id="noApplications" class="details-action icons-bar-applications-inactive"
+             th:if="${#maps.isEmpty(applications)}">
+            <div id="noApplicationsMessage" class="icons-bar-hint-message" th:utext="#{details.applications.empty}">
+                No applications available
+            </div>
+        </div>
+        <div id="venuesButton" class="details-action icons-bar-things-to-do-inactive">
+            <div id="noVenuesMessage" class="icons-bar-hint-message" th:utext="#{details.venues.empty}"
+                 style="display: hidden;">
+                No venues available
+            </div>
+            <div id="venuesButtonHint" class="icons-bar-hint-message" th:utext="#{details.venues.button.hint}"
+                 style="display: hidden;">
+                Venues available
+            </div>
+        </div>
+        <div id="visitButton" class="details-action icons-bar-visit">
+            <div id="visitButtonHint" class="icons-bar-hint-message" th:utext="#{details.tickets.button.hint}"
+                 style="display: hidden;">
+                Tickets available
+            </div>
+        </div>
+        <div id="iconsBarExpand" class="details-action icons-bar-expand">
+        </div>
+        <div id="iconsBarCollapse" class="details-action icons-bar-collapse">
+        </div>
+        <div id="detailsSocial" class="details-actions-social">
+            <div id="shareButtonHint" class="icons-social-hint-message share-button-hint"
+                 th:utext="#{details.share.button.hint}" style="display: hidden;">
+                Share
+            </div>
+            <div id="favoriteButtonHint" class="icons-social-hint-message favorite-button-hint"
+                 th:utext="#{details.favorite.button.hint}" style="display: hidden;">
+                Add to favorites
+            </div>
+            <div id="ratingButtonHint" class="icons-social-hint-message rating-button-hint"
+                 th:utext="#{details.rating.button.hint}" style="display: hidden;">
+                Rate
+            </div>
+            <div id="detailsShare" class="details-action details-share js-details-action-opening">
+                <div class="details-action-panel details-action-share-panel row">
+                    <div class="col-xs-4 social-container" id="googleShare">
+                        <div class="social-share google-share">
+                            <img src="/img/google-plus.png" width="24" height="24" class="pull-left"/>
+                            <span id="googleSocialCount">-</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 social-container" id="facebookShare">
+                        <div class="social-share facebook-share">
+                            <img src="/img/facebook.png" width="24" height="24" class="pull-left"/>
+                            <span id="facebookSocialCount">-</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 social-container" id="twitterShare">
+                        <div class="social-share twitter-share">
+                            <img src="/img/twitter.png" width="24" height="24" class="pull-left"/>
+                            <span id="twitterSocialCount">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="isAuthenticated()" id="detailsFavorite"
+                 class="details-action details-favorite" th:classappend="${favorite}? 'details-favorite-active'">
+                <form th:action="@{/subjects/favorites}" method="post" role="form" id="detailsFavoriteForm">
+                    <input type="hidden" name="id" th:value="${event == null} ? ${site.id} : ${event.id}"/>
+                </form>
+            </div>
+            <div id="detailsFavoriteAnonymous" sec:authorize="isAnonymous()"
+                 class="details-action details-favorite details-social-inactive details-login-required"
+                 data-toggle="tooltip" data-placement="right" th:title="#{details.favorite.login}">
+                <div id="favoriteAnonymousMessage" class="icons-bar-inactive-message favorite-anonymous-message"
+                     th:utext="#{details.favorite.anonymous}">
+                </div>
+            </div>
+            <div id="detailsRate" sec:authorize="isAuthenticated()"
+                 class="details-action details-rating js-details-action-opening"
+                 th:classappend="(${vote.rating} == null) or (${vote.rating} == 0) ? 'details-rating-empty'">
+                <div class="details-rating-count" id="detailsRatingCount" th:text="${vote.rating}"></div>
+                <div class="details-action-panel details-action-rating-panel row" sec:authorize="isAuthenticated()">
+                    <div class="col-xs-12 details-rating-stars">
+                        <form th:action="${event == null} ? @{/sites/vote} : @{/events/vote}" method="post" role="form"
+                              id="detailsRating">
+                            <input type="hidden" name="id" th:value="${vote.subjectId}"/>
+                            <img data-rating="0" width="17" height="17" class="details-rating-star details-rating-zero"
+                                 src="/img/rating-gray.png"/>
+                            <img th:each="rating : ${#numbers.sequence(1, 5)}" th:attr="data-rating=${rating}"
+                                 width="17" height="16" class="details-rating-star"
+                                 th:src="${vote.rating ne null and vote.rating ge rating} ? '/img/rating-blue.png' : '/img/rating-gray.png'"/>
+                            <img src="/img/close.png" width="17" height="17" class="details-rating-close pull-left"
+                                 id="detailsRatingClose"/>
+
+                            <div id="detailsRatingText" class="pull-left details-rating-text"
+                                 th:style="${vote.rating} == null ? 'opacity: 0;' : ''"
+                                 th:text="${vote.rating} == null ? '1/5' : (${vote.rating} + '/5')"></div>
+                            <img src="/img/vertical-line.png" width="1" height="20"
+                                 class="details-rating-vertical-line pull-left"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="detailsRatingAnonymous" sec:authorize="isAnonymous()"
+                 class="details-action details-rating details-rating-empty details-social-inactive details-login-required"
+                 data-toggle="tooltip" data-placement="right" th:title="#{details.rating.login}">
+                <div id="ratingAnonymousMessage" class="icons-bar-inactive-message rating-anonymous-message"
+                     th:utext="#{details.rating.anonymous}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fb-root"></div>
+</div>
+
+<div th:fragment="home-title (prefix)">
+    <h1 class="no-margin-top" th:text="${searchParams.city.covered} ? (
+            ${searchParams.city.filled} ? (
+                ${countDto.total} == 0 ? ${#messages.msg(prefix + '.noresults.title', searchParams.city.backupName)} : #{${prefix + '.results.title'}}
+            ) : (
+                ${searchParams.needGeolocation} ? #{${prefix + '.unlocalization.title'}} : #{${prefix + '.nolocalization.title'}}
+            )
+        ) : #{${prefix + '.unavailable.title'}}">Find your visit in one click</h1>
+    <h4 th:utext="${searchParams.city.covered} ? (
+            ${searchParams.city.filled} ? (
+                ${countDto.total} == 0 ? #{${prefix + '.noresults.subtitle'}} : #{${prefix + '.results.subtitle'}}
+            ) : (
+                ${searchParams.needGeolocation} ? #{${prefix + '.unlocalization.subtitle'}} : #{${prefix + '.nolocalization.subtitle'}}
+            )
+        ) : #{${prefix + '.unavailable.subtitle'}}">Tell us what experience you like, we will tell you where to go!</h4>
+</div>
+
+<div th:fragment="home-select">
+    <div class="row home-col-list">
+        <div>
+            <div class="col-xs-4 home-col">
+                <a data-toggle="modal" data-target=".home-select-date" class="auto-resize-line">
+                    <div>
+                        <span th:text="${#calendars.format(searchParams.dateTime, #messages.msg('assistant.search.date.format'))}">Saturday, 22nd December</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xs-4 home-col">
+                <a data-toggle="modal" data-target=".home-select-time">
+                    <div>
+                        <span th:text="${#calendars.format(searchParams.dateTime, #messages.msg('assistant.search.time.format'))}">11:00 AM</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xs-4 home-col">
+                <a data-toggle="modal" data-target=".home-select-city" class="auto-resize-line">
+                    <div>
+                                        <span th:text="(${searchParams.city.filled} ? ${searchParams.city.name} : #{assistant.search.city.empty})
+                                        + (${searchParams.city.filled} ? (' (' + ${searchParams.city.country} + ')') : '')">Paris (France)</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="select-popup">
+    <div class="modal fade home-select-popup home-select-date" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/date}" method="post">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" width="41" height="41"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                </div>
+                                <div class="col-xs-8">
+                                    <h3 th:text="#{assistant.search.select.date.title}">When ?</h3>
+                                </div>
+                                <div class="col-xs-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div id="homeSelectDatePicker"></div>
+                                    <input type="hidden" id="homeSelectDatePickerInput" name="date"
+                                           th:value="${searchParams.date}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a href="javascript:void(0);" class="home-go js-submit-form"
+                                       th:text="#{home.go}">GO</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade home-select-popup home-select-time" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/time}" method="post" class="form-inline">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" width="41" height="41"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                </div>
+                                <div class="col-xs-8">
+                                    <h3 th:text="#{assistant.search.select.time.title}">Time ?</h3>
+                                </div>
+                                <div class="col-xs-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <h4 class="home-select-time-date"
+                                        th:text="${#calendars.format(searchParams.dateTime, #messages.msg('assistant.search.select.time.date.format'))}">
+                                        Samedi, 19 Avril 2014</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <div class="form-group">
+                                        <div class="input-group spinner" id="home-time-hours">
+                                            <input type="text" class="form-control input-lg text-center" value="00"/>
+
+                                            <div class="input-group-btn-vertical">
+                                                <button type="button" class="btn btn-default btn-xs">
+                                                    <span class="glyphicon glyphicon-chevron-up"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-xs">
+                                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>:</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group spinner" id="home-time-minutes">
+                                            <input type="text" class="form-control input-lg text-center" value="00"/>
+
+                                            <div class="input-group-btn-vertical">
+                                                <button type="button" class="btn btn-default btn-xs">
+                                                    <span class="glyphicon glyphicon-chevron-up"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-xs">
+                                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="homeSelectTimePickerInput" name="time"
+                                       th:value="${searchParams.timeAsMinutes}"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a href="javascript:void(0);" class="home-go js-submit-form"
+                                       th:text="#{home.go}">GO</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="homeSelectCity" class="modal fade home-select-popup home-select-city" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/city}" method="post" id="homeSelectCityForm">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" width="41" height="41"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                </div>
+                                <div class="col-xs-8">
+                                    <h3 th:text="#{assistant.search.select.city.title}">Where ?</h3>
+                                </div>
+                                <div class="col-xs-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="homeSelectCityInput"
+                                               th:placeholder="#{assistant.search.select.city.placeholder}"
+                                               name="name"/>
+                                        <input type="hidden" id="homeSelectCityCountryInput"
+                                               th:value="${searchParams.city.filled} ? ${searchParams.city.country}"
+                                               name="country"/>
+                                        <input type="hidden" id="homeSelectCityLatInput"
+                                               th:value="${searchParams.city.filled} ? ${searchParams.city.location.x}"
+                                               name="location.x"/>
+                                        <input type="hidden" id="homeSelectCityLonInput"
+                                               th:value="${searchParams.city.filled} ? ${searchParams.city.location.y}"
+                                               name="location.y"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a href="javascript:void(0);" class="home-go js-submit-form"
+                                       th:text="#{home.go}">GO</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer (weatherWidget)">
+    <div th:if="${weatherWidget}" class="container weather-widget-container">
+        <div id="weatherWidget" class="weather-widget weather-widget-footer">
+            <div class="weather-text text-right">
+                <span id="weatherWidgetDate" class="small">Saturday, 22nd March</span><br/>
+                <span id="weatherWidgetCity" class="large">Paris</span>
+            </div>
+            <div class="text-center">
+                <img id="weatherWidgetIcon" src="/img/blank.jpg"/>
+            </div>
+            <div class="weather-text text-left">
+                <span id="weatherWidgetTemperature" class="large">16°C</span><br/>
+                <span id="weatherWidgetDescription" class="small">Windy &amp; Sunny</span>
+            </div>
+        </div>
+    </div>
+    <div id="footer-small" class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="javascript:void(0);" id="language-selector" class="language-selector">
+                    <div th:switch="${countryParam.language}">
+                        <span th:case="'de'" th:text="#{common.language.german}">Deutsch</span>
+                        <span th:case="'en'" th:text="#{common.language.english}">English</span>
+                        <span th:case="'es'" th:text="#{common.language.spanish}">Español</span>
+                        <span th:case="'fr'" th:text="#{common.language.french}">Français</span>
+                        <span th:case="'it'" th:text="#{common.language.italian}">Italiano</span>
+                        <span th:case="'*'" th:text="#{common.language.english}">English</span>
+                        <img src="/img/language-selector.png"/>
+                    </div>
+                </a>
+            </div>
+
+            <div id="newsletterSubscribeWidget" class="col-xs-9">
+                <form method="post" class="form-horizontal account-form validating-form" role="form"
+                      id="newsletterSubscribeForm"
+                      th:action="@{/newsletter}">
+                    <div class="form-group">
+                        <label for="subscriberEmail" class="col-xs-3 subscriber-email-label"
+                               th:text="#{account.general.newsletter.subscribe}">Subscribe to newsletter</label>
+
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <input type="email" class="form-control subscriber-email-input" id="subscriberEmail"
+                                       name="email" th:placeholder="#{account.general.newsletter.email}"/>
+                                <span class="subscriber-email-addon" id="newsletterSubscribeButton"></span>
+                            </div>
+                        </div>
+                        <div class="error-container newsletter-error-container" id="newsletterErrorContainer">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-1">
+                <a href="javascript:void(0);" id="show-footer" class="toggle-footer">
+                    <img src="/img/show-footer.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="footer-large" class="container" style="display: none;">
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h5 th:text="#{footer.language}">Language</h5>
+                            </li>
+                            <li class="list-group-item">
+                                <a th:class="${countryParam.language == 'fr'} ? 'active'"
+                                   th:href="@{'http://www.citibreak.fr' + ${navigationParam.currentPath}}"
+                                   th:text="#{common.language.french}">Français</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a th:class="${countryParam.language == 'en'} ? 'active'"
+                                   th:href="@{'http://www.citibreak.com' + ${navigationParam.currentPath}}"
+                                   th:text="#{common.language.english}">English</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h5 th:text="#{footer.you.and.pocket}">You and Pocket</h5>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#" th:text="#{footer.contact.us}"
+                                   data-toggle="modal" data-target=".contact-us-modal">Contact Us</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a th:href="@{/privacy}" th:text="#{footer.personal.data}">Personal Data</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a th:href="@{/legals}" th:text="#{footer.legal.mention}">Legal Mention</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h5 th:text="#{footer.follow.us}">Follow Us</h5>
+                            </li>
+                            <li class="list-group-item list-group-item-icon">
+                                <a href="https://plus.google.com/116778901675065651618/posts" target="_blank"
+                                   class="google-plus" th:text="#{footer.google}">Google</a>
+                            </li>
+                            <li class="list-group-item list-group-item-icon">
+                                <a href="https://twitter.com/citibreak" target="_blank" class="twitter"
+                                   th:text="#{footer.twitter}">Twitter</a>
+                            </li>
+                            <li class="list-group-item list-group-item-icon">
+                                <a href="https://www.facebook.com/pages/Citibreak/1399797680298228?sk=info"
+                                   target="_blank" class="facebook" th:text="#{footer.facebook}">Facebook</a>
+                            </li>
+                            <li class="list-group-item list-group-item-icon">
+                                <a href="http://instagram.com/citibreak/" target="_blank" class="instagram"
+                                   th:text="#{footer.instagram}">Instagram</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h5 th:text="#{footer.about.us}">About Us</h5>
+                            </li>
+                            <li class="list-group-item">
+                                <a th:href="@{/about}" th:text="#{footer.presentation}">Presentation</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="http://blog.citibreak.com" th:text="#{footer.blog}">Blog</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="row">
+                    <div class="col-xs-10">
+
+                    </div>
+                    <div class="col-xs-2">
+                        <a href="javascript:void(0);" id="hide-footer" class="toggle-footer">
+                            <img src="/img/hide-footer.png"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade contact-us-modal" tabindex="-1" role="dialog" aria-hidden="true" id="contactUsModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/contact}" method="post" id="contactUsForm" class="validating-form">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" width="41" height="41"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-8">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h1 th:text="#{contact.title}">Contact Us</h1>
+                                    <h4 th:text="#{contact.subtitle}">In order to help us to give you an answer quickly,
+                                        please complete this form.</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="reportErrorTitle" th:text="#{contact.field.title}">Title</label>
+                                        <select id="reportErrorTitle" class="form-control" name="title">
+                                            <option th:text="#{contact.field.title.mr}">Mr.</option>
+                                            <option th:text="#{contact.field.title.mr}">Mrs.</option>
+                                            <option th:text="#{contact.field.title.mr}">Miss.</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="reportErrorEmail" th:text="#{contact.field.email}">Email</label>
+                                        <input type="email" class="form-control" id="reportErrorEmail" name="email"
+                                               th:value="${user != null ? user.email : ''}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="reportErrorFirstName" th:text="#{contact.field.firstName}">First
+                                            Name</label>
+                                        <input type="text" class="form-control" id="reportErrorFirstName"
+                                               name="firstName"/>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="reportErrorLastName" th:text="#{contact.field.lastName}">Last
+                                            Name</label>
+                                        <input type="text" class="form-control" id="reportErrorLastName"
+                                               name="lastName"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="reportErrorCountry"
+                                               th:text="#{contact.field.country}">Country</label>
+                                        <input type="text" class="form-control" id="reportErrorCountry"
+                                               name="country"/>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="reportErrorSubject" th:text="#{contact.field.subject}">Topic</label>
+                                        <select id="reportErrorSubject" class="form-control" name="subject"
+                                                value="myAccount">
+                                            <option value="myAccount" th:text="#{contact.field.subject.account}">My
+                                                account
+                                            </option>
+                                            <option value="partnership" th:text="#{contact.field.subject.partnership}">
+                                                Partnership
+                                            </option>
+                                            <option value="press" th:text="#{contact.field.subject.press}">Press
+                                            </option>
+                                            <option value="alert" th:text="#{contact.field.subject.alert}">Alert
+                                            </option>
+                                            <option value="others" th:text="#{contact.field.subject.other}">Others
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" name="comment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group text-right">
+                                        <button type="button" class="btn btn-gray btn-report-error"
+                                                th:text="#{contact.cancel}" id="contactUsCancel">Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-orange btn-report-error"
+                                                id="contactUsSubmitButton"
+                                                th:text="#{contact.submit}"
+                                                th:attr="data-loading-text=#{common.button.loading}">Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade register-popup" id="contactUsCompleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="get" role="form">
+                    <div class="row">
+                        <div class="col-xs-1">
+                        </div>
+                        <div class="col-xs-10">
+                            <div class="row register-popup-header">
+                                <div class="col-xs-12">
+                                    <br/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-1">
+                                </div>
+                                <div class="col-xs-10 text-center form-group contact-us-popup-complete-image">
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+                            <div class="row register-popup-header">
+                                <div class="col-xs-12 text-center">
+                                    <h3 th:utext="#{contact.success.text}">Thank you for your message</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                    <button type="button" class="btn btn-orange btn-register-login js-modal-close"
+                                            th:text="#{contact.success.return}">Return
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade account-update-popup" id="newsletterSubscribeModal" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-xs-1">
+                    </div>
+                    b
+                    <div class="col-xs-10">
+                        <div class="row">
+                            <div class="col-xs-1">
+                            </div>
+                            <div class="col-xs-10 form-group account-update-popup-image">
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                        <div class="row register-popup-header">
+                            <div class="col-xs-12 text-center">
+                                <h4 th:utext="#{newsletter.subscribe.popup.title}">Thank you for signing up to receiving
+                                    our Newsletter.</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">ыгвщ ыг
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                        <button type="button" class="btn btn-orange btn-register-login js-modal-close"
+                                th:text="#{contact.success.return}">Return
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade account-update-popup applications-modal" id="searchStreamModal" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div id="createDayOutPage0" class="modal-content applications-popup">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a href="javascript:void(0);" class="home-select-cancel js-modal-close pull-left">
+                            <img src="/img/cancel-popup.png" width="32" height="32"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-10 text-center applications-header noselect"
+                                 th:text="${#messages.msg('search.stream.modal.header')}">
+                                Search stream
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 create-dayout-page" style="display: none;">
+                        1/4
+                    </div>
+                </div>
+                <div id="searchStreamList" class="row search-stream-list">
+                    <div class="col-xs-12">
+                        <div th:with="types=${#strings.listSplit('CULTURAL,RESTAURANT,BAR,SHOPPING', ',')}">
+                            <div class="row form-group">
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-8 application-type-radio-container">
+                                    <label th:each="type : ${types}" class="radio-inline">
+                                        <input th:id="${'_' + type}" name="historyEntryType1" type="radio"
+                                               th:checked="${type} == 'CULTURAL'"/>
+                                        <span></span>
+
+                                        <div th:text="${#messages.msg('search.stream.venue.type.' + type)}"></div>
+                                    </label>
+                                </div>
+                                <div class="col-xs-2"></div>
+                            </div>
+                            <div th:each="type : ${types}" th:id="'searchStreamResults_' + ${type}"
+                                 th:style="${type == types.get(0)} ? 'display: block;' : 'display: none;'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form id="clearSearchStreamForm" th:action="@{/history/clear}" method="POST">
+                    <input type="hidden" name="type" id="clearSearchStreamType"/>
+                    <input type="hidden" name="sessionId" id="_sessionId" th:value="${sessionId}"/>
+                </form>
+
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="row">
+                            <div id="createDayOutInfo" class="col-xs-1 create-dayout-info">
+                                <img src="/img/btn-info-orange.png" width="20" height="20"/>
+                            </div>
+                            <div id="createDayOutHint" class="col-xs-10 create-dayout-hint"
+                                 th:text="#{dayout.create.hint}" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div id="clearSearchStreamButton" class="btn btn-gray js-modal-close clear-history-button"
+                             th:text="#{search.stream.clear}">
+                            Clear
+                        </div>
+                        <div id="createDayOutButton" class="btn btn-green create-dayout-button"
+                             th:text="#{dayout.create}">
+                            Create your day-out
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111 -->
+            <div id="createDayOutPage1" class="modal-content applications-popup" style="display: none;">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a id="createDayOutPreviousStep1" href="javascript:void(0);"
+                           class="home-select-cancel pull-left">
+                            <img src="/img/cancel-popup.png" width="32" height="32"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-8 text-center applications-header noselect"
+                                 th:text="#{dayout.create.header}">
+                                Create your day out
+                            </div>
+                            <div class="col-xs-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 create-dayout-page">
+                        1/4
+                    </div>
+                </div>
+                <form id="createDayOutForm" th:action="@{/subjects/favorites}" method="post" role="form">
+                </form>
+                <div class="row dayout-name-row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-6">
+                        <div class="row dayout-name-label" th:text="#{dayout.name.prompt}">
+                            Enter your day out name
+                        </div>
+                        <div class="row">
+                            <input type="text" class="form-control" id="dayOutName" name="name"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+
+                <div id="existingDaysOut" class="row existing-dayout-list">
+                </div>
+
+                <div id="firstDayOut" th:utext="#{dayout.create.first}" class="row dayout-first" style="display: none;">
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-8"></div>
+                    <div class="col-xs-4">
+                        <div class="btn btn-gray js-modal-close create-dayout-cancel" th:text="#{dayout.create.cancel}">
+                            Cancel
+                        </div>
+                        <div id="createDayOutPage2Button" class="btn btn-green create-dayout-continue"
+                             th:text="#{dayout.create.continue}">
+                            Continue
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222 -->
+            <div id="createDayOutPage2" class="modal-content applications-popup">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a id="createDayOutPreviousStep2" href="javascript:void(0);"
+                           class="home-select-cancel pull-left">
+                            <img src="/img/cancel-popup.png" width="32" height="32"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-10 text-center applications-header noselect"
+                                 th:text="#{dayout.create.header}">
+                                Create your day out
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 create-dayout-page" style="display: none;">
+                        2/4
+                    </div>
+                </div>
+                <div id="searchStreamSelectList" class="row search-stream-list">
+                    <div class="col-xs-12">
+                        <div th:with="types=${#strings.listSplit('CULTURAL,RESTAURANT,BAR,SHOPPING', ',')}">
+                            <div class="row form-group">
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-8 application-type-radio-container">
+                                    <label th:each="type : ${types}" class="radio-inline">
+                                        <input th:id="${type}" name="historyEntryType2" type="radio"
+                                               th:checked="${type} == 'CULTURAL'"/>
+                                        <span></span>
+
+                                        <div th:text="${#messages.msg('search.stream.venue.type.' + type)}"></div>
+                                    </label>
+                                </div>
+                                <div class="col-xs-2"></div>
+                            </div>
+                            <div th:each="type : ${types}" th:id="'searchStreamSelectResults' + ${type}"
+                                 th:style="${type == types.get(0)} ? 'display: block;' : 'display: none;'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div id="saveDayOutInfo" class="col-xs-1 create-dayout-info">
+                                <img src="/img/btn-info-orange.png" width="20" height="20"/>
+                            </div>
+                            <div id="saveDayOutHint" class="col-xs-10 create-dayout-hint" th:text="#{dayout.save.hint}"
+                                 style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="btn btn-gray js-modal-close create-dayout-cancel" th:text="#{dayout.create.cancel}">
+                            Cancel
+                        </div>
+                        <div id="createDayOutPage3Button" class="btn btn-green create-dayout-continue" disabled="true"
+                             th:text="#{dayout.create.save}">
+                            Continue
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333 -->
+            <div id="createDayOutPage3" class="modal-content applications-popup">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <a id="createDayOutPreviousStep3" href="javascript:void(0);"
+                           class="home-select-cancel pull-left">
+                            <img src="/img/cancel-popup.png" width="32" height="32"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-10 text-center applications-header noselect"
+                                 th:text="#{dayout.create.header}">
+                                Create your day out
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 create-dayout-page" style="display: none;">
+                        1/4
+                    </div>
+                </div>
+                <div class="row dayout-name-row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-6">
+                        <div class="row dayout-name-label" th:text="#{dayout.create.confirm.caption}">
+                            Confirm your day’s out agenda by clicking on the Validate button
+                        </div>
+                        <div class="row">
+                            <input type="text" class="form-control" id="dayOutNameConfirm" name="name"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <div id="dayOutItemsList" class="row dayout-items-list">
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8"></div>
+                    <div class="col-xs-4">
+                        <div class="btn btn-gray js-modal-close create-dayout-cancel" th:text="#{dayout.create.cancel}">
+                            Cancel
+                        </div>
+                        <div id="createDayOutPage4Button" class="btn btn-green create-dayout-continue" disabled="true"
+                             th:text="#{dayout.create.validate}">
+                            Validate
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444 -->
+            <div id="createDayOutPage4" class="modal-content applications-popup">
+                <div class="row">
+                    <div class="col-xs-2">
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-10 text-center applications-header noselect"
+                                 th:text="#{dayout.share.header}">
+                                Share your day out
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 create-dayout-page" style="display: none;">
+                        4/4
+                    </div>
+                </div>
+                <div th:if="${user != null}" class="row dayout-name-row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-6">
+                        <strong>
+                            <div id="dayOutNameDisplay" class="row dayout-name-label"></div>
+                        </strong>
+
+                        <div class="row dayout-name-label" th:text="#{dayout.saved.message}">
+                            has been saved in your favorites
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <div th:if="${user == null}" class="row dayout-name-row">
+                    <p/>
+                </div>
+                <div class="row dayout-created-image">
+                    <img src="/img/share-dayout.jpg" width="400"/>
+                </div>
+                <div class="row dayout-share-prompt" th:utext="#{dayout.share.prompt}">
+                    Want to share your day out agenda
+                </div>
+                <div class="row">
+                    <div class="col-xs-2">
+                    </div>
+                    <div class="col-xs-8 dayout-share-radio-container noselect">
+                        <label class="radio-inline dayout-share-radio">
+                            <div id="dayOutShareFacebook" class="dayout-share-button">
+                                <img src="/img/facebook-circle.png" width="48" height="48"/>
+                            </div>
+                        </label>
+                        <label class="radio-inline dayout-share-radio">
+                            <div id="dayOutShareMail" class="dayout-share-button">
+                                <img src="/img/mail-circle.png" width="48" height="48"/>
+                            </div>
+                        </label>
+                        <label class="radio-inline dayout-share-radio">
+                            <div id="dayOutShareGoogle" class="dayout-share-button">
+                                <img src="/img/google-plus-circle.png" width="48" height="48"/>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-xs-2">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8"></div>
+                    <div class="col-xs-4">
+                        <div id="dayoutFinishButton" class="btn btn-green create-dayout-continue js-modal-close"
+                             th:text="#{dayout.create.share}">
+                            Finish
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initLayout();
+        initAvatarSystem();
+        /*]]>*/
+    </script>
+    <script>/*<![CDATA[*/
+    var facebookAppId = $('meta[property="fb:app_id"]').attr("content");
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: facebookAppId,
+            xfbml: false,
+            version: 'v2.1'
+        });
+        window.registerFbInitDone();
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    /*]]>*/</script>
+    <script type="text/javascript">
+        (function () {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://apis.google.com/js/client:plusone.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+    <script type="text/javascript">
+        $(document).on("click", function(event){
+            var trigger = $("#headerPopupSearchInput");
+            if(trigger.get(0) !== event.target) {
+                trigger.val('');
+                $(".tt-dropdown-menu").slideUp("fast");
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        var $buoop = {};
+        $buoop.ol = window.onload;
+        window.onload = function () {
+            try {
+                if ($buoop.ol) $buoop.ol();
+            } catch (e) {
+            }
+            var e = document.createElement("script");
+            e.setAttribute("type", "text/javascript");
+            e.setAttribute("src", "//browser-update.org/update.js");
+            document.body.appendChild(e);
+        }
+    </script>
+    <!-- SessionCam Client Integration v6.0 -->
+    <script type="text/javascript">
+        //<![CDATA[
+        var scRec = document.createElement('SCRIPT');
+        scRec.type = 'text/javascript';
+        scRec.src = "//d2oh4tlt9mrke9.cloudfront.net/Record/js/sessioncam.recorder.js";
+        document.getElementsByTagName('head')[0].appendChild(scRec);
+        //]]>
+    </script>
+    <!-- End SessionCam -->
+</footer>
+
+<div th:fragment="home-geocoding">
+    <form th:if="${searchParams.needGeolocation}" th:action="@{/geocoding}" method="post" id="geocodingForm">
+        <input type="hidden" name="x" class="js-geocoding-x"/>
+        <input type="hidden" name="y" class="js-geocoding-y"/>
+        <script type="text/javascript">
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                            var form = $('#geocodingForm');
+                            form.find('.js-geocoding-x').val(position.coords.latitude);
+                            form.find('.js-geocoding-y').val(position.coords.longitude);
+                            form.submit();
+                        }, function (error) {
+
+                        }
+                );
+            }
+        </script>
+    </form>
+</div>
+
+<div th:fragment="iAdvize (pageType)">
+    <!-- START IADVIZE CHAT -->
+    <script type="text/javascript" th:inline="javascript">
+        var userName = /*[[${user != null ? user.name : null'}]]*/ "Username";
+        var userPhoneNumber = /*[[${user != null ? user.phone : null}]]*/ "Phone";
+        var userEmail = /*[[${user != null ? user.email : null}]]*/ "Email";
+        var pageType = /*[[${pageType}]]*/ "homepage";
+        var idzCustomData = {
+            "device": "desktop",
+            "page_type": pageType,
+            "product_price": 0,
+            "cust_name": userName,
+            "cust_firstname": null,
+            "cust_phonenumber": userPhoneNumber,
+            "cust_email": userEmail,
+            "product_ppCount": 0
+        };
+    </script>
+    <script type='text/javascript'>
+        (function () {
+            var idz = document.createElement('script');
+            idz.type = 'text/javascript';
+            idz.async = true;
+            idz.src = document.location.protocol + '/' + '/' + 'lc.iadvize.com/iadvize.js?sid=15591';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(idz, s);
+        })();
+    </script>
+    <!-- END IADVIZE CHAT -->
+</div>
+
+</body>
+
+</html>

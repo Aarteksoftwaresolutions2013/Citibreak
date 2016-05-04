@@ -1,0 +1,100 @@
+.account-separator {
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.account-form input {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: #555;
+    color: white;
+}
+
+.account-form .help-block {
+    clear: both;
+    color: white;
+    padding: 5px 0 0 15px;
+}
+
+.account-form .control-label {
+    text-align: left;
+}
+
+.nav-citybreak li {
+    padding: 10px 15px;
+    margin: 0 0 15px 0;
+}
+
+.nav-citybreak li.active {
+    border-bottom: 2px solid #a8c6cb;
+}
+
+.nav-citybreak li > a:hover,
+.nav-citybreak li.active > a,
+.nav-citybreak li.active > a:hover {
+    background: none;
+}
+
+.nav-citybreak li > a {
+    color: white;
+    display: inline;
+    padding: 11px 0;
+}
+.nav-citybreak li > a:hover {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.nav-citybreak li.active > a {
+    border-bottom: 4px solid #fbb03b;
+    border-radius: 0;
+}
+
+.account-delete-popup .modal-content,
+.account-update-popup .modal-content {
+    padding: 25px 25px 30px 25px
+}
+.account-update-popup-image {
+    height: 264px;
+    max-height: 264px;
+    background: transparent url('/img/account-update.jpg') no-repeat center;
+}
+.account-delete-popup-image {
+    height: 264px;
+    max-height: 264px;
+    background: transparent url('/img/account-delete.jpg') no-repeat center;
+}
+.account-delete-popup .btn-account-update,
+.account-update-popup .btn-account-update {
+    font-size: 18px;
+    padding: 10px 50px;
+}
+body .btn-account-save {
+    padding: 10px 50px;
+    margin-top: 30px;
+    font-size: 14px;
+}
+.account-delete-user {
+    margin-bottom: 30px;
+}
+.account-delete-username {
+    font-size: 28px;
+}
+.account-delete-email {
+    font-size: 18px;
+}
+.account-delete-image {
+    margin-right: 20px;
+}
+
+.account-current-avatar {
+    margin-right: 10px;
+}
+.account-default-avatar {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.btn-account-select-avatar {
+    background-color: #4d4d4d;
+    color: #bababa;
+    font-size: 16px;
+    padding: 6px 18px;
+}

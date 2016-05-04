@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('assistant')" class="row navbar-citybreak"></div>
+
+    <div class="row"
+         th:with="sitesSize=${sitesResponseDto.sitesCount}, eventsSize=${sitesResponseDto.eventsCount}">
+        <div class="col-xs-1">
+            <a th:href="@{${navigationParam.lastPath}}" class="previous-page-button">
+                <img src="/img/cancel-popup.png"/>
+            </a>
+        </div>
+        <div class="col-xs-4">
+            <h1 class="no-margin-top">
+                <span th:if="${sitesSize > 0}" th:text="${sitesSize}">6</span>
+                <span th:if="${sitesSize == 1}" th:text="#{search.results.count.title.site.one}">site</span>
+                <span th:if="${sitesSize > 1}" th:text="#{search.results.count.title.site}">sites</span>
+                <span th:if="${sitesSize > 0 and eventsSize > 0}" th:text="#{search.results.count.title.and}">et</span>
+                <span th:if="${eventsSize > 0}" th:text="${eventsSize}">1</span>
+                <span th:if="${eventsSize == 1}" th:text="#{search.results.count.title.event.one}">exhibition</span>
+                <span th:if="${eventsSize > 1}" th:text="#{search.results.count.title.event}">exhibitions</span>
+                <br />
+                <small th:if="${(sitesSize + eventsSize) == 1}" th:text="#{search.results.count.subtitle.one}">Match your selection</small>
+                <small th:if="${(sitesSize + eventsSize) > 1}" th:text="#{search.results.count.subtitle}">Match your selection</small>
+            </h1>
+            <div class="row search-col-list">
+                <div>
+                    <div class="col-xs-4 search-col">
+                        <a data-toggle="modal" data-target=".home-select-date" class="text-center auto-resize-line">
+                            <div>
+                                <span th:text="${#calendars.format(searchParams.dateTime, #messages.msg('search.params.date.format'))}">Saturday 22nd December</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 search-col">
+                        <a data-toggle="modal" data-target=".home-select-time" class="text-center">
+                            <div>
+                                <span th:text="${#calendars.format(searchParams.dateTime, #messages.msg('search.params.time.format'))}">11:00 AM</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 search-col">
+                        <a data-toggle="modal" data-target=".home-select-city" class="text-center auto-resize-line">
+                            <div>
+                                <span th:text="${searchParams.city.name}">Paris</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${showTags}" th:unless="${#lists.isEmpty(searchParams.tags)}" class="row search-tags-list">
+                <div th:if="${#strings.isEmpty(category)}" th:each="tag : ${searchParams.tags}"
+                     class="col-xs-4 search-tags">
+                    <a class="auto-resize-line" th:classappend="${'tag-' + tagsParams.getColor(tag)}"
+                       th:with="tagName=${#strings.toLowerCase(tag)}">
+                        <div>
+                            <span th:text="#{${'tags.name.' + tagName}}">Adventures</span>
+                        </div>
+                    </a>
+                </div>
+                <div th:unless="${#strings.isEmpty(category)}" class="col-xs-4 search-tags">
+                    <a class="auto-resize-line" th:classappend="${'tag-' + tagsParams.getColor(category)}">
+                        <div>
+                            <span th:text="#{${'search.params.' + category}}">Museum</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row search-maps">
+                <div class="col-xs-12">
+                    <div id="map-canvas"></div>
+                </div>
+            </div>
+            <div class="row" th:unless="${showDescription}">
+                <div class="col-lg-12">
+                    <div id="weatherWidget" class="weather-widget">
+                        <div class="weather-text text-left">
+                            <span id="weatherWidgetTemperature" class="large">16°C</span><br/>
+                            <span id="weatherWidgetDescription" class="small">Windy &amp; Sunny</span>
+                        </div>
+                        <div class="text-center">
+                            <img id="weatherWidgetIcon" src="/img/blank.jpg"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${showDescription}">
+                <div class="col-xs-12">
+                    <h4 th:text="#{${'browse.description.title.' + category}}">CASTLES – ATTRACTIVE DESTINATIONS IN FRANCE</h4>
+                    <p th:utext="#{${'browse.description.text.' + category}}">France with its historical castles is one of the most visited places in the world.
+                    So what are you waiting for? Plan your Tour de France today and enjoy the journey of a life time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-7 search-result-separator">
+            <div class="row">
+                <div class="col-xs-11">
+                    <h3 class="search-result-title">
+                        <a th:href="${indexType} == 'site' ? 'javascript:void(0);' : @{'/search/site/' + ${category}}" th:class="${indexType} == 'site' ? 'active'"
+                           th:if="${sitesSize > 0}" th:text="#{search.results.title.sites}">Sites</a>
+                        <span th:if="${sitesSize > 0 and eventsSize > 0}"> | </span>
+                        <a th:href="${indexType} == 'event' ? 'javascript:void(0);' : @{'/search/event/' + ${category}}" th:class="${indexType} == 'event' ? 'active'"
+                           th:if="${eventsSize > 0}" th:text="#{search.results.title.events}">Exhibitions</a>
+                    </h3>
+
+                    <div id="home-carousel-less" class="home-carousel-less">
+                        <img src="/img/less.png"/>
+                    </div>
+                    <div class="search-result-list" id="searchResultsCarousel" th:with="currentSize=${sitesResponseDto.typeCounts.get(indexType)}">
+                        <div th:each="data, row : ${sitesResponseDto.sites}" th:if="${row.index} % 3 == 0" class="row">
+                            <div th:each="siteIndex : ${#numbers.sequence(row.index , row.index + 2)}"
+                                 th:if="${siteIndex} lt ${currentSize}"
+                                 th:with="currentSite = ${sitesResponseDto.sites[siteIndex]}"
+                                 class="col-xs-4 search-result"
+                                 th:attr="data-id=${currentSite.id}, data-name=${currentSite.siteName}, data-lat=${currentSite.location.x}, data-lng=${currentSite.location.y}">
+                                <a th:href="@{${currentSite.detailsUrl}}"
+                                   th:title="${currentSite.siteName}" class="thumbnail">
+                                    <div class="thumbnail-card"
+                                         th:with="schedulesData=${currentSite.getSchedulesData(searchParams.dateTime)},
+                                                    distance=${currentSite.getDistanceFrom(searchParams.city.location)},
+                                                    mileage=${distance lt 1 ? #messages.msg('search.results.distance.short') : #numbers.formatDecimal(distance, 1, 0) + ' Km'}">
+                                        <div class="free-ribbon">
+                                            <img th:src="${currentSite.displayImageUrl}" src="/img/result-dummy.png"
+                                                 class="search-result-img"/>
+
+                                            <p th:if="${currentSite.free}"><span
+                                                    th:utext="#{search.results.free.ribbon}">FREE<br/>ADMISSION</span>
+                                            </p>
+
+                                            <div class="caption small">
+                                                <div>
+                                                    <div class="pull-right search-result-distance"
+                                                         th:text="${mileage}">
+                                                        18 Km
+                                                    </div>
+                                                    <div th:text="${currentSite.address.city}"
+                                                         class="search-result-city">Paris
+                                                    </div>
+                                                </div>
+                                                <div th:if="${!schedulesData.closed}" class="search-result-schedules"
+                                                     th:text="${schedulesData.remainingHours lt 1} ? #{search.results.closing.short} : #{search.results.closing(${schedulesData.remainingHours})}">
+                                                    Open All Day
+                                                </div>
+                                            </div>
+                                            <div th:if="${schedulesData.closed}" class="closed">
+                                                <span th:if="${!schedulesData.willOpen}" th:text="#{search.results.closed}">
+                                                    Closed
+                                                </span>
+                                                <span th:if="${schedulesData.willOpen} and ${schedulesData.remainingHours lt 1}" th:utext="#{search.results.opening.short}">
+                                                    Openning soon
+                                                </span>
+                                                <span th:if="${schedulesData.willOpen} and ${schedulesData.remainingHours ge 1} and ${schedulesData.remainingHours lt 24}"
+                                                      th:utext="#{search.results.opening(${schedulesData.remainingHours})}">
+                                                    Open in 6 hours
+                                                </span>
+                                                <span th:if="${schedulesData.willOpen} and ${schedulesData.remainingHours ge 1} and ${schedulesData.remainingHours ge 24}"
+                                                      th:utext="${schedulesData.remainingDays == 1} ?
+                                                        #{search.results.opening.long.one} :
+                                                        #{search.results.opening.long(${schedulesData.remainingDays})}">
+                                                    Open in 6 days
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <div class="search-result-rating-star pull-right"
+                                             th:if="${currentSite.rating.average}"
+                                             th:text="${currentSite.rating.average ?: '&nbsp;'}">9
+                                        </div>
+                                        <div class="search-result-name" th:text="${currentSite.name}">Musée Grévin</div>
+                                    </h4>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="home-carousel-more" class="home-carousel-more">
+                        <img src="/img/more.png"/>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="desktop/layout :: select-popup"></div>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyDNOsH5rMWbdH7iU9okNch9HOJexnJVDKw&amp;sensor=false"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var country = /*[[${countryParam.language}]]*/ "en";
+        var searchLat = /*[[${searchParams.city.location.x}]]*/ -34.397;
+        var searchLng = /*[[${searchParams.city.location.y}]]*/ 150.644;
+        /*]]>*/
+    </script>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            autoResizeLines();
+            initSearchResultsMap();
+            initSearchResults();
+            initWeatherWidget();
+            initHomePopup();
+        });
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+<footer th:replace="desktop/layout :: iAdvize ('recherche')"></footer>
+
+</body>
+</html>

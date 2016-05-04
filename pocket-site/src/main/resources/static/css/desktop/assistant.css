@@ -1,0 +1,246 @@
+.home-col-list {
+    margin: 20px -5px;
+}
+
+.home-col-list .home-col {
+    padding-right: 5px;
+    padding-left: 5px;
+    background: url('/img/triangle.png') no-repeat right 5px bottom;
+}
+
+.home-col-list .home-col a {
+    font-size: 16px;
+    color: white;
+    padding: 8px 15px;
+    display: block;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    height: 62px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.home-col-list .home-col a:hover {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.4);
+}
+.home-col-list .home-col a div {
+    width: 100%;
+    height: 46px;
+    overflow: hidden;
+}
+.home-col-list .home-col a div span {
+    line-height: 46px;
+}
+
+.home-tags-list {
+    margin: 40px -5px;
+    position: relative;
+}
+
+.home-tags-list .home-tags {
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+.home-tags-list .home-tags div.show {
+    display: block;
+    height: 72px;
+    width: 100%;
+    color: white;
+    padding: 8px 34px 8px 8px;
+    background: rgba(255, 255, 255, 0.2);
+    /*cursor: pointer;*/
+    overflow: hidden;
+    border-left: 4px solid #7f8c8d;
+    font-size: 20px;
+}
+.home-tags-list .home-tags div.show:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+.home-tags-list .home-tags div.show div {
+    width: 100%;
+    height: 56px;
+    overflow: hidden;
+}
+.home-tags-list .home-tags div.show div span {
+    line-height: 56px;
+}
+.home-tags-list .home-tags div a.delete {
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 24px;
+    height: 21px;
+    line-height: 21px;
+}
+.home-tags-list .home-tags-first div.show {
+    background: #f15a24;
+    border-left: 4px solid #f15a24;
+    padding: 8px;
+}
+.home-tags-list .home-tags-first div.show:hover {
+    background: #f15a24;
+}
+.home-tags-list .home-tags-more {
+    position: absolute;
+    bottom: 0;
+    right: -82px;
+    margin-bottom: 0;
+}
+.home-tags-list .home-tags-more p {
+    width: 72px;
+    padding: 24px;
+    margin: 0;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+}
+.home-tags-list .home-tags-more p:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+.home-tags-list .home-tags-more img {
+    float: none;
+}
+
+.home-carousel {
+    width: 100%;
+    height: 390px;
+    overflow: hidden;
+}
+.home-carousel > a {
+    display: block;
+    height: 125px;
+    margin-bottom: 5px;
+    position: relative;
+    color: white;
+}
+.home-carousel > a .home-carousel-cover {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    display: block;
+    padding: 7px 10px;
+}
+.home-carousel > a:hover .home-carousel-cover {
+    background: rgba(30, 30, 30, 0.7);
+}
+
+.home-carousel-less, .home-carousel-more {
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    height: 28px;
+}
+
+.home-carousel-less {
+    padding: 0 0 10px 0;
+}
+
+.home-carousel-more {
+    padding: 10px 0 0 0;
+}
+
+.home-carousel-less.disabled, .home-carousel-more.disabled {
+    visibility: hidden;
+}
+
+.home-go {
+    font-family: "45 Thin","Helvetica Neue",Helvetica,Arial,sans-serif;;
+    font-size: 27px;
+    display: block;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background: #009245;
+    line-height: 80px;
+    text-align: center;
+    color: white;
+}
+
+.home-go:hover {
+    color: white;
+    text-decoration: none;
+    background: #00A34C;
+}
+
+.home-select-popup h3 {
+    color: #ffffff;
+    background: #f15a24;
+    text-align: center;
+    padding: 15px;
+    margin: 40px 0;
+}
+
+.home-select-popup h4 {
+    margin: 0 0 20px 0;
+}
+
+.home-select-popup .home-go {
+    margin: 40px auto;
+}
+
+.home-select-cancel {
+    display: block;
+    margin: 20px;
+}
+.home-select-cancel:hover {
+    opacity: 0.6;
+}
+
+.home-select-time .home-select-time-date {
+    font-family: HelveticaNeueLTStd-Lt, sans-serif;
+    font-size: 21px;
+}
+
+.search-popup .tt-input,
+.search-popup .tt-hint,
+.home-select-city .tt-input,
+.home-select-city .tt-hint {
+    font-size: 18px;
+    line-height: normal;
+}
+
+.home-select-city .tt-hint {
+    color: #ccc;
+}
+
+.home-select-city .twitter-typeahead {
+    width: 100%;
+}
+
+.home-select-city .tt-dropdown-menu {
+    width: 100%;
+    margin-top: 15px;
+    list-style: none;
+    font-size: 18px;
+    position: relative !important;
+    display: block !important;
+    height: 252px;
+    overflow: hidden;
+}
+
+.home-select-city .tt-suggestion > p {
+    display: block;
+    padding: 8px 12px;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap;
+}
+.home-select-city .tt-suggestion .small {
+    margin-left: 10px;
+    color: #999;
+}
+
+.home-select-city .tt-suggestion > p:hover,
+.home-select-city .tt-suggestion > p:focus,
+.home-select-city .tt-suggestion.tt-cursor p {
+    text-decoration: none;
+    outline: 0;
+    cursor: pointer;
+    background: #ccc;
+}
+

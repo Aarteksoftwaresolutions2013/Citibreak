@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head (
+    placeLatitude=${site.location.y},
+    placeLongitude=${site.location.x}
+)"></head>
+<body>
+
+<div class="container">
+
+<div th:replace="desktop/layout :: header ('details')" class="row navbar-citybreak"></div>
+
+<div class="row">
+    <div class="col-xs-1 col-xs-1-back">
+        <a th:href="@{${navigationParam.lastPath} + '#back'}" class="previous-page-button">
+            <img src="/img/cancel-popup.png" width="41" height="42" />
+        </a>
+    </div>
+    <div class="col-xs-8">
+        <div class="row details-header">
+            <div class="col-xs-2">
+                <div class="details-vote">
+                    <span id="detailsRatingAverage" class="details-vote-rating"
+                          th:text="${site.rating?.average ?: '&nbsp;'}">9</span>
+                        <span id="detailsRatingVotes" th:attr="data-text=${#messages.msg('details.votes.count')}"
+                              th:text="${#messages.msg('details.votes.count', site.rating?.votes)}">155 votes</span>
+                </div>
+            </div>
+            <div class="col-xs-10 no-padding-left details-title"
+                    th:with="mainThemes=${site.mainThemes.getText(countryParam.language)}">
+                <div th:if="${site.closed}" class="pull-right text-right details-pricing">
+                    <div>
+                        <span th:utext="#{details.price.closed}" class="details-closed">SITE COSED</span>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" th:unless="${site.closed}" class="pull-right text-right details-pricing" id="detailsPricingButton">
+                    <div th:if="${#bools.isFalse(site.free) and site.lowestPrice != null and site.highestPrice != null}">
+                        <span class="details-pricing-from" th:text="#{details.price.from}">From</span><br/>
+                        <span th:text="${site.formattedLowestPrice}">5.5 €</span> - <span
+                            th:text="${site.formattedHighestPrice}">7.5 €</span>
+                    </div>
+                    <div th:if="${#bools.isFalse(site.free) and site.lowestPrice == null and site.highestPrice != null}">
+                        <span class="details-pricing-from" th:text="#{details.price.from}">From</span><br/>
+                        <span th:text="${site.formattedHighestPrice}">5.5 €</span>
+                    </div>
+                    <div th:if="${#bools.isFalse(site.free) and site.lowestPrice != null and site.highestPrice == null}">
+                        <span th:utext="#{details.price.unavailable}">PRICE UNAVAILABLE</span>
+                    </div>
+                    <div th:if="${#bools.isFalse(site.free) and site.lowestPrice == null and site.highestPrice == null}">
+                        <span th:utext="#{details.price.unavailable}">PRICE UNAVAILABLE</span>
+                    </div>
+                    <div th:if="${#bools.isTrue(site.free)}">
+                        <span th:utext="#{details.price.free}">FREE ADMISSION</span>
+                    </div>
+                </a>
+                <h1 class="no-margin" th:text="${site.name}">Musée du Louvre</h1>
+                <span th:text="${site.address.city}">Paris</span>
+                <span th:unless="${#strings.isEmpty(mainThemes) or #strings.isEmpty(site.address.city)}"> | </span>
+                <span th:text="${mainThemes}">Arts décoratifs - Beaux Arts - Histoire</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" id="detailsMedia">
+                <div class="details-video" id="detailsVideo">
+                    <div id="videoPlayer" class="details-video-player" th:attr="data-src=${site.videoUrl}"></div>
+                    <div id="detailsActionsVideo" class="details-actions-video">
+                        <div class="details-action details-share-twitter" id="detailsShareTwitter">
+                        </div>
+                        <div class="details-action details-share-facebook" id="detailsShareFacebook">
+                        </div>
+                    </div>
+                </div>
+                <div class="details-image" id="detailsImage">
+                    <div id="imageContainer" class="details-image-border">
+                        <img th:src="${site.displayImageUrl}" src="/img/details-dummy.jpg" />
+                    </div>
+
+                    <div class="details-play img-circle" id="detailsPlay" th:unless="${#strings.isEmpty(site.videoUrl)}"></div>
+                    <button type="button" class="btn btn-orange btn-site-map" id="siteShowMap" th:text="#{article.button.map}">Map</button>
+                </div>
+            </div>
+            <div class="col-xs-12" id="detailsMap" style="display: none">
+                <div id="siteDetails" class="site-details">
+                    <div id="siteDetailsText" class="site-details-text">
+                        <div class="col-xs-12" th:with="schedulesData=${site.getSchedulesData(searchParams.dateTime)}">
+                            <div class="row">
+                                <h2 th:text="${site.name}">Musée du Louvre</h2>
+                            </div>
+                            <div class="row directions">
+                                <button id="directionsBtn" class="btn btn-blue" th:text="#{details.directions}">Directions</button>
+                                <a target="_blank" th:unless="${#strings.isEmpty(site.websiteUrl)}" th:text="#{details.website}"
+                                   th:href="@{${site.websiteUrl}}">www.louvre.fr</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 details-field" th:text="#{details.address}">Address:</div>
+                                <div class="col-xs-10 details-field-value" th:text="${site.address.getFormattedString()}">
+                                    17 Avenue Franklin Delaro Roosevelt, 75008 Paris, France
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 details-field" th:text="#{details.phone}">Phone:</div>
+                                <div class="col-xs-10 details-field-value" th:text="${site.phone}">
+                                    +33 1 12 25 19 55
+                                </div>
+                            </div>
+                            <div class="row" th:if="${schedulesData.filled}">
+                                <span class="details-field" th:text="#{details.hours}">Hours: </span>
+                                <span class="details-field-value"
+                                      th:classappend="${schedulesData.closed} ? 'site-details-text-closed'"
+                                      th:text="${schedulesData.closed} ? #{details.closed.today} : #{details.open.today}">today</span><span>&nbsp;</span>
+                                <span th:unless="${schedulesData.closed}" th:text="${schedulesData.getFormattedOpenHours(searchParams.date, searchParams.dateTimeZone, #messages.msg('details.open.date.format'))}"></span>
+                            </div>
+                            <input id="siteDetailsLat" type="hidden" th:value="${site.location.x}"/>
+                            <input id="siteDetailsLon" type="hidden" th:value="${site.location.y}"/>
+                        </div>
+                        <div id="siteDetailsTextImage" class="site-details-text-image">
+                            <img th:href="@{${site.displayImageUrl}}"/>
+                        </div>
+                    </div>
+                    <div id="siteDetailsMap" class="site-details-map">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-orange btn-site-map" id="siteShowImage" th:text="#{details.photo}">Photo</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3 col-xs-3-back" id="detailsRightPanel">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-1 col-xs-1-back">
+
+    </div>
+    <div class="col-xs-10 col-xs-10-back">
+        <div class="row details-info">
+            <div class="col-xs-12" th:with="schedulesData=${site.getSchedulesData(searchParams.dateTime)}">
+                <h3>
+                    <a href="javascript:void(0);" id="detailsInfoAbout" data-target=".js-details-info-about" class="js-details-tab active"
+                            th:text="#{details.info.about}">About the Site</a> |
+                    <a href="javascript:void(0);" data-target=".js-details-info-general" class="js-details-tab"
+                       th:text="#{details.info.details}">Site Details</a><span> |</span>
+                    <a href="javascript:void(0);" data-target=".js-details-info-comments" class="js-details-tab"
+                       th:text="#{details.info.reviews}">Reviews</a>
+                </h3>
+                <div class="details-closing-container">
+                    <div class="details-closing" th:if="${schedulesData.filled and !schedulesData.closed}"
+                         th:text="${schedulesData.remainingHours lt 1} ?
+                                #{search.results.closing.short} :
+                                #{search.results.closing(${schedulesData.remainingHours})}">closed in less than</div>
+                    <div class="details-closing" th:if="${schedulesData.willOpen and schedulesData.closed
+                        and schedulesData.remainingHours lt 1}"
+                         th:utext="#{search.results.opening.short}">
+                        Openning soon
+                    </div>
+                    <div class="details-closing" th:if="${schedulesData.willOpen and schedulesData.closed
+                        and schedulesData.remainingHours ge 1 and schedulesData.remainingHours lt 24}"
+                          th:utext="#{search.results.opening(${schedulesData.remainingHours})}">
+                        Open in 6 hours
+                    </div>
+                    <div class="details-closing" th:if="${schedulesData.willOpen and schedulesData.closed
+                        and schedulesData.remainingHours ge 1 and schedulesData.remainingHours ge 24}"
+                          th:utext="${schedulesData.remainingDays == 1} ?
+                            #{search.results.opening.long.one} :
+                            #{search.results.opening.long(${schedulesData.remainingDays})}">
+                        Open in 6 days
+                    </div>
+                </div>
+                <div class="details-closing-container">
+                    <div class="details-closing" th:if="${#bools.isTrue(site.booking)}"
+                         th:text="#{search.results.booking}">booking requested</div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="detailsInfoContainer">
+            <div class="col-xs-12 js-details-info-about">
+                <div id="detailsInfoAboutText" class="details-info-about" th:utext="${site.description.getText(countryParam.language)}">
+                    Dummy Description
+                </div>
+                <div id="detailsInfoEvents" class="details-info-events-general">
+                    <div class="row">
+                        <div class="col-xs-12 details-info-events">
+                            <h5 th:utext="#{details.info.exhibitions}">► Exhibitions in progress</h5>
+                        </div>
+                    </div>
+                    <div class="details-info-no-events" th:if="${events.size() == 0}">
+                        <p th:utext="#{details.info.no.events}">
+                            No exhibitions available at the moment
+                        </p>
+                    </div>
+                    <div class="row"
+                         th:if="${row.index} % 4 == 0 and ${events.size() > 0}"
+                         th:each="_,row: ${events}"
+                         th:with="numList=${#strings.listSplit('0,1,2,3', ',')}">
+                        <div class="details-info-event col-xs-3"
+                             th:each="num : ${numList}"
+                             th:with="rowIndex=(${row.index} + ${num})">
+                            <a th:href="@{${events[rowIndex].detailsUrl}(history='next')}" th:title="${events[rowIndex].name}"
+                               th:if="${rowIndex lt events.size()}">
+                                <img th:src="${events[rowIndex].displayImageUrl}" height="110"/>
+                            </a>
+                            <div class="details-info-event-title"
+                                 th:if="${rowIndex lt events.size()}"
+                                 th:text="${events[rowIndex].name}">Event name</div>
+                            <div class="details-info-event-dates"
+                                 th:if="${rowIndex lt events.size()}"
+                                 th:text="${events[rowIndex].getFormattedDates()}">17/12/14 - 18/12/14</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 js-details-info-general" style="display: none;">
+                <div id="detailsInfoInfoText" class="details-info-general">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="details-info-address"
+                                            th:with="websiteMissing=${#strings.isEmpty(site.website)}, wikipediaMissing=${#strings.isEmpty(site.wikipedia)}">
+                                        <h5 th:text="${site.address.formattedString}">
+                                            1, rue de Bellechasse -75007 Paris -France
+                                        </h5>
+
+                                        <p th:text="${site.phone}">(33) 014 0494 814</p>
+
+                                        <p>
+                                            <a th:href="'mailto:' + ${site.email}" th:text="#{details.email}">E-mail</a>
+                                        </p>
+
+                                        <p th:unless="${websiteMissing and wikipediaMissing}">
+                                            <a th:href="${site.website}" th:text="#{details.website}" th:unless="${websiteMissing}" target="_blank">Musée du Louvre</a>
+                                            <span th:unless="${websiteMissing or wikipediaMissing}"> / </span>
+                                            <a th:href="${site.wikipedia}" th:text="#{details.site.wikipedia}" th:unless="${wikipediaMissing}" target="_blank">Site wikipedia</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="details-info-schedules">
+                                        <h5 th:utext="${site.displaySchedules}">Mon, Wed, Fri - Sun: 9:30 –18:00 ;
+                                            Thurs: 9:30 –21:45<br/>
+                                            Closed on 1st January, 1st of May and 25th of December.</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 details-info-all">
+                            <div class="row" th:unless="${#strings.isEmpty(site.access)}">
+                                <div class="col-xs-12">
+                                    <div class="details-info-access">
+                                        <h5 th:text="#{details.info.access}">ACCESS</h5>
+
+                                        <p th:utext="${site.access}">BUS: 24, 63, 68, 69, 73, 83, 84, 94</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" th:unless="${#strings.isEmpty(site.activities)}">
+                                <div class="col-xs-12">
+                                    <div class="details-info-activities">
+                                        <h5 th:text="#{details.info.activities}">ACTIVITIES</h5>
+
+                                        <p th:utext="${site.activities}">Guided visit, educational workshop, children
+                                            workshop</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" th:if="${not #strings.isEmpty(site.services)}">
+                                <div class="col-xs-12">
+                                    <div class="details-info-services">
+                                        <h5 th:text="#{details.info.services}">SERVICES</h5>
+
+                                        <p th:utext="${site.services}">Bookstore, Shop, Restaurant, Cafeteria</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 js-details-info-comments" style="display: none;">
+                <div id="detailsInfoReviews" class="details-comments">
+                    <div class="details-action-panel-comments row" id="detailsCommentsContainer"
+                         th:attr="data-site-id=${site.id}">
+                        <div class="col-xs-12" id="detailsCommentsList">
+                        </div>
+                    </div>
+                </div>
+                <div class="details-no-comments" id="detailsNoComments" style="display: none;">
+                    <div class="row details-no-comments-text">
+                        <span th:text="${#messages.msg('details.comments.empty.desktop')}"></span>
+                    </div>
+                    <div class="row details-display-add-comments" id="detailsNoCommentsButtonContainer">
+                    </div>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="details-add-comments" id="detailsAddCommentContainer" style="display: none;">
+                    <div class="details-add-comment row">
+                        <img th:src="${user.avatarUrl}" width="44" height="44" class="img-circle"/>
+                        <div class="details-comment-text details-add-comment-text">
+                            <form th:action="@{/subjects/comments}" id="detailsAddCommentForm">
+                                <input type="hidden" name="id" th:value="${site.id}"/>
+                                <textarea id="detailsAddCommentText" th:placeholder="#{details.comments.share.placeholder}" class="details-add-comment-text" name="text"
+                                          maxlength="260"></textarea>
+                                <button type="button" class="btn btn-orange btn-display-add-comment" id="detailsAddCommentButton"
+                                        th:text="#{details.comments.share}">Share
+                                </button>
+                                <button type="button" class="btn btn-orange btn-display-add-comment btn-display-cancel-comment" id="detailsAddCommentCancelButton"
+                                        th:text="#{details.comments.cancel}">Cancel
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="details-display-add-comments" id="detailsDisplayAddCommentsContainer">
+                    <div id="detailsDisplayAddComments">
+                        <button type="button" class="btn btn-orange btn-display-add-comments" id="detailsDisplayAddCommentsButton"
+                                th:text="#{details.comments.share.yours}">Share Yours</button>
+                        <div id="addCommentsAnonymousMessage" class="details-add-comment-inactive-message" th:utext="#{details.comments.anonymous}">
+                            Please connect or register to add a review
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade account-update-popup applications-modal" id="applicationsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content applications-popup">
+            <div class="row">
+                <div class="col-xs-2">
+                    <a href="javascript:void(0);" class="home-select-cancel js-modal-close pull-left">
+                        <img src="/img/cancel-popup.png" width="32" height="32"/>
+                    </a>
+                </div>
+                <div class="col-xs-8">
+                    <div class="row">
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-6 text-center applications-header" th:text="${#messages.msg('details.applications.list')}">
+                            Apps available
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                </div>
+            </div>
+            <div id="applicationsList" class="row applications-list">
+                <div class="col-xs-12">
+                    <div th:with="types=${#strings.listSplit('IOS,ANDROID', ',')}">
+                        <div class="row form-group">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4 application-type-radio-container">
+                                <label th:each="type : ${types}" class="radio-inline">
+                                    <input th:id="${type}" name="applicationType" type="radio" th:checked="${type} == 'IOS'"/>
+                                    <span></span>
+
+                                    <div th:text="${#messages.msg('application.type.' + type)}"></div>
+                                </label>
+                            </div>
+                            <div class="col-xs-4"></div>
+                        </div>
+                        <div th:each="type : ${types}" th:id="'applications' + ${type}"
+                             th:style="${type == types.get(0)} ? 'display: block;' : 'display: none;'">
+                            <div th:if="not ${#lists.isEmpty(applications.get(type))}" class="row applications-info-message"
+                                 th:text="${#messages.msg('details.applications.hint')}">
+                                Cliquez sur l’app de votre choix pour en savoir plus et la télé
+                            </div>
+                            <div th:if="${#lists.isEmpty(applications.get(type))}" class="row">
+                                <div class="row applications-empty-image">
+                                    <img src="/img/applications-empty.png"/>
+                                </div>
+                                <div class="row applications-empty-message" th:text="${#messages.msg('details.applications.empty.short')}">
+                                    Aucune apps disponible
+                                </div>
+                            </div>
+                            <div th:each="application : ${applications.get(type)}"
+                                 class="row application-row">
+                                <a th:href="${application.url}" target="_blank" class="application-url">
+                                    <div class="row">
+                                        <div class="col-xs-2 application-image">
+                                            <div class="free-ribbon" style="width: 80px; height: 80px;">
+                                                <img th:src="${application.displayImageUrl}" height="80" width="80"/>
+                                                <p th:if="${application.free}">
+                                                    <span th:text="${#messages.msg('application.price.free')}">FREE</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <div th:text="${application.name}" class="application-info"></div>
+                                            <div th:if="not ${application.free} and not ${application.price == null}"
+                                                 th:text="${application.currency.symbol} + ${application.price}" class="application-info"></div>
+                                            <br th:if="${application.free}"/>
+                                            <br/>
+                                            <div th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.listJoin(application.languages, ', ')))}"
+                                                 class="application-languages"></div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                        </div>
+                                    </div>
+                                </a>
+                                <hr class="pull-left col-xs-9"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade account-update-popup applications-modal" id="venuesModal" tabindex="-1" role="dialog"
+     aria-hidden="true" th:attr="data-site-id=${site.id}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content applications-popup">
+            <div class="row">
+                <div class="col-xs-2">
+                    <a href="javascript:void(0);" class="home-select-cancel js-modal-close pull-left">
+                        <img src="/img/cancel-popup.png" width="32" height="32"/>
+                    </a>
+                </div>
+                <div class="col-xs-8">
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10 text-center applications-header"
+                             th:text="${#messages.msg('details.venues.list')}">
+                            Venues available
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                </div>
+            </div>
+            <div id="venuesList" class="row applications-list">
+                <div class="col-xs-12">
+                    <div th:with="types=${#strings.listSplit('RESTAURANT,BAR,SHOPPING', ',')}">
+                        <div class="row form-group">
+                            <div class="col-xs-3"></div>
+                            <div class="col-xs-6 application-type-radio-container">
+                                <label th:each="type : ${types}" class="radio-inline">
+                                    <input th:id="${type}" name="venueType" type="radio"
+                                           th:checked="${type} == 'RESTAURANT'"/>
+                                    <span></span>
+                                    <div th:text="${#messages.msg('venue.type.' + type)}"></div>
+                                </label>
+                            </div>
+                            <div class="col-xs-3"></div>
+                        </div>
+                        <div th:each="type : ${types}" th:id="'venues' + ${type}"
+                             th:style="${type == types.get(0)} ? 'display: block;' : 'display: none;'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade account-update-popup tickets-modal" id="ticketsModal" tabindex="-1" role="dialog" aria-hidden="true"
+     th:attr="data-tickets=${#lists.isEmpty(tickets.tickets)}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content applications-popup">
+            <div class="row">
+                <div class="col-xs-2">
+                    <a href="javascript:void(0);" class="home-select-cancel js-modal-close pull-left">
+                        <img src="/img/cancel-popup.png" width="32" height="32"/>
+                    </a>
+                </div>
+                <div class="col-xs-8">
+                    <div class="row">
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-6 text-center applications-header" th:text="${#messages.msg('details.tickets.list')}">
+                            Billets disponible
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                </div>
+            </div>
+            <div id="ticketsList" class="row tickets-list">
+                <div class="col-xs-12">
+                    <div class="row form-group">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8 application-type-radio-container">
+                            <label class="radio-inline">
+                                <input name="applicationType" type="radio" id="ticketSingle" checked="checked" />
+                                <span></span>
+
+                                <div th:text="#{details.tickets.single}">Billet</div>
+                            </label>
+                            <label class="radio-inline">
+                                <input name="applicationType" type="radio" id="ticketGroup" />
+                                <span></span>
+
+                                <div th:text="#{details.tickets.group}">Visite en Groupe</div>
+                            </label>
+                            <label class="radio-inline">
+                                <input name="applicationType" type="radio" id="privateTour" />
+                                <span></span>
+
+                                <div th:text="#{details.private.tours}">Visite privée</div>
+                            </label>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                    <div id="ticketSingleContainer" class="js-ticket-container">
+                        <div th:if="not ${#lists.isEmpty(tickets.tickets)}" class="row applications-info-message"
+                             th:text="${#messages.msg('details.tickets.hint')}">
+                            Cliquez sur la ligne de votre choix pour acheter un billet
+                        </div>
+                        <div th:if="${#lists.isEmpty(tickets.tickets)}" class="row">
+                            <div class="row applications-empty-image">
+                                <img src="/img/applications-empty.png"/>
+                            </div>
+                            <div class="row applications-empty-message" th:text="#{details.tickets.empty}">
+                                Aucun ticket disponible
+                            </div>
+                        </div>
+                        <div th:each="ticket : ${tickets.tickets}"
+                             class="row application-row">
+                            <a th:href="${ticket.url}" target="_blank" class="application-url">
+                                <div class="row">
+                                    <div class="col-xs-2 application-image">
+                                        <div class="free-ribbon" style="width: 80px; height: 80px;">
+                                            <img th:src="${ticket.imageUrl}" height="80" width="80"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <div th:text="${ticket.name}" class="application-info"></div>
+                                        <div th:text="${ticket.formattedPrice}" class="application-info"></div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="pull-left col-xs-9"/>
+                        </div>
+                    </div>
+                    <div id="ticketGroupContainer" class="js-ticket-container" style="display: none">
+                        <form id="ticketGroupForm" method="get" th:action="@{/tickets}">
+                            <input type="hidden" name="lat" th:value="${site.location.y}" />
+                            <input type="hidden" name="lng" th:value="${site.location.x}" />
+                        </form>
+                        <div class="row applications-info-message" id="ticketFound" style="display: none;"
+                             th:text="${#messages.msg('details.tickets.hint')}">
+                            Cliquez sur la ligne de votre choix pour acheter un billet
+                        </div>
+                        <div class="row" id="ticketNotFound" style="display: none;">
+                            <div class="row applications-empty-image">
+                                <img src="/img/applications-empty.png"/>
+                            </div>
+                            <div class="row applications-empty-message" th:text="#{details.tickets.empty}">
+                                Aucun ticket disponible
+                            </div>
+                        </div>
+                        <p class="text-center" id="ticketLoader"><img src="/img/ajax-loader.gif" /></p>
+                    </div>
+                    <div id="privateTourContainer" class="js-ticket-container" style="display: none">
+                        <form id="privateToursForm" method="get" th:action="@{/privateTours/site}">
+                            <input type="hidden" name="siteId" th:value="${site.id}" />
+                        </form>
+                        <div class="row applications-info-message" id="privateToursFound" style="display: none;"
+                             th:text="${#messages.msg('details.private.tours.hint')}">
+                            Cliquez sur la ligne de votre choix pour acheter un billet
+                        </div>
+                        <div class="row" id="privateToursNotFound" style="display: none;">
+                            <div class="row applications-empty-image">
+                                <img src="/img/applications-empty.png"/>
+                            </div>
+                            <div class="row applications-empty-message" th:text="#{details.tickets.empty}">
+                                Aucun ticket disponible
+                            </div>
+                        </div>
+                        <p class="text-center" id="privateToursLoader"><img src="/img/ajax-loader.gif" /></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyDNOsH5rMWbdH7iU9okNch9HOJexnJVDKw&amp;sensor=false"></script>
+<script type="text/javascript">
+    /*<![CDATA[*/
+    var twitterViaText = /*[[#{details.share.twitter.via}]]*/ "- Find your visit in one click";
+    var twitterWatchText = /*[[#{details.share.twitter.video.watch}]]*/ "! Watch this video :";
+    var emptyTicketText = /*[[#{details.tickets.empty}]]*/ "Aucun ticket disponible";
+    initDetails();
+    /*]]>*/
+</script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

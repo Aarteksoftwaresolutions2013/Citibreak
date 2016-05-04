@@ -1,0 +1,100 @@
+.tags-select-list {
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+.tags-select-list .tags-select {
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-top: 10px;
+}
+.tags-select-list .tags-select .thumbnail {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+}
+.tags-select-list .tags-select .thumbnail .tags-select-img {
+    width: 100px;
+    height: 50px;
+    float: left;
+}
+.tags-select-list .tags-select .thumbnail .caption {
+    border-top: none;
+    color: white;
+}
+.tags-select-list .tags-select .thumbnail:hover {
+    text-decoration: none;
+}
+.tags-select-list .tags-select .h4 {
+    overflow: hidden;
+    margin: 0;
+    padding-left: 10px;
+    padding-right: 30px;
+}
+.tags-select-list .tags-select .tag-name {
+    overflow: hidden;
+    font-size: 13px;
+    height: 50px;
+    padding: 5px 0;
+}
+.tags-select-list .tags-select .tag-name span {
+    line-height: 40px;
+}
+.tags-select-list .tags-select .tags-select-count {
+    background: #f7931e;
+    font-weight: normal;
+    margin-right: 10px;
+    font-size: 10px;
+    margin-top: 12px;
+    height: 26px;
+    width: 26px;
+    padding: 8px 0;
+    line-height: 10px;
+    text-align: center;
+}
+.tags-select-list .tags-select-checkbox {
+    position: absolute;
+    top: 13px;
+    right: 5px;
+}
+.tags-select-list .tags-select-checkbox img {
+    display: none;
+    max-width: 100%;
+    height:auto;
+}
+.tags-select-list .tags-select-checkbox-checked .tags-select-checkbox-img-checked,
+.tags-select-list .tags-select-checkbox-unchecked .tags-select-checkbox-img-unchecked {
+    display: block;
+}
+.tags-select-list .tags-select-img-container {
+    position: relative;
+}
+.tags-select-toomany {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: none;
+    background: white;
+    color: black;
+    width: 80%;
+    position: fixed;
+    top: 45%;
+    left: 10%;
+    text-align: center;
+    z-index: 10;
+}
+.tags-select-toomany p {
+    margin: 0;
+    font-size: 12px;
+    padding: 10px 0;
+}
+
+.tags-select-toomany-title {
+    padding: 10px 0;
+    font-size: 16px;
+    color: #c1272d;
+    border-bottom: 1px solid #f26533;
+}

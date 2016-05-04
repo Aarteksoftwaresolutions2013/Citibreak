@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('account')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <div th:include="desktop/account/menu :: menu ('activity')"></div>
+        </div>
+        <div class="col-xs-9 account-separator">
+            <div class="row">
+                <form class="form-horizontal account-form" role="form">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label" th:text="#{account.activity.lastSignIn}">Last sign in</label>
+                            <div class="col-xs-9">
+                                <p class="form-control-static"
+                                   th:text="${#calendars.format(user.getLastConnectionDateUpdated(searchParams.dateTimeZone), #messages.msg('account.activity.date.format'))}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label" th:text="#{account.activity.lastPasswordUpdate}">Last password update</label>
+
+                            <div class="col-xs-9">
+                                <p class="form-control-static"
+                                   th:text="${#calendars.format(user.lastPasswordUpdateDate, #messages.msg('account.activity.date.format'))}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

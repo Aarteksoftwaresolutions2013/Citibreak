@@ -1,0 +1,274 @@
+.separator {
+    border-color: #a8c6cb
+}
+
+.home-carousel.my-carousel a {
+    margin-bottom: 64px;
+}
+.home-carousel > a .my-carousel-type {
+    position: absolute;
+    bottom: 40px;
+    left: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 6px;
+    font-size: 9px;
+}
+.home-carousel > a .my-carousel-cover {
+    width: 100%;
+    display: block;
+    padding: 6px 2px;
+    height: 40px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.my-select-container {
+    padding-left: 0;
+}
+.my-select-container .btn-my-select {
+    width: 100%;
+    height: 50px;
+    padding: 10px 25px 10px 5px;
+    text-align: left;
+    font-size: 15px;
+    line-height: 16px;
+    background: #f15a24 url(/img/my-select.png) no-repeat right 8px center;
+    white-space: normal;
+}
+.my-select-container .open .my-select-choices {
+    display: block;
+}
+.my-select-container .my-select-choices {
+    display: none;
+    position: absolute;
+    width: 229px;
+    left: 229px;
+    top: 0;
+}
+
+.home-results {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+.home-need-assistance {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+.home-need-assistance img {
+    width: 100%;
+}
+.home-buzz-container {
+    width: 292px;
+    margin: 0 auto;
+    position: relative;
+}
+.home-need-assistance img.next-buzz {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.home-need-assistance-help p {
+    line-height: 25px;
+    font-size: 20px;
+}
+
+.home-results.search-result-list {
+    height: 218px;
+}
+.home-results.search-result-list .search-result .thumbnail .search-result-img {
+    width: 100%;
+    height: 120px;
+    border-bottom: none;
+    float: none;
+}
+.home-results.search-result-list .search-result .thumbnail-card {
+    height: auto;
+}
+.home-results.search-result-list .free-ribbon {
+    height: auto;
+}
+.home-results.search-result-list .closed {
+    width: 100%;
+    height: 100%;
+    padding-top: 70px;
+    background-position: center 30px;
+}
+
+.home-need-assistance-help {
+    margin-bottom: 20px;
+}
+.home-need-assistance-help .btn-more-choices {
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 60px;
+    background: #f15a24 url(/img/more-choices.png) no-repeat 20px center;
+}
+.home-need-assistance-help .btn-more-choices:active {
+    background: #f15a24 url(/img/more-choices.png) no-repeat 20px center;
+}
+
+.home-specials-image {
+    height: 195px;
+}
+
+.home-search-result-list.search-result-list .search-result .thumbnail .caption {
+    border-top: none;
+    font-size: 8px;
+    line-height: 8px;
+    color: white;
+    height: 38px;
+    position: inherit;
+    padding: 4px;
+    bottom: 0;
+}
+.home-search-result-list.search-result-list .search-result-schedules {
+    font-size: 6px;
+    background: none;
+    padding-left: 0;
+    text-align: center;
+    height: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.home-search-result-list .search-result-name {
+    font-size: 12px;
+    height: 48px;
+    overflow: hidden;
+}
+.home-search-result-list.home-results.search-result-list {
+
+}
+
+.home-select-options {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: none;
+    background: white;
+    color: black;
+    width: 80%;
+    position: fixed;
+    top: 30%;
+    left: 10%;
+    z-index: 10;
+}
+.home-select-options .radio {
+    margin: 15px 10px;
+}
+.home-select-options-title {
+    padding: 10px;
+    font-size: 16px;
+    color: #c1272d;
+    border-bottom: 1px solid #f26533;
+}
+
+.search-result-list.home-search-result-list .search-result h4 {
+    height: 48px;
+}
+
+.search-result-list.home-search-result-list .search-result-city,
+.search-result-list.home-search-result-list .search-result-distance {
+    text-align: center;
+    padding-left: 0;
+    margin-bottom: 2px;
+}
+
+
+.article-popup form {
+    padding: 10px;
+}
+.article-popup .home-select-cancel {
+    margin: 15px 0 15px 15px;
+}
+.article-popup .article-title {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    margin-top: -10px;
+}
+.article-popup .article-title h3 {
+    margin: 0 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #dc5828;
+}
+.article-popup .article-date p {
+    font-weight: bold;
+    height: 62px;
+    line-height: 62px;
+    margin: 0;
+}
+.article-popup .article-header-container {
+    margin-bottom: 30px;
+}
+.article-popup .article-header-container p {
+    margin: 0;
+}
+.article-popup .article-media {
+    margin: 20px -15px;
+    height: 399px;
+    overflow: hidden;
+}
+.article-popup .article-info-subtitle {
+    color: #52A7CC;
+    font-weight: bold;
+    padding-left: 0;
+}
+.article-popup .article-info-subtitle p {
+    margin-bottom: 0;
+}
+.article-popup .article-image {
+    background-position: center center;
+    background-size: cover;
+}
+.article-popup .article-map,
+.article-popup .article-image,
+.article-popup .article-video {
+    height: 370px;
+    width: 100%;
+}
+.article-popup .article-map-container {
+    display: none;
+}
+.article-popup .article-description {
+    margin: 10px 0;
+}
+.article-popup .article-description-container {
+    max-height: 200px;
+}
+.article-popup .article-button {
+    margin: 10px 0 20px 0;
+}
+
+.article-popup .mCSB_container {
+    padding-right: 20px;
+}
+.article-popup .details-info-schedules,
+.article-popup .details-info-address {
+    padding: 0;
+}
+.article-popup .details-info-address h5 {
+    font-size: 12px;
+    background: url('/img/details-address-2.png') no-repeat left top;
+}
+.article-popup .details-info-schedules h5 {
+    font-size: 12px;
+    background: url('/img/details-schedules-2.png') no-repeat left top;
+}
+.article-popup .details-info-address p {
+    padding-left: 30px;
+    font-size: 12px;
+}
+.article-popup .article-subtitle-label {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+.article-popup .article-author {
+    margin-bottom: 10px;
+}
+.article-popup .article-more-info {
+    margin-top: 20px;
+}

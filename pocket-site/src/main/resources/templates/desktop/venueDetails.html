@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head (
+    placeLatitude=${venue.location.y},
+    placeLongitude=${venue.location.x}
+)"></head>
+<body>
+
+<div class="container">
+
+<div th:replace="desktop/layout :: header ('details')" class="row navbar-citybreak"></div>
+
+<div class="row">
+    <div class="col-xs-1 col-xs-1-back">
+        <a th:href="@{${navigationParam.lastPath}}" class="previous-page-button">
+            <img src="/img/cancel-popup.png" width="41" height="42" />
+        </a>
+    </div>
+    <div class="col-xs-10">
+        <div class="row details-header">
+            <div class="col-xs-2" th:if="${venue.rating != null}">
+                <div class="details-vote">
+                    <span id="detailsRatingAverage" class="details-vote-rating"
+                          th:text="${venue.rating}">9</span>
+                </div>
+            </div>
+            <div th:class="${'col-xs-10 details-title' + (venue.rating != null ? 'no-padding-left' : '')}">
+                <div th:if="${venue.price != null}" class="pull-right text-right venue-pricing">
+                    <span th:text="#{details.price}">Price</span><br/>
+                    <div class="venue-price">
+                        <span th:each="num : ${#numbers.sequence(1,4)}" th:class="${num le venue.price ? 'venue-price-tag' : ''}">€</span>
+                    </div>
+                </div>
+                <h1 class="no-margin" th:text="${venue.name}">Musée du Louvre</h1>
+                <span class="details-venue-category" th:text="${venue.category}">Arts décoratifs - Beaux Arts - Histoire</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" id="detailsMap">
+                <div id="siteDetails" class="venue-details">
+                    <div id="siteDetailsText" class="venue-details-text">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <h2 th:text="${venue.name}">Musée du Louvre</h2>
+                            </div>
+                            <div class="row directions">
+                                <button id="directionsBtn" class="btn btn-blue" th:text="#{details.directions}">Directions</button>
+                                <a target="_blank" th:unless="${#strings.isEmpty(venue.url)}" th:text="#{details.website}"
+                                   th:href="@{${venue.url}}">www.louvre.fr</a>
+                            </div>
+                            <div class="row" th:if="${venue.address != null}">
+                                <div class="col-xs-2 details-field" th:text="#{details.address}">Address:</div>
+                                <div class="col-xs-10 details-field-value" th:text="${venue.address.getFormattedString()}">
+                                    17 Avenue Franklin Delaro Roosevelt, 75008 Paris, France
+                                </div>
+                            </div>
+                            <div class="row" th:if="${venue.phone != null}">
+                                <div class="col-xs-2 details-field" th:text="#{details.phone}">Phone:</div>
+                                <div class="col-xs-10 details-field-value" th:text="${venue.phone}">
+                                    +33 1 12 25 19 55
+                                </div>
+                            </div>
+                            <div class="row" th:if="${venue.hours != null}">
+                                <div class="col-xs-2 details-field" th:text="#{details.hours}">Hours:</div>
+                                <div class="col-xs-10 details-field-value" th:text="${venue.hours}">
+                                    +33 1 12 25 19 55
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-8"></div>
+                                <div class="col-xs-4"><img src="/img/foursquare-logomark.png" height="50"/></div>
+                            </div>
+                            <div class="row">
+                                <img class="venue-image" th:src="${venue.imageUrl}"/>
+                            </div>
+                            <input id="venueDetailsLat" type="hidden" th:value="${venue.location.x}"/>
+                            <input id="venueDetailsLon" type="hidden" th:value="${venue.location.y}"/>
+                            <input th:if="${siteLocation != null}" id="venueDetailsSiteLat" type="hidden" th:value="${siteLocation.x}"/>
+                            <input th:if="${siteLocation != null}" id="venueDetailsSiteLon" type="hidden" th:value="${siteLocation.y}"/>
+                        </div>
+                        <div th:if="${venue.imageUrl != null}" class="site-details-text-image">
+                            <img th:href="@{${venue.imageUrl}}"/>
+                        </div>
+                        <div th:if="${venue.imageUrl == null}" class="site-details-text-no-image">
+                            <img th:src="@{${'/img/' + #strings.toLowerCase(venueType) + '.jpg'}}" width="240" height="160"/>
+                        </div>
+                    </div>
+                    <div id="venueDetailsMap" class="venue-details-map">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-1 col-xs-1-back">
+
+    </div>
+    <div class="col-xs-10 col-xs-10-back">
+        <div class="row details-info">
+            <div class="col-xs-12">
+                <h3>
+                    <a href="javascript:void(0);" class="js-details-tab active"
+                       th:text="#{details.info.reviews}">Reviews</a>
+                </h3>
+            </div>
+        </div>
+        <div class="venue-no-reviews" th:if="${#lists.isEmpty(venue.reviews)}">
+            <div class="row">
+                <span th:text="${#messages.msg('venue.reviews.empty')}">There are no reviews posted for this venue</span>
+            </div>
+        </div>
+        <div class="details-comments row" id="venueReviewsContainer" th:style="${#lists.isEmpty(venue.reviews) ? 'display: none;' : ''}">
+            <div class="col-xs-12 details-action-panel-comments">
+                <div class="venue-reviews" id="venueReviews">
+                    <div class="details-comment" th:each="review : ${venue.reviews}">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img class="venue-review-reviewer-image" width="32" height="32"
+                                     th:src="${review.reviewerImageUrl}"/>
+                                <div class="venue-review-header">
+                                    <span class="venue-review-reviewer" th:text="${review.reviewer}"></span>
+                                    <span class="venue-review-date" th:text="${#calendars.format(review.date, #messages.msg('details.venues.review.date.format'))}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row venue-review-text">
+                            <span th:text="${review.text}"></span>
+                        </div>
+                        <hr class="col-xs-11 venue-review-line"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyDNOsH5rMWbdH7iU9okNch9HOJexnJVDKw&amp;sensor=false"></script>
+<script type="text/javascript">
+    /*<![CDATA[*/
+    var twitterViaText = /*[[#{details.share.twitter.via}]]*/ "- Find your visit in one click";
+    var twitterWatchText = /*[[#{details.share.twitter.video.watch}]]*/ "! Watch this video :";
+    initVenueDetails();
+    /*]]>*/
+</script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

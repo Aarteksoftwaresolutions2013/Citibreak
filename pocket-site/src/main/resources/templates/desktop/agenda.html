@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('favorites')" class="row navbar-citybreak"></div>
+
+    <div class="row" th:with="sites=${agenda.entries},sitesSize=${#lists.size(agenda.entries)}">
+        <div class="col-xs-3 favorite-categories">
+            <h1 class="no-margin-top">
+                <span th:text="${agenda.name}">My agenda</span><br/>
+            </h1>
+        </div>
+        <div class="col-xs-8 search-result-separator">
+            <div class="row">
+                <div class="col-xs-11">
+                    <div id="home-carousel-less" class="home-carousel-less">
+                        <img src="/img/less.png"/>
+                    </div>
+                    <div class="search-result-list" id="favoritesResultsCarousel">
+                        <div th:each="data, row : ${sites}" th:if="${row.index} % 3 == 0" class="row">
+                            <div th:each="siteIndex : ${#numbers.sequence(row.index , row.index + 2)}"
+                                 th:if="${siteIndex} lt ${sitesSize}" th:with="currentSite=${sites[siteIndex]}"
+                                 class="col-xs-4 search-result"
+                                 th:attr="data-id=${currentSite.subjectId}, data-name=${currentSite.name}">
+                                <a th:href="${'/' + currentSite.basePath + '/' + currentSite.subjectId + '/details/?history=add'}"
+                                   target="_blank" th:title="${currentSite.name}"
+                                   class="thumbnail">
+                                    <div class="thumbnail-card">
+                                        <div class="free-ribbon">
+                                            <img th:src="${currentSite.displayImageUrl}" src="/img/result-dummy.png"
+                                                 class="search-result-img"/>
+
+                                            <div class="caption small">
+                                                <div>
+                                                    <div th:utext="${currentSite.address}"
+                                                         class="search-result-city">Paris
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <div class="search-result-name"
+                                             th:text="${#messages.msg('search.stream.venue.type.' + currentSite.type) + ' - ' + currentSite.name}">
+                                            Musée Grévin
+                                        </div>
+                                    </h4>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="home-carousel-more" class="home-carousel-more">
+                        <img src="/img/more.png"/>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initAgenda();
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

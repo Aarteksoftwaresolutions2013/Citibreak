@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}">
+
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="verification" content="655042677870f9b0b86da27af01ff352" />
+    <meta name="description" th:attr="content=${__#{'head.meta.description.' + ${metaPageName}}__}"/>
+    <meta property="fb:app_id" th:attr="content=${facebookAppId}" />
+    <meta property="og:url"  th:attr="content='http://www.citibreak.fr' + @{__#{'head.meta.og.url.' + ${metaPageName}}__}"/>
+    <meta property="og:title" itemprop="name" th:attr="content=${__#{'head.meta.og.title.' + ${metaPageName}}__}"/>
+    <meta property="og:description" itemprop="description" th:attr="content=${__#{'head.meta.og.description.' + ${metaPageName}}__}"/>
+    <meta property="og:image" itemprop="image" th:attr="content='http://www.citibreak.fr' + ${__#{'head.meta.og.image.' + ${metaPageName}}__}"/>
+    <meta property="og:type" th:attr="content=${__#{'head.meta.og.type.' + ${metaPageName}}__}"/>
+
+    <meta th:if="${placeLatitude} != null" property="place:location:latitude"  th:attr="content=${placeLatitude}" />
+    <meta th:if="${placeLatitude} != null" property="place:location:longitude" th:attr="content=${placeLongitude}" />
+
+    <title th:text="${__#{'head.meta.title.' + ${metaPageName}}__}">Citibreak</title>
+
+    <link rel="icon" type="image/jpg" href="/img/favicon.jpg" />
+    <link rel="alternate" href="http://www.citibreak.com/" hreflang="en-US" />
+    <link rel="alternate" href ="http://www.citibreak.fr/" hreflang="fr-fr" />
+
+    <link href="/css/helvetica.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/typeahead.css" rel="stylesheet"/>
+    <link href="/css/datepicker.css" rel="stylesheet"/>
+    <link href="/css/mCustomScrollbar.css" rel="stylesheet"  />
+    <link href="/css/mobile/application.css" rel="stylesheet"/>
+    <link href="/css/mobile/assistant.css" rel="stylesheet"/>
+    <link href="/css/mobile/tags.css" rel="stylesheet"/>
+    <link href="/css/mobile/search.css" rel="stylesheet"/>
+    <link href="/css/mobile/details.css" rel="stylesheet"/>
+    <link href="/css/mobile/account.css" rel="stylesheet"/>
+    <link href="/css/mobile/home.css" rel="stylesheet"/>
+
+    <script src="/js/libs/jquery.min.js"></script>
+    <script src="/js/libs/jquery.mousewheel.min.js"></script>
+    <script src="/js/libs/jquery.typeahead.js"></script>
+    <script src="/js/libs/jquery.carouFredSel.min.js"></script>
+    <script src="/js/libs/jquery.validate.min.js"></script>
+    <script src="/js/libs/jquery.velocity.min.js"></script>
+    <script src="/js/libs/jquery.dotdotdot.min.js"></script>
+    <script src="/js/libs/jquery.scrolltofixed.min.js"></script>
+    <script src="/js/libs/jquery.form.min.js"></script>
+    <script src="/js/libs/jquery.touchswipe.min.js"></script>
+    <script src="/js/libs/bootstrap.min.js"></script>
+    <script src="/js/libs/bootstrap-datepicker.js"></script>
+    <script th:src="'/js/libs/locales/bootstrap-datepicker.' + ${countryParam.language} + '.js'" src=""></script>
+    <script src="/js/libs/jquery.mCustomScrollbar.min.js"></script>
+    <script src="/js/libs/hogan.min.js"></script>
+    <script src="/js/libs/moment.js"></script>
+    <script src="/js/mobile/main.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="/js/libs/respond.min.js"></script>
+    <![endif]-->
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var loggedInUser = /*[[${user != null} ? ${user.name} : null]]*/"user";
+        var country = /*[[${countryParam.language}]]*/ "en";
+        var loginError = /*[[${#strings.isEmpty(param.error) ? false : true}]]*/ false;
+        moment.lang(country);
+
+        $.validator.messages.completed = /*[[#{common.validation.completed}]]*/ "Completed.";
+        $.validator.messages.creditcard = /*[[#{common.validation.creditcard}]]*/ "Please enter a valid credit card number.";
+        $.validator.messages.date = /*[[#{common.validation.date}]]*/ "Please enter a valid date.";
+        $.validator.messages.dateISO = /*[[#{common.validation.dateISO}]]*/ "Please enter a valid date (ISO).";
+        $.validator.messages.digits = /*[[#{common.validation.digits}]]*/ "Please enter only digits.";
+        $.validator.messages.email = /*[[#{common.validation.email}]]*/ "Please enter a valid email address.";
+        $.validator.messages.equalTo = /*[[#{common.validation.equalTo}]]*/ "Please enter the same value again.";
+        $.validator.messages.number = /*[[#{common.validation.number}]]*/ "Please enter a valid number.";
+        $.validator.messages.remote = /*[[#{common.validation.remote}]]*/ "Please fix this field.";
+        $.validator.messages.required = /*[[#{common.validation.required}]]*/ "This field is required.";
+        $.validator.messages.url = /*[[#{common.validation.url}]]*/ "Please enter a valid URL.";
+
+        var noResultsFoundText = /*[[#{search.no.results}]]*/ "No results founds";
+        var noRecentActivityText = /*[[#{search.stream.no.activity}]]*/ "No recent activity";
+        var noCommentsText = /*[[#{details.comments.empty}]]*/ "No comments";
+        /*]]>*/
+    </script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script th:inline="javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', /*[[#{head.google.analytic.account}]]*/ 'UA-00000000-0', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript">/*<![CDATA[*/(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+        for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+    mixpanel.init("d43055a4902bd893cae73baca1abadcd");/*]]>*/</script>
+    <script type='text/javascript'>
+        /*<![CDATA[*/
+        (function() {
+            var useSSL = 'https:' == document.location.protocol;
+            var src = (useSSL ? 'https:' : 'http:') +
+                    '//www.googletagservices.com/tag/js/gpt.js';
+            document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        })();
+        /*]]>*/
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        var adsAccount = /*[[#{head.google.ads.account.mobile}]]*/ '/37249290/CB_HP_Desk_345x170';
+        var adsSize = /*[[#{head.google.ads.size.mobile}]]*/ 345;
+        googletag.pubads().enableAsyncRendering();
+        centerSlot = googletag.defineSlot(adsAccount, [parseInt(adsSize, 10), 170], 'div-gpt-ad-1415039494559-0').addService(googletag.pubads());
+        googletag.enableServices();
+    </script>
+    <!-- Start Alexa Certify Javascript -->
+    <script type="text/javascript">
+        _atrk_opts = { atrk_acct:"0Y4Zk1ao6C52cv", domain:"citibreak.com",dynamic: true};
+        (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+    </script>
+    <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=0Y4Zk1ao6C52cv" style="display:none" height="1" width="1" alt="" /></noscript>
+    <!-- End Alexa Certify Javascript -->
+</head>
+
+<body>
+
+<div th:fragment="header (currentTab)">
+<div class="col-xs-5">
+    <img id="navbarMenuButton" class="navbar-menu-button" src="/img/mobile/menu-button.png" width="22" height="19" />
+    <img id="headerSearchInput" class="navbar-search-button" src="/img/search.png" width="19" height="19" />
+</div>
+<div class="modal fade search-popup" id="headerPopupSearchModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <a href="javascript:void(0);" class="delete js-modal-close">
+                <img src="/img/close_black.png" width="21" height="21" />
+            </a>
+            <div class="row">
+                    <div class="col-xs-12 text-center search-popup-input">
+                        <input type="text" id="headerPopupSearchInput" class="form-control input-sm" th:attr="data-placeholder=#{search.input.placeholder}" />
+                        <span class="glyphicon glyphicon-remove search-popup-input-clear" id="headerPopupSearchClear"></span>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-2 col-no-padding text-center">
+    <img class="navbar-logo" src="/img/mobile/logo.png" width="35" height="27" />
+</div>
+<div class="col-xs-5" sec:authorize="isAnonymous()">
+    <a href="javascript: void(0);" data-toggle="dropdown" class="navbar-login-button" id="loginDropdownToggle">
+        <img src="/img/login.png" width="27" height="27" class="pull-right" />
+        <span th:text="#{head.navbar.login.sign-up}" class="text-right">Login / Sign Up</span>
+    </a>
+    <div class="login-form navbar-dropdown">
+        <form th:action="@{/login}" method="post" role="form">
+            <div class="form-group login-error" th:if="${param.error}" th:text="#{head.navbar.login.error}">
+                Invalid email and / or password.
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" th:attr="placeholder=#{head.navbar.login.email}" name="email"/>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" th:attr="placeholder=#{head.navbar.login.password}" name="password"/>
+            </div>
+            <button type="submit" class="btn btn-orange" th:text="#{head.navbar.login.signin}">Sign In</button>
+            <a class="btn btn-register" data-toggle="modal" data-target="#registerModal" th:text="#{head.navbar.login.register}">Register</a>
+        </form>
+    </div>
+    <div class="modal fade register-popup" id="registerModal" tabindex="-1" role="dialog" aria-hidden="true"
+         th:attr="data-facebook=@{/account/facebook}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/register}" method="post" role="form" id="registerForm" class="validating-form">
+                    <div id="registerPictureFormContent">
+                        <div class="row register-popup-header">
+                            <div class="col-xs-12 text-center">
+                                <h2 class="no-margin-top" th:text="#{head.register.picture.title}">Select your picture</h2>
+                                <h5 th:utext="#{head.register.picture.subtitle}">Choose from our list of avatars or import your file</h5>
+                            </div>
+                        </div>
+                        <div class="row register-picture-images">
+                            <div class="col-xs-5 register-picture-display">
+                                <img src="/img/avatar/empty.jpg" class="pull-right img-circle register-select-avatar-img"
+                                     id="accountCurrentAvatarImage" width="70" height="70" />
+                            </div>
+                            <div class="col-xs-7">
+                                <img src="/img/avatar/default-0.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                                <img src="/img/avatar/default-1.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                                <img src="/img/avatar/default-2.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                                <img src="/img/avatar/default-3.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                                <img src="/img/avatar/default-4.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                                <img src="/img/avatar/empty.jpg" class="pull-left account-default-avatar" width="48" height="48" id="registerFacebookPictureUrl" />
+                                <div class="register-picture-browse">
+                                    <button type="button" class="btn btn-account-select-avatar" id="accountSelectAvatarButton"
+                                            th:text="#{account.profile.picture.browse}">Browse</button>
+                                    <input type="file" class="hidden" id="accountSelectAvatarInput" accept="image/*" name="avatar"/>
+                                    <input type="hidden" name="defaultAvatar" id="accountDefaultAvatarInput" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12 text-center">
+                                <a class="btn btn-orange btn-register-submit" id="registerPictureSaveButton"
+                                   th:text="#{head.register.picture.save}">Save
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="registerMainFormContent">
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <a href="javascript:void(0);" class="register-popup-cancel js-modal-close">
+                                    <img src="/img/cancel-popup.png" width="26" height="26"/>
+                                </a>
+                            </div>
+                            <div class="col-xs-10 text-center">
+                                <img class="register-popup-title" src="/img/register-title.png"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h5 th:utext="#{head.register.title}">Create your account and start sharing<br/>
+                                    your visits with your friends</h5>
+                            </div>
+                        </div>
+                        <div class="row register-popup-header">
+                            <div class="col-xs-12 text-center">
+                                <img src="/img/avatar/empty.jpg" class="img-circle register-select-avatar-img" id="registerSelectedAvatar" width="50" height="50" />
+                                <br />
+                                <a href="javascript:void(0);" class="register-select-avatar-link" id="registerSelectAvatarLink"
+                                   th:text="#{head.register.picture.add}">Add Photo</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="registerUsername">
+                                    <span th:text="#{head.register.username}">Username</span>
+                                    <span class="register-help-block" th:text="#{head.register.username.help}">(Name that will be displayed with your photo)</span>
+                                </label>
+                                <input type="text" class="form-control" id="registerUsername" name="name"/>
+                            </div>
+                            <div class="col-xs-12 form-group error-container">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="registerPassword">
+                                    <span th:text="#{head.register.password}">Password</span>
+                                    <span class="register-help-block" th:text="#{head.register.password.help}">(4-15 characters)</span>
+                                </label>
+                                <input type="password" class="form-control" id="registerPassword"
+                                       name="password"/>
+                            </div>
+                            <div class="col-xs-12 form-group error-container">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="registerConfirmPassword" th:text="#{head.register.confirm.password}">Confirm Password</label>
+                                <input type="password" class="form-control" id="registerConfirmPassword"
+                                       name="confirmPassword"/>
+                            </div>
+                            <div class="col-xs-12 form-group error-container"
+                                 id="registerConfirmPasswordErrorContainer">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="registerEmail" th:text="#{head.register.email}">Email</label>
+                                <input type="text" class="form-control" id="registerEmail" name="email"/>
+                            </div>
+                            <div class="col-xs-12 form-group error-container" id="registerEmailErrorContainer">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="registerLanguage" th:text="#{head.register.language}">Language</label>
+                                <select class="form-control" name="language" id="registerLanguage">
+                                    <option value="fr_FR" th:text="#{common.language.french}">Français</option>
+                                    <option value="en_EN" th:text="#{common.language.english}">English</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-12 form-group error-container">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="terms" value="true"/> <span
+                                            th:utext="#{head.register.terms}">By signing up, you are accepting Citibreak Terms and Conditions</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 form-group error-container checkbox-error-container" id="registerTermsErrorContainer">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12 text-center">
+                                <button type="submit" class="btn btn-orange btn-register-submit"
+                                        th:text="#{head.register.submit}">Submit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row facebook-item">
+                            <div class="col-xs-12 form-group text-center">
+                                <div class="register-popup-or" th:text="#{head.register.or}">or</div>
+                            </div>
+                        </div>
+                        <div class="row facebook-item">
+                            <div class="col-xs-12 form-group text-center">
+                                <button type="button" class="btn btn-register-facebook" id="registerWithFacebook"
+                                        th:text="#{head.register.signup.with.facebook}">Signup with Facebook
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form th:action="@{/account/connect/facebook}" method="POST" id="registerWithFacebookForm" class="col-no-padding">
+                    <input type="hidden" name="scope" value="email" />
+                    <input type="hidden" name="origin" th:value="${#httpServletRequest.requestURI}" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade register-popup" id="registerCompleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="get" role="form" id="registerSuccessForm">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <a href="javascript:void(0);" class="register-popup-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" width="41" height="41"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-10">
+                            <div class="row register-popup-header">
+                                <div class="col-xs-12 text-center">
+                                    <img class="register-popup-title" src="/img/register-title.png"/>
+
+                                    <h3 th:utext="#{head.register.success.title}">Welcome to Citibreak! You are now
+                                        registered.</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-1">
+                                </div>
+                                <div class="col-xs-10 text-center form-group register-popup-complete-image">
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                    <button type="button" class="btn btn-orange btn-register-login js-register-login"
+                                            th:text="#{head.register.success.login}">Login
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-5" sec:authorize="isAuthenticated()">
+    <a href="javascript: void(0);" class="navbar-login-button" id="logoutButton" data-toggle="dropdown">
+        <img th:src="${user.avatarUrl}" src="/img/login.png" width="27" height="27" class="img-circle pull-right" />
+        <span th:text="${user.name}" class="text-right">James</span>
+    </a>
+    <div class="logout-form navbar-dropdown">
+        <ul class="list-group">
+            <li class="list-group-item"><a th:href="@{/account}" th:text="#{head.menu.account.settings}">Account Settings</a></li>
+            <li class="list-group-item">
+                <form th:action="@{/logout}" method="post" role="form">
+                    <a href="javascript:void(0);" class="js-submit-form" th:text="#{head.menu.sign.out}">Sign out</a>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="fb-root"></div>
+
+<div id="mobileMenu" class="nav-mobile-menu">
+    <ul class="nav nav-pills nav-stacked nav-citybreak">
+        <li th:class="${currentTab == 'home'} ? 'active'">
+            <a th:href="@{/}" th:text="#{head.navbar.my-citibreak}">My Citibreak</a>
+        </li>
+        <li th:class="${currentTab == 'assistant'} ? 'active'">
+            <a th:href="@{/assistant}" th:text="#{head.navbar.my-assistant}">My Assistant</a>
+        </li>
+        <li th:class="${currentTab == 'favorites'} ? 'active'"
+            th:with="loggedIn=${user != null},
+                                    hasFavorites=${user != null and user.hasFavorites()}">
+            <a th:if="${loggedIn and hasFavorites}" th:href="@{/favorites/site/}" th:text="#{head.navbar.my-favorites}">My Favorites</a>
+            <a th:unless="${loggedIn and hasFavorites}" href="javascript:void(0);" th:text="#{head.navbar.my-favorites}" id="myFavoriteButton" data-trigger="click"
+               data-toggle="tooltip" data-placement="bottom" th:title="${loggedIn} ? #{head.navbar.my-favorites.empty} : #{head.navbar.my-favorites.login}">My Favorites</a>
+        </li>
+        <li th:class="${currentTab == 'footer'} ? 'active opennable js-active-dropdown' : 'opennable js-active-dropdown'">
+            <a href="javascript:void(0);" th:text="#{footer.you.and.pocket}">You and Pocket</a>
+            <ul class="nav-submenu">
+                <li>
+                    <a href="#" th:text="#{footer.contact.us}"
+                       data-toggle="modal" data-target=".contact-us-modal">Contact Us</a>
+                </li>
+                <li>
+                    <a th:href="@{/privacy}" th:text="#{footer.personal.data}"
+                            th:class="${currentTab == 'privacy'} ? 'active'">Personal Data</a>
+                </li>
+                <li>
+                    <a th:href="@{/legals}" th:text="#{footer.legal.mention}"
+                       th:class="${currentTab == 'legals'} ? 'active'">Legal Mention</a>
+                </li>
+            </ul>
+        </li>
+        <li th:class="${currentTab == 'about'} ? 'active'">
+            <a th:href="@{/about}" th:text="#{footer.about.us}">About Us</a>
+        </li>
+        <li th:class="${currentTab == 'footer'} ? 'active opennable js-active-dropdown' : 'opennable js-active-dropdown'">
+            <a href="javascript:void(0);" th:text="#{footer.follow.us}">Follow Us</a>
+            <ul class="nav-submenu">
+                <li class="list-group-item list-group-item-icon">
+                    <a href="https://plus.google.com/116778901675065651618/posts" target="_blank" class="google-plus" th:text="#{footer.google}">Google</a>
+                </li>
+                <li class="list-group-item list-group-item-icon">
+                    <a href="https://twitter.com/citibreak" target="_blank" class="twitter" th:text="#{footer.twitter}">Twitter</a>
+                </li>
+                <li class="list-group-item list-group-item-icon">
+                    <a href="https://www.facebook.com/pages/Citibreak/1399797680298228?sk=info" target="_blank" class="facebook" th:text="#{footer.facebook}">Facebook</a>
+                </li>
+                <li class="list-group-item list-group-item-icon">
+                    <a href="http://instagram.com/citibreak/" target="_blank" class="instagram" th:text="#{footer.instagram}">Instagram</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</div>
+
+<div th:fragment="home-title (prefix)" class="text-center">
+    <h1 class="no-margin-top" th:text="${searchParams.city.covered} ? (
+            ${searchParams.city.filled} ? (
+                ${countDto.total} == 0 ? ${#messages.msg(prefix + '.noresults.title', searchParams.city.backupName)} : #{${prefix + '.results.title'}}
+            ) : (
+                ${searchParams.needGeolocation} ? #{${prefix + '.unlocalization.title'}} : #{${prefix + '.nolocalization.title'}}
+            )
+        ) : #{${prefix + '.unavailable.title'}}">Find your visit in one click</h1>
+</div>
+
+<div th:fragment="home-select">
+    <div class="row home-col-list">
+        <div>
+            <div class="col-xs-4 home-col">
+                <a data-toggle="modal" data-target=".home-select-date" class="auto-resize-line">
+                    <div>
+                        <span th:text="${#calendars.format(searchParams.dateTime, #messages.msg('assistant.search.date.format'))}">Saturday, 22nd December</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xs-4 home-col">
+                <a data-toggle="modal" data-target=".home-select-time">
+                    <div>
+                        <span th:text="${#calendars.format(searchParams.dateTime, #messages.msg('assistant.search.time.format'))}">11:00 AM</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xs-4 home-col">
+                <a data-toggle="modal" data-target=".home-select-city" class="auto-resize-line">
+                    <div>
+                        <span th:text="(${searchParams.city.filled} ? ${searchParams.city.name} : #{assistant.search.city.empty})
+                        + (${searchParams.city.filled} ? (' (' + ${searchParams.city.country} + ')') : '')">Paris (France)</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="select-popup">
+    <div class="modal fade home-select-popup home-select-date" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/date}" method="post">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" height="21" width="21" />
+                            </a>
+                        </div>
+                        <div class="col-xs-6">
+                            <h3 th:text="#{assistant.search.select.date.title}">When ?</h3>
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="homeSelectDatePicker"></div>
+                            <input type="hidden" id="homeSelectDatePickerInput" name="date"
+                                   th:value="${searchParams.date}"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 home-go-container text-center">
+                            <a href="javascript:void(0);" class="home-go js-submit-form"
+                               th:text="#{home.go}">GO</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade home-select-popup home-select-time" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/time}" method="post" class="form-inline">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" height="21" width="21"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-6">
+                            <h3 th:text="#{assistant.search.select.time.title}">Time ?</h3>
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <h4 class="home-select-time-date"
+                                th:text="${#calendars.format(searchParams.dateTime, #messages.msg('assistant.search.select.time.date.format'))}">Samedi, 19 Avril 2014</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <div class="form-group">
+                                <div class="input-group spinner" id="home-time-hours">
+                                    <input type="text" class="form-control input-lg text-center" value="00"/>
+
+                                    <div class="input-group-btn-vertical">
+                                        <button type="button" class="btn btn-default btn-xs">
+                                            <span class="glyphicon glyphicon-chevron-up"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>:</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group spinner" id="home-time-minutes">
+                                    <input type="text" class="form-control input-lg text-center" value="00"/>
+
+                                    <div class="input-group-btn-vertical">
+                                        <button type="button" class="btn btn-default btn-xs">
+                                            <span class="glyphicon glyphicon-chevron-up"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-xs">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="homeSelectTimePickerInput" name="time"
+                               th:value="${searchParams.timeAsMinutes}"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 home-go-container text-center">
+                            <a href="javascript:void(0);" class="home-go js-submit-form"
+                               th:text="#{home.go}">GO</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="homeSelectCity" class="modal fade home-select-popup home-select-city" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form th:action="@{/city}" method="post" id="homeSelectCityForm">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <a href="javascript:void(0);" class="home-select-cancel js-modal-close">
+                                <img src="/img/cancel-popup.png" height="21" width="21"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-6">
+                            <h3 th:text="#{assistant.search.select.city.title}">Where ?</h3>
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                        </div>
+                        <div class="col-xs-10">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="homeSelectCityInput" th:placeholder="#{assistant.search.select.city.placeholder}" name="name"/>
+                                <input type="hidden" id="homeSelectCityCountryInput" th:value="${searchParams.city.filled} ? ${searchParams.city.country}" name="country"/>
+                                <input type="hidden" id="homeSelectCityLatInput" th:value="${searchParams.city.filled} ? ${searchParams.city.location.x}" name="location.x"/>
+                                <input type="hidden" id="homeSelectCityLonInput" th:value="${searchParams.city.filled} ? ${searchParams.city.location.y}" name="location.y"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 home-go-container text-center">
+                            <a href="javascript:void(0);" class="home-go js-submit-form"
+                               th:text="#{home.go}">GO</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="footer (weatherWidget)">
+<div th:if="${weatherWidget}" class="container weather-widget-container">
+    <div id="weatherWidget" class="weather-widget weather-widget-footer">
+        <div class="weather-text text-right">
+            <span id="weatherWidgetDate" class="small">Saturday, 22nd March</span><br/>
+            <span id="weatherWidgetCity" class="large">Paris</span>
+        </div>
+        <div class="text-center">
+            <img id="weatherWidgetIcon" src="/img/blank.jpg"/>
+        </div>
+        <div class="weather-text text-left">
+            <span id="weatherWidgetTemperature" class="large">16°C</span><br/>
+            <span id="weatherWidgetDescription" class="small">Windy &amp; Sunny</span>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade contact-us-modal" tabindex="-1" role="dialog" aria-hidden="true" id="contactUsModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form th:action="@{/contact}" method="post" id="contactUsForm" class="validating-form" style="padding: 15px;">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="javascript:void(0);" class="home-select-cancel js-modal-close pull-left">
+                            <img src="/img/cancel-popup.png" width="21" height="21"/>
+                        </a>
+                        <h2 th:text="#{contact.title}">Contact Us</h2>
+                    </div>
+                    <div class="col-xs-12 text-center">
+                        <p th:text="#{contact.subtitle}">In order to help us to give you an answer quickly, please complete this form.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="reportErrorTitle" th:text="#{contact.field.title}">Title</label>
+                            <select id="reportErrorTitle" class="form-control" name="title">
+                                <option th:text="#{contact.field.title.mr}">Mr.</option>
+                                <option th:text="#{contact.field.title.mr}">Mrs.</option>
+                                <option th:text="#{contact.field.title.mr}">Miss.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="reportErrorEmail" th:text="#{contact.field.email}">Email</label>
+                            <input type="email" class="form-control" id="reportErrorEmail" name="email" th:value="${user != null ? user.email : ''}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="reportErrorFirstName" th:text="#{contact.field.firstName}">First Name</label>
+                            <input type="text" class="form-control" id="reportErrorFirstName"
+                                   name="firstName"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="reportErrorLastName" th:text="#{contact.field.lastName}">Last Name</label>
+                            <input type="text" class="form-control" id="reportErrorLastName"
+                                   name="lastName"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="reportErrorCountry" th:text="#{contact.field.country}">Country</label>
+                            <input type="text" class="form-control" id="reportErrorCountry"
+                                   name="country"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="reportErrorSubject" th:text="#{contact.field.subject}">Topic</label>
+                            <select id="reportErrorSubject" class="form-control" name="subject">
+                                <option th:text="#{contact.field.subject.account}">My account</option>
+                                <option th:text="#{contact.field.subject.partnership}">Partnership</option>
+                                <option th:text="#{contact.field.subject.press}">Press</option>
+                                <option th:text="#{contact.field.subject.other}">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-gray btn-report-error"
+                                    th:text="#{contact.cancel}" id="contactUsCancel">Cancel</button>
+                            <button type="submit" class="btn btn-orange btn-report-error" id="contactUsSubmitButton"
+                                    th:text="#{contact.submit}" th:attr="data-loading-text=#{common.button.loading}">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade register-popup" id="contactUsCompleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="get" role="form">
+                <div class="row">
+                    <div class="col-xs-1">
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="row register-popup-header">
+                            <div class="col-xs-12">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-1">
+                            </div>
+                            <div class="col-xs-10 text-center form-group contact-us-popup-complete-image">
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                        <div class="row register-popup-header">
+                            <div class="col-xs-12 text-center">
+                                <h3 th:utext="#{contact.success.text}">Thank you for your message</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 form-group col-xs-4 text-center">
+                                <button type="button" class="btn btn-orange btn-register-login js-modal-close"
+                                        th:text="#{contact.success.return}">Return
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    initLayout();
+    initAvatarSystem();
+    /*]]>*/
+</script>
+<script>/*<![CDATA[*/
+var facebookAppId = $('meta[property="fb:app_id"]').attr("content");
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : facebookAppId,
+        xfbml      : false,
+        version    : 'v2.1'
+    });
+    window.registerFbInitDone();
+};
+
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+/*]]>*/</script>
+<script type="text/javascript">
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/client:plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+</script>
+<!-- SessionCam Client Integration v6.0 -->
+<script type="text/javascript">
+    //<![CDATA[
+    var scRec=document.createElement('SCRIPT');
+    scRec.type='text/javascript';
+    scRec.src="//d2oh4tlt9mrke9.cloudfront.net/Record/js/sessioncam.recorder.js";
+    document.getElementsByTagName('head')[0].appendChild(scRec);
+    //]]>
+</script>
+<!-- End SessionCam -->
+</div>
+
+<div th:fragment="home-geocoding">
+    <form th:if="${searchParams.needGeolocation}" th:action="@{/geocoding}" method="post" id="geocodingForm">
+        <input type="hidden" name="x" class="js-geocoding-x" />
+        <input type="hidden" name="y" class="js-geocoding-y" />
+        <script type="text/javascript">
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                            var form = $('#geocodingForm');
+                            form.find('.js-geocoding-x').val(position.coords.latitude);
+                            form.find('.js-geocoding-y').val(position.coords.longitude);
+                            form.submit();
+                        }, function (error) {
+
+                        }
+                );
+            }
+        </script>
+    </form>
+</div>
+
+</body>
+
+</html>

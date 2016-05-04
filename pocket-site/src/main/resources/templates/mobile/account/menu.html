@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('account')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <form class="form-horizontal account-form" role="form">
+            <div class="col-xs-12">
+                <h1 class="account-title" th:text="#{account.settings.title}">Account Settings</h1>
+                <ul class="nav nav-pills nav-stacked nav-citybreak nav-separator">
+                    <li th:class="${activeMenu eq 'general' ? 'active' : ''}">
+                        <a th:href="@{/account/general}" th:text="#{account.menu.general}">Sign-in Options</a>
+                    </li>
+                    <li th:class="${activeMenu eq 'profile' ? 'active' : ''}">
+                        <a th:href="@{/account/profile}" th:text="#{account.menu.profile}">Profile</a>
+                    </li>
+                    <li th:class="${activeMenu eq 'activity' ? 'active' : ''}">
+                        <a th:href="@{/account/activity}" th:text="#{account.menu.activity}">Activity</a>
+                    </li>
+                    <li th:class="${activeMenu eq 'delete' ? 'active' : ''}">
+                        <a th:href="@{/account/delete}" th:text="#{account.menu.delete}">Delete My Account</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${false})"></footer>
+
+</body>
+</html>

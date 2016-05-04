@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('about')" class="row navbar-citybreak"></div>
+
+    <div class="row" th:switch="${countryParam.language}">
+        <div class="col-xs-12">
+            <img src="/img/about-us.jpg" style="width: 100%;" />
+            <br />
+            <br />
+        </div>
+    </div>
+    <div class="row" th:switch="${countryParam.language}">
+        <div class="col-xs-12" th:case="'fr'">
+            <h2>A PROPOS DE CITIBREAK</h2>
+            <br />
+
+            <p>Parce qu'il n'est pas toujours facile de trouver une sortie culturelle qui correspond à ses attentes ou
+                ses goûts, nous avons créé CITIBREAK.</p>
+            <p>CITIBREAK est un service gratuit qui vous aide à trouver votre sortie, où que vous soyez en Europe,
+                en fonction de votre humeur ou de l'expérience que vous souhaitez vivre. CITIBREAK est connecté à
+                votre réseau, vous pouvez partager vos meilleurs moments avec votre communauté et bénéficier à
+                votre tour de ses recommandations.</p>
+            <p>Avec CITIBREAK il vous suffit d’un clic pour trouver, réserver et profiter de votre sortie.</p>
+            <br />
+
+            <h2>NOTRE HISTOIRE</h2>
+            <br />
+
+            <p>CITIBREAK a été créé et est développé depuis 2013 par le trio Ivan de Gaillande, Jean-Bernard
+                Debreux et Cédric Schmitz, sur une idée de ce dernier.</p>
+            <p>C’est à la suite de recherches répétées pour trouver des sorties culturelles insolites afin d’épater
+                sa petite amie, que Cédric a eu cette idée : créer un service qui propose en un clic un choix de
+                manifestation culturelle sur la base de l'expérience que l’on souhaite vivre.</p>
+            <p>Depuis, Cédric s’est marié et continue d’épater sa femme avec CITIBREAK.</p>
+            <br />
+
+            <h2 id="team">L'EQUIPE</h2>
+            <br />
+
+            <div class="team">
+                <img src="/img/team/cedric.jpg" width="140" height="170" class="pull-left" data-hover="#cedric" data-trigger="click" />
+                <img src="/img/team/jean-bernard.jpg" width="140" height="170" class="pull-left" data-hover="#jeanbernard" data-trigger="click"  />
+                <div class="team-details col-xs-12 text-center" id="cedric">
+                    <div class="team-container">
+                        <h3><b>CEDRIC SCHMITZ</b></h3>
+                        <h4><b>CITIBREAK MASTERMIND</b></h4>
+                        <p>Avant que Cédric ne se fasse avaler par le Web, il a fait des études de Finance et a travaillé pour plusieurs
+                            cabinets de conseil, à travers le monde.</p>
+                        <p>Ayant une affinité naturelle pour tout ce qui a trait au Digital (premier ordinateur à 12 ans) et à l’Art, en 2013
+                            il se rend compte du potentiel économique de fournir un service combinant ses deux passions et décide de
+                            lancer CITIBREAK.</p>
+                        <p>Cédric est un passionné de photo, et un véritable globe-trotteur : un an aux Etats-Unis, 2 ans à Singapour, un
+                            an au Japon, 1 an en Hollande.</p>
+                    </div>
+                </div>
+                <div class="team-details col-xs-12 text-center" id="jeanbernard">
+                    <div class="team-container">
+                        <h3><b>JEAN-BERNARD DEBREUX</b></h3>
+                        <h4><b>TECHNOLOGIE GURU</b></h4>
+                        <p>JB programmait des cartes perforées quand les jeunes de notre équipe n’avaient pas encore d’ADN. Un esprit
+                            vif et créatif combiné avec une vaste expérience dans l'industrie Digitale, JB est notre guide pour toutes les
+                            décisions liées aux technologies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team">
+                <img src="/img/team/ivan.jpg" width="140" height="170" class="pull-left" data-hover="#ivan" data-trigger="click"  />
+                <img src="/img/team/tayo.jpg" width="140" height="170" class="pull-left" data-hover="#tayo" data-trigger="click"  />
+                <div class="team-details col-xs-12 text-center" id="ivan">
+                    <div class="team-container">
+                        <h3><b>IVAN DE GAILLANDE</b></h3>
+                        <h4><b>MONEY MAN</b></h4>
+                        <p>Ivan est le financier de la bande, plein d’énergie, il est souvent la voix de la raison.
+                            Signe particulier : vous ne le verrez jamais sans sa casquette.</p>
+                    </div>
+                </div>
+                <div class="team-details col-xs-12 text-center" id="tayo">
+                    <div class="team-container">
+                        <h3><b>TAYO ADETOLA</b></h3>
+                        <h4><b>MASTER OF ART</b></h4>
+                        <p>Tayo – Architecte technophile devenu Web designer. Tayo est fasciné par tout ce qui a trait à la création: de la mode aux pixels.</p>
+                        <p>Tayo est un grand fan du club de football d'Arsenal (C'mon Gunners) et adore collectionner les cravates. Sa philosophie dans la vie: MOINS, C’EST MIEUX.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team">
+                <img src="/img/team/guillaume.jpg" width="140" height="170" class="pull-left" data-hover="#guillaume" data-trigger="click"  />
+                <div class="team-details col-xs-12 text-center" id="guillaume">
+                    <div class="team-container">
+                        <h3><b>GUILLAUME LE BILLER</b></h3>
+                        <h4><b>CODING ARTISTE</b></h4>
+                        <p>Guillaume est un maître Kung Fu quand il s’agît de technologie! Programmeur à multiples facettes, capable
+                            de paramétrer un serveur ou d’écrire des scripts en dormant.</p>
+                        <p>Guillaume développe CITIBREAK avec ses doigts magiques et transforme nos rêves en réalité.</p>
+                        <p>A ses heures perdues Guillaume est un joueur de Starcraft amateur.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12" th:case="*">
+            <h2>ABOUT US</h2>
+            <br />
+
+            <p>Because it’s not always easy to find a cultural event to go to and because most often it doesn’t match
+                your expectation or taste, we have created CITIBREAK.</p>
+            <p>CITIBREAK is a free service to assist you in finding your event, wherever you are in Europe, based
+                on your mood or the experience you want to live. CITIBREAK is connected to your network, you can
+                share your best moment with your community and in turn benefit from their recommendation.</p>
+            <p>With CITIBREAK you’re one click away to find, book and enjoy your journey.</p>
+            <br />
+
+            <h2>HISTORY</h2>
+            <br />
+
+            <p>CITIBREAK has been created and developed since 2013 by the trio of Ivan de Gaillande, Jean-Bernard
+                Debreux and Cédric Schmitz, an idea of the latter.</p>
+            <p>Further to repeated searches to find unusual cultural events to impress his girlfriend, Cedric had this
+                idea: build a service to find any type of cultural event in just “one click”, based on the experience you
+                want to live, the date and your location.</p>
+            <p>Since then, Cédric is married and keep impressing his wife with CITIBREAK.</p>
+            <br />
+
+            <h2 id="team">MEET THE TEAM</h2>
+            <br />
+
+            <div class="team">
+                <img src="/img/team/cedric.jpg" width="140" height="177" class="pull-left" data-hover="#cedric" />
+                <img src="/img/team/jean-bernard.jpg" width="140" height="177" class="pull-left" data-hover="#jeanbernard" />
+                <div class="team-details col-xs-12 text-center" id="cedric">
+                    <div class="team-container">
+                        <h3><b>CEDRIC SCHMITZ</b></h3>
+                        <h4><b>CITIBREAK MASTERMIND</b></h4>
+                        <p>Before Cédric got eaten by the web he studied Finance and worked in Consulting companies all over the world.
+                            With a natural affinity for IT (first computer at 12) and Art, in 2013 he saw business potential for a service
+                            combining his two passions and decide to create CITIBREAK.</p>
+                        <p>Cédric is a photography lover and a true globetrotter: 1 year in the US, 2 years in Singapore, 1 year in Japan, 1
+                            year in Netherland.</p>
+                    </div>
+                </div>
+                <div class="team-details col-xs-12 text-center" id="jeanbernard">
+                    <div class="team-container">
+                        <h3><b>JEAN-BERNARD DEBREUX</b></h3>
+                        <h4><b>TECHNOLOGY GURU</b></h4>
+                        <p>Our CTO handled punch card programming when the youngsters of the team weren’t even genetically coded. A
+                            sharp and creative mind combined with a vast management experience in the IT industry make him our guide
+                            for all IT decisions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team">
+                <img src="/img/team/ivan.jpg" width="140" height="177" class="pull-left" data-hover="#ivan" />
+                <img src="/img/team/tayo.jpg" width="140" height="177" class="pull-left" data-hover="#tayo" />
+                <div class="team-details col-xs-12 text-center" id="tayo">
+                    <div class="team-container">
+                        <h3><b>TAYO ADETOLA</b></h3>
+                        <h4><b>MASTER OF ART</b></h4>
+                        <p>Tayo - An architectural design technologist turned graphics/ web designer. Fascinated with anything creative: from fashion to pixels.</p>
+                        <p>Tayo is a huge fan of Arsenal football club (C'mon Gunners) and also loves collecting neck ties. His life's philosophy: LESS IS MORE</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team">
+                <img src="/img/team/guillaume.jpg" width="140" height="177" class="pull-left" data-hover="#guillaume" />
+                <div class="team-details col-xs-12 text-center" id="guillaume">
+                    <div class="team-container">
+                        <h3><b>GUILLAUME LE BILLER</b></h3>
+                        <h4><b>coding artist</b></h4>
+                        <p>Guillaume’s IT Kung Fu is immense! Programming, setting up server or hacking, it all seems to come natural to Guillaume.</p>
+                        <p>He develops CITIBREAK solution with his magic fingers and make all our dreams come true.</p>
+                        <p>In his spare time Guillaume is a keen starcraft player</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    var allDetails = $('.team .team-details');
+    $('.team img').mouseenter(function() {
+        var id = $(this).data('hover');
+        allDetails.stop().hide();
+        $(id).show();
+    }).mouseleave(function() {
+        allDetails.stop().hide();
+    });
+    /*]]>*/
+</script>
+
+<footer th:include="mobile/layout :: footer (${false})"></footer>
+
+</body>
+</html>

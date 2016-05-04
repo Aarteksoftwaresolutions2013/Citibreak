@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('legals')" class="row navbar-citybreak"></div>
+    <div class="row" th:switch="${countryParam.language}">
+        <div class="col-xs-1 col-xs-1-back">
+            <a th:href="@{${navigationParam.lastPath}(history='remove')}">
+                <img src="/img/cancel-popup.png" width="41" height="42" />
+            </a>
+        </div>
+        <div class="col-xs-9" th:case="'fr'">
+            <h1>DONNEES PERSONNELLES</h1>
+            <br />
+
+            <p>La politique de données personnelles, mise en place par la société Little Red Dot est accessible depuis chaque
+                page du site www.citibreak.com en cliquant sur le lien Données personnelles.</p>
+            <p>Vous reconnaissez et acceptez expressément que des données personnelles vous concernant soient collectées
+                sur le Site.</p>
+
+            <h4><span style="text-decoration: underline;">1. informations générales</span></h4>
+            <p>Ce document détaille la façon dont Little Red Dot utilise et collecte vos données personnelles et vous informe
+                des mesures prises par Little Red Dot pour assurer la protection de vos données personnelles dans le cadre de
+                l’utilisation du Site conformément aux dispositions de la loi n°78-17 du 6 janvier 1978 relative à l’Informatique,
+                aux Fichiers et aux Libertés (ci-après la "Loi Informatique et Libertés"), telle que modifiée par les dispositions de
+                la loi n°2004-801 du 6 août 2004 relative à la protection des personnes physiques à l’égard des traitements de
+                données à caractère personnel.</p>
+            <p>Little Red Dot protège la vie privée de ses internautes en respectant la règlementation applicable en vigueur.
+                Ainsi, Little Red Dot, en tant que responsable de traitement, a notifié auprès de la Commission Nationale de
+                l’Informatique et des Libertés (ci-après la « CNIL ») la collecte et le traitement de vos données personnelles.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">2. Collecte, utilisation et conservation des données</span></h4>
+            <br />
+            <p style="text-decoration: underline; margin-left: 15px">2.1 Collecte des données</p>
+            <p><b>Données personnelles</b></p>
+            <p>Little Red Dot est susceptible de collecter vos données personnelles, notamment par l’intermédiaire de la
+                rubrique "contact", lors de la création de votre compte, ou encore lors de la signalisation d’une erreur concernant
+                une information proposée par Little Red Dot.</p>
+            <p>Les "données personnelles" font référence aux informations vous concernant en tant que personne physique
+                que vous communiquez volontairement en remplissant un formulaire figurant sur le Site, ou que Little Red
+                Dot collecte dans le cadre de votre navigation et qui, quelle qu’en soit la nature, permettent de vous identifier,
+                directement ou non. Les données personnelles regroupent des données nominatives (telles que vos noms,
+                coordonnées, photographies que vous communiquez) et des données d’identification électronique disponibles
+                sur ou à partir de votre ordinateur (telles que les "cookies" ou "les adresses IP"). Vos données d’identification
+                électronique permettent d’identifier votre terminal de connexion ou les pages consultées sur le Site au cours de
+                votre navigation et sont généralement insuffisantes à elles seules pour vous identifier de manière nominative.</p>
+            <br />
+
+            <p><b>Cookies</b></p>
+            <p>Little Red Dot peut être amenée à collecter des informations en implantant un cookie ou une balise web dans
+                votre ordinateur à partir du Site. Les Cookies que Little Red Dot émet à partir du Site permettent, selon votre
+                choix de paramétrage de votre terminal, que vous pouvez revoir à tout moment, de:</p>
+            <ul>
+                <li>établir des statistiques et volumes de fréquentation et d'utilisation des divers éléments composant le Site
+                (rubriques et contenus visités, parcours), permettant d'améliorer l'intérêt et l'ergonomie des services qui
+                vous sont offerts;</li>
+                <li>décompter les clics sur un élément d'un service en ligne ;</li>
+                <li>mémoriser les informations de connexion ou d’identification durant la visite d'un service en ligne.</li>
+            </ul>
+            <p>De même Little Red Dot est susceptible d'acheter des espaces publicitaires afin de promouvoir ses produits,
+                au moyen de contenus publicitaires diffusés sur des sites ou applications de tiers, lesquels peuvent contenir un
+                cookie. Sous réserve de votre choix de paramétrage de votre terminal que vous pouvez revoir à tout moment, ce
+                cookie peut être enregistré dans votre terminal afin de :</p>
+            <ul>
+                <li>comptabiliser le nombre d'affichages et d'activations de nos contenus publicitaires diffusés sur des sites
+                    ou applications de tiers, d'identifier ces contenus et ces sites ou applications, de déterminer le nombre
+                    d'utilisateurs ayant cliqué sur chaque contenu ;</li>
+                <li>établir des statistiques.</li>
+            </ul>
+            <p>Un cookie ne permet pas de vous identifier; en revanche, il enregistre des informations relatives à la navigation
+                de votre ordinateur sur le Site (les pages que vous avez consultées, la date et l’heure de la consultation, etc.) que
+                Little Red Dot pourra lire lors de vos visites ultérieures ou au nombre d'affichage de nos contenus publicitaires sur
+                des sites ou applications de tiers. Little Red Dot vous informe que vous pouvez vous opposer à l’enregistrement
+                de "cookies" en configurant votre navigateur de la manière suivante:</p>
+            <ul>
+                <li>Pour Mozilla Firefox : Choisissez le menu "outil " puis "Options", Cliquez sur l’icône "vie privée", Repérez
+                    le menu "cookie" et sélectionnez les options qui vous conviennent.</li>
+                <li>Pour Microsoft Internet Explorer 6.0 et au delà : Choisissez le menu "Outils" (ou "Tools"), puis "Options
+                    Internet" (ou "Internet Options"), Cliquez sur l’onglet "Confidentialité" (ou "Confidentiality"), Sélectionnez
+                    le niveau souhaité à l’aide du curseur.</li>
+                <li>Pour Opéra 6.0 et au-delà : Choisissez le menu "Fichier">"Préférences", Vie Privée et sélectionnez les
+                    options qui vous conviennent.</li>
+                <li>Pour Safari : Dans le menu de Safari choisir "Préférences" > "Sécurité" et sélectionnez les options qui
+                    vous conviennent.</li>
+            </ul>
+            <br />
+
+            <p><b>Facebook, Twitter, Google+</b></p>
+            <p>Little Red Dot est l’éditeur d’une page d’information et de présentation du Site www.citibreak.com sur les réseaux
+                sociaux Facebook, Twitter et Google+</p>
+            <p>Vous pouvez suivre la page de Citibreak.com. Vos informations personnelles que vous aurez indiquées comme
+                publiques et accessibles depuis votre profil, sont accessibles à Little Red Dot. Little Red Dot ne crée ni n’utilise
+                aucune base de données indépendante de Facebook, Twitter ou Google+ à partir des informations personnelles
+                que vous pourriez y publier.</p>
+            <p>Si vous voulez vous opposer à l’accès par Little Red Dot des informations personnelles que vous avez publiées
+                sur votre profil (et qui sont visibles publiquement), nous vous rappelons que Facebook, Twitter ou Google+ offrent
+                la possibilité de limiter l’accès à vos données. Nous vous recommandons par ailleurs de prendre connaissance
+                régulièrement de la politique de données personnelles de Facebook, Twitter ou Google+.</p>
+
+            <p style="text-decoration: underline; margin-left: 15px">2.2 Utilisation des données</p>
+            <p>Les informations que vous communiquez sur le Site permettent à Little Red Dot de :</p>
+            <ul>
+                <li>Traiter vos questions ou demandes d’informations,</li>
+                <li>Mesurer l'audience du Site,</li>
+                <li>Vous adresser, sous réserve de votre accord, des messages à caractère publicitaire ou de prospection
+                    commerciale,</li>
+                <li>Vous informer sur les produits Little Red Dot,</li>
+                <li>Vous informer des événements organisés par Little Red Dot,</li>
+                <li>Vous proposer de participer à des sondages,</li>
+                <li>Vous permettre de suivre le Site et son actualité</li>
+            </ul>
+            <p>Les informations indispensables à Little Red Dot pour remplir les missions décrites ci-dessus sont signalées
+                par un astérisque dans les différentes pages du Site. Les autres informations ont un caractère facultatif et
+                nous permettent de mieux vous connaître et d’améliorer nos communications et services à votre égard. Les
+                informations collectées par Little Red Dot sont notamment vos nom, prénom, pays, adresse e-mail, tranche d’âge.</p>
+
+            <br />
+            <p style="text-decoration: underline; margin-left: 15px">2.3 Conservation des données</p>
+            <p>Little Red Dot pourra être amenée à conserver vos données personnelles pendant une période ne pouvant
+                excéder dix ans à compter du dernier contact. Les Cookies permettant de réaliser une analyse de la fréquentation
+                du Site sont conservés six mois.</p>
+
+            <h4><span style="text-decoration: underline;">3. Partage et divulgation des données</span></h4>
+            <p>Little Red Dot est seule destinataire des données collectées.</p>
+
+            <p>Little Red Dot ne transmet vos données personnelles à un tiers que lorsque :</p>
+            <ul>
+                <li>vous nous avez donné votre accord préalable pour le partage de ces informations (par exemple pour un
+                évènement promotionnel spécial) ;</li>
+                <li>Little Red Dot doit partager ces informations avec ses distributeurs, prestataires et notamment ses
+                prestataires techniques pour vous fournir le service que vous avez demandé (par exemple l’envoi d’une
+                Newsletter) ;</li>
+                <li>Little Red Dot reçoit la requête d’une autorité judiciaire ou de toute autorité administrative habilitée par
+                la loi sollicitant la communication de ces informations conformément aux dispositions législatives en
+                vigueur.</li>
+            </ul>
+            <p>Little Red Dot fait ses meilleurs efforts pour assurer la confidentialité et la sécurité des données personnelles
+                collectées lors de leur transmission aux personnes précitées.</p>
+            <p>Lorsque vous souhaitez faire découvrir un produit ou un service de la marque CITIBREAK à un proche grâce à
+                une fonction « Partager » proposée sur le Site, les données que vous saisissez servent uniquement à l’envoi de
+                votre message et elles ne sont ni utilisées à d’autres fins, ni conservées par Little Red Dot. Vous êtes en outre
+                seul responsable du message que vous rédigez à l’attention d’un proche grâce à cette fonction.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">4. Données transmises par l’internaute sans sollicitation de Little Red Dot</span></h4>
+            <p>Little Red Dot vous demande de ne pas transmettre de contenus qui ne seraient pas sollicités par un
+                questionnaire ou tout autre formulaire de collecte, telles que des informations commerciales, des publicités, des
+                créations personnelles, des idées, concepts, etc.</p>
+            <p>Lorsque vous fournissez volontairement des données personnelles vous concernant, en particulier lorsqu’il
+                s’agit de contenus multimédia (photographies, vidéos etc.), vous vous engagez à communiquer des informations
+                exactes et ne portant pas préjudice aux intérêts ou aux droits des tiers.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">5. Mesures de sécurité</span></h4>
+            <p>Little Red Dot fait ses meilleurs efforts pour protéger vos données personnelles contre les dommages, pertes,
+                détournements, intrusions, divulgations, altérations ou destructions.</p>
+            <p>Les systèmes informatiques de Little Red Dot font l’objet d’une protection physique et logicielle conforme à l’état
+                de l’art. Des procédures de sauvegarde physique et électronique des données collectées sur le Site sont mises
+                en œuvre, conformément à la législation française en vigueur relative à la protection des données personnelles.</p>
+            <p>Les salariés de Little Red Dot qui, du fait de leur fonction, auraient accès à vos données personnelles s'engagent
+                à la plus grande confidentialité à cet égard.</p>
+            <p>Toutefois, Little Red Dot ne maîtrise pas les risques liés au fonctionnement d’Internet et attire votre attention sur
+                l’existence d’éventuels risques en terme de pertes ponctuelles de données ou d’atteinte à la confidentialité des
+                données transitant via ce réseau. Les informations proposées sur le Site pourront être interrompues pour des cas
+                de force majeure ou indépendants de la volonté de Little Red Dot ou de faits ne relevant pas de la responsabilité
+                de Little Red Dot.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">6. Droits des personnes sur les données collectées</span></h4>
+            <p>Vous disposez d’un droit général d’accès, de modification, de rectification et de suppression des données qui
+                vous concernent.</p>
+            <p>Vous pouvez l’exercer en adressant votre demande à notre Service Relations Clientèle :</p>
+            <ul>
+                <li>par courrier : en écrivant à Little Red Dot - Service Relations Clientèle – 12 rue Vivienne, 75002 Paris,
+                France</li>
+                <li>par e-mail : en remplissant le formulaire “contactez nous” sur le site www.citibreak.com</li>
+            </ul>
+            <p>Afin que nous puissions satisfaire cette demande, vous devrez nous faire parvenir les éléments nécessaires à
+                votre identification : nom, prénom, e-mail et éventuellement votre adresse postale.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">7. Usage des données en cas de changement de contrôle de la société</span></h4>
+            <p>Les données collectées par Little Red Dot pourraient faire l’objet d’un transfert à des tiers dans le cadre d’un
+                changement de contrôle de la société, d’une acquisition, d’une procédure collective ou d’une vente des actifs de
+                la société.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">8. Politique de données personnelles relative aux mineurs</span></h4>
+            <p>Le Site ne vise pas comme public les mineurs. L’accès au Site n’est toutefois pas réservé aux adultes car il ne
+                présente pas de contenus interdits aux mineurs de moins de 18 ans.</p>
+            <p>Les formulaires et questionnaires du Site ne visent pas à recueillir des informations sur les mineurs. Si des
+                informations étaient recueillies sur un mineur par le Site, le représentant légal du mineur aura la possibilité de
+                contacter le Service Relations clientèles de Little Red Dot pour rectifier, modifier ou supprimer ces informations
+                (voir article 6.)</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">9. Mise à jour de la Politique de Données Personnelles</span></h4>
+            <p>Little Red Dot est susceptible de modifier à tout moment la Politique de Données Personnelles. Si Little Red
+                Dot souhaite utiliser vos données personnelles d’une manière différente de celle stipulée dans la Politique de
+                Données Personnelles en vigueur au moment de la collecte, ces modifications seront notifiées de manière visible
+                sur le Site.</p>
+            <p>Du fait des changements qui peuvent intervenir dans la Politique de Données personnelles, nous vous invitons à
+                visiter régulièrement la rubrique « Données personnelles ».</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">10. Questions/contact</span></h4>
+            <p>Pour toutes questions ou commentaires relatifs à la Politique de Données Personnelles ou à la façon dont Little
+                Red Dot procède à la collecte et à l'utilisation des données vous concernant, vous pouvez vous adresser à notre
+                Service Relations Clientèle :</p>
+            <ul>
+                <li>par e-mail : en remplissant le formulaire “contactez nous” sur le site www.citibreak.com</li>
+                <li>par courrier : en écrivant à Little Red Dot - Service Relations Clientèle – 12 rue Vivienne, 75002 Paris, France</li>
+            </ul>
+
+            <br />
+            <br />
+            <div class="text-center"><small>Dernière mise à jour : Juin 2014<br />
+                Copyright © Little Red Dot 2014</small></div>
+        </div>
+        <div class="col-xs-9" th:case="*">
+            <h1>PRIVACY POLICY</h1>
+            <br />
+
+            <h4><span style="text-decoration: underline;">1. Privacy</span></h4>
+            <p>The Little Red Dot company recognize the importance of protecting the privacy of all consumers ("you"
+                or "user") who visit the CITIBREAK hosted or sponsored websites.<br />
+                We also believe it is important to inform you about how we will use your personal information, and to give you
+                choices about how this data will be used. For these reasons, we encourage you to read this Privacy Policy
+                carefully.<br />
+                This Privacy Policy is directed and applicable to individuals who visit those portions of the CITIBREAK
+                website accessible at www.citibreak.com, as well as and including any other CITIBREAK websites or web
+                pages accessible through the CITIBREAK website or pages on third party social networking services,
+                directed at consumers.</p>
+            <p>This Privacy Policy applies only to information collected by us via the Sites and does not extend to any other
+                websites.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">2. Collection and Use of Information</span></h4>
+            <br />
+            <p style="text-decoration: underline; margin-left: 15px">a. Personal Information</p>
+            <p>While users can view our website by browsing anonymously, we collect identifiable personal information
+                ("Personal Information") about Sites users when they voluntarily register or otherwise sign up with the Sites,
+                contact us via the Sites, or voluntarily provide it to make purchases from the Sites, as applicable. Sites users
+                may provide Personal Information for various reasons, including but not limited to, for the purposes of
+                obtaining event information, and services, to answer surveys, enter contests and receive notice of other
+                promotional opportunities, and to make purchases, as applicable. The type of Personal Information that we
+                may collect includes name, address, phone number, email address, language of use. We may also use the
+                information that you provide to create a personal customer profile in order to let you know of products or
+                events that may be of interest to you and to streamline future purchases, as applicable. We may combine
+                Personal Information we collect on the Sites with other information we collect offline about users to better
+                tailor marketing or website content or for other purposes, such as internal research. For information on how
+                to opt-out of allowing us to use your Personal Information for marketing purposes, see section 6 below.</p>
+            <br />
+
+            <p style="text-decoration: underline; margin-left: 15px">b. Non-Personal Information</p>
+            <p>We collect certain aggregate and non-personal information when you visit the Sites. This information does
+                not relate to a single identifiable visitor. It tells us such things as how many users visited the Sites and the
+                pages accessed. Collecting this information helps us tailor our Sites to our visitors.</p>
+            <p>When you visit the Sites to browse, read or download information, we automatically collect standard
+                computer information that your browser sends to every website you visit, such as your IP address, browser
+                type and language, access times and referring website addresses. We generally do not link standard
+                computer information to anything that will allow us to identify users unless to enforce compliance with our
+                rules or terms of service or to protect our service, sites, users or others.</p>
+            <p>We also may collect aggregate and non-personal information through "cookies", as explained below.</p>
+            <p>Cookies: Cookies are pieces of information that any website may transfer to your browser that are then
+                stored in your computer system. Cookies are returned to the website that deposited them when a visitor
+                returns to that site. Cookies tell us, for example, whether a user is a first time visitor or has visited the Sites
+                before and what areas of the websites are of greatest interest to the user. The deposit of cookies by the Sites
+                may enhance your online experience by allowing us to save your preferences for your next visit. Our cookies
+                may also measure the general activity on the Sites, which allows us to determine which areas and features
+                are most popular. This information allows us to make improvements to our Sites.</p>
+            <p>Most web browsers are set up to accept cookies. You can, however, reset your browser to refuse all cookies
+                or to indicate when a cookie is being sent. If you choose to decline cookies, some of the functionality of the
+                Sites may be impaired.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">3. Sharing of Personal Information</span></h4>
+            <p>Subject to the following paragraphs and the disclosures discussed in them, we will neither disclose nor sell
+                any information about you to a party unaffiliated with us unless</p>
+            <p>(i) required to do so by law or legal process;</p>
+            <p>(ii) required to do so by law enforcement authorities or other government officials;</p>
+            <p>(iii) we believe disclosure is necessary or appropriate to prevent physical harm, financial loss or injury to, or
+                interference with, our rights or property or the rights or property of our users or others, or in connection with
+                an investigation of suspected or actual illegal activity;</p>
+            <p>(iv) we reasonably believe that you have used information from the Sites in order to commit unlawful acts or
+                acts that may endanger the health and/or safety of the public; and/or</p>
+            <p>(v) we believe the law in good faith requires such disclosure.</p>
+
+            <p>We may appoint third party service providers to administer and/or operate certain functions or services on
+                our behalf, the proper performance of which may require a transfer of the information submitted by you. The
+                functions or services include, for example, administering the Sites, delivery of marketing or other
+                communications to you about our products, services or special events, and delivery of products requested or
+                ordered by you, as applicable. Any such transfer shall be subject to confidentiality and security obligations
+                and for the sole purpose of the performance of those functions or services.</p>
+            <p>We may also share your Personal Information with other third parties for joint marketing and promotions of
+                products, services or events that may be of interest to you. Any transfers of Personal Information shall be
+                subject to confidentiality and security obligations and for the sole purpose of the performance of those
+                obligations.<br />
+                For information on how to opt-out of allowing us to use your Personal Information for marketing, see section
+                6 below. You should be aware, however, that even if you opt-out of allowing us to use your information for
+                marketing campaigns, we may still share certain information with third parties to comply with legal
+                obligations. For example, if you have opted out of marketing emails from us, we may have to provide your
+                email address to a third party we jointly market with to comply with your opt-out request.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">4. Unsolicited Materials</span></h4>
+            <p>Through the Sites, we request that you provide to us certain types of information so that we may better serve
+                you. The requested information may include questions and comments about our products or services. Please
+                do not provide us with materials, including but not limited to business, advertising, creative, marketing or any
+                other types of proposals, ideas and the like ("Unsolicited Materials"). All Unsolicited Materials, including any
+                unsolicited Personal Information (for example, Personal Information provided not in response to a specific
+                request for such information, but in a free form text box) that we receive will not be subject to this Privacy
+                Policy. By submitting any Unsolicited Materials, you agree that we shall have the sole discretion as to how to
+                utilize such Unsolicited Materials and you automatically provide to us a perpetual, royalty free license to such
+                end. If any Unsolicited Materials that you provide to us are protected by third party copyright, trademark or
+                other proprietary rights, you agree to indemnify, defend, and hold harmless Little Red Dot, its parent,
+                subsidiaries and/or affiliated entities, and its and their respective officers, directors, employees, agents,
+                licensors, representatives, and third party providers (collectively, "the Little Red Dot Indemnitees"), against
+                any claims or actions brought against any of the Little Red Dot Indemnitees arising out of or relating to our
+                use or possession of the Unsolicited Materials.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">5. Security</span></h4>
+            <p>Protecting your information is of primary concern to us. We store the information that we collect on secure
+                servers and otherwise take reasonable precautions to protect your Personal Information.
+                However, we cannot warrant and do not represent that our level of security meets or exceeds any specific
+                standards. No Internet transmission is 100% secure or error-free, nor is stored data free from vulnerabilities.
+                We cannot guarantee the security of our websites, databases or services, nor can we guarantee that the
+                information you supply will not be intercepted while being transmitted to us over the Internet. We are not
+                responsible for the actions of third parties.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">6. Updating Your Personal Information and Opting Out of Marketing Communications</span></h4>
+            <p>If you want to update your Personal Information, or if you prefer not to receive information from us, please
+                send us an email through the contact form on www.citibreak.com. Please include your name and email
+                address and any message.</p>
+            <p>Please note that any requests may take up to six to eight weeks to become effective.</p>
+            <p>Even if you opt-out of marketing communications, we may still contact you to send you important information
+                regarding the operation or administration of your personal profile or other non-marketing information. For
+                additional information regarding our policies regarding the Sites please see Legal Statement.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">7. Corporate Change of Control</span></h4>
+            <p>Personal Information collected over the Sites may be transferred as part of any merger, acquisition or sale of
+                company assets, as well as in the unlikely event of an insolvency, bankruptcy, or receivership in which
+                Personal Information would be transferred to another entity.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">8. Children’s Privacy</span></h4>
+            <p>The Sites are not directed to children and we do not intentionally collect or maintain any Personal Information
+                from children under the age of 13 years old. If you believe that we might have any Personal Information from
+                or about anyone under the age of 13, please contact us at the contact information provided below under
+                section 10.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">9. Changes to This Privacy Policy</span></h4>
+            <p>We reserve the right, in our sole discretion, to modify, alter or otherwise update this policy at any time and
+                you agree to be bound by such modifications, alterations or updates. We will notify you of material changes
+                to this Privacy Policy by posting the revised policy with the date it was revised on this page and if you have
+                registered with us, we may notify you by email to your email address of record. Your continued use (including
+                access, browsing and/or use of any interactive feature) of our Sites constitutes your agreement to this
+                Privacy Policy and any updates. We encourage you to periodically review this Privacy Policy to stay informed
+                about how we are protecting the Personal Information we collect.</p>
+
+            <br />
+            <h4><span style="text-decoration: underline;">10. Contacting Us</span></h4>
+            <p>If you have any questions or comments about this Privacy Policy, or if you would like us to update any
+                information we have about you, please contact us by:</p>
+            <ul>
+                <li>Sending an email through the contact form on www.citibreak.com</li>
+                <li>Writing us at Little Red Dot, 12 rue Vivienne, 75002 Paris, France</li>
+            </ul>
+
+            <br />
+            <br />
+            <div class="text-center"><small>Last updated : June 2014<br />
+                Little Red Dot, All Rights Reserved</small></div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

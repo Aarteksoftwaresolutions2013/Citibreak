@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head></head>
+<body>
+
+<div th:fragment="articles">
+    <div class="col-xs-3">
+        <h4 th:text="#{home.news.title}" th:unless="${#lists.isEmpty(articlesResponseDto.articles)}">News and Reviews</h4>
+        <h5 th:text="#{home.news.subtitle}" th:unless="${#lists.isEmpty(articlesResponseDto.articles)}">Articles on most talked about exhibitions, artists, cultural sites</h5>
+
+        <div id="home-carousel-less" class="home-carousel-less">
+            <img src="/img/less.png"/>
+        </div>
+        <div id="homeCarousel" class="home-carousel my-carousel">
+            <a th:each="article : ${articlesResponseDto.articles}" th:attr="data-url=@{'/article/' + ${article.id}}" href="javascript:void(0);">
+                <img th:src="${article.displayImageUrl}"/>
+                <div class="my-carousel-type" th:text="#{${'home.article.' + #strings.toLowerCase(article.type)}}">ARTICLE</div>
+                <span class="my-carousel-cover" th:text="${article.headline1.getText(countryParam.language)}">News title</span>
+            </a>
+        </div>
+        <div id="home-carousel-more" class="home-carousel-more">
+            <img src="/img/more.png"/>
+        </div>
+    </div>
+    <div class="modal fade article-popup" id="articlePopup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    <div class="hide">
+        <div class="row" id="articlePopupLoading">
+            <div class="col-xs-offset-1 col-xs-10 text-center">
+                <h3 th:text="#{common.button.loading}">Loading</h3>
+                <br />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyDNOsH5rMWbdH7iU9okNch9HOJexnJVDKw&amp;sensor=false"></script>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initArticles();
+        /*]]>*/
+    </script>
+</div>
+
+<div th:fragment="home-select (current)">
+    <button type="button" class="btn btn-orange btn-my-select" data-toggle="dropdown"
+            id="mySelectButton" th:text="#{${'home.select.' + current}}">Special Events</button>
+    <div class="my-select-choices" id="mySelectChoices">
+        <a th:href="@{/home/specials/}" th:text="#{'home.select.special'}" th:if="${hasSpecialEvent and current != 'special'}">Special Events</a>
+        <a th:href="@{/home/buzz/}" th:text="#{'home.select.buzz'}" th:if="${current != 'buzz'}">Buzz de la semaine</a>
+        <a th:href="@{/home/recent/}" th:text="#{'home.select.recent'}" th:if="${current != 'recent'}">What’s New</a>
+        <a th:href="@{/home/free/}" th:text="#{'home.select.free'}" th:if="${current != 'free'}">Free it’s even better</a>
+        <a th:href="@{/home/family/}" th:text="#{'home.select.family'}" th:if="${current != 'family'}">Have a great time with the kids</a>
+        <a th:href="@{/home/around/}" th:text="#{'home.select.around'}" th:if="${current != 'around'}">Around you</a>
+        <a th:href="@{/assistant}" th:text="#{'home.select.assistant'}">Need Assistance</a>
+    </div>
+</div>
+
+</body>
+</html>

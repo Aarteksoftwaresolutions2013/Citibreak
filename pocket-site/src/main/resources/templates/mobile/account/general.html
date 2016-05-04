@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('account')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1 class="account-title" th:text="#{account.menu.general}">Sign-in Options</h1>
+            <form class="form-horizontal account-form validating-form" role="form" id="accountForm"
+                  th:action="@{/account/general}">
+                <div class="form-group">
+                    <label for="accountEmail" class="col-xs-12" th:text="#{account.general.email}">Email</label>
+
+                    <div class="col-xs-12">
+                        <input type="email" class="form-control" id="accountEmail" name="email"
+                               th:value="${user.email}"/>
+                    </div>
+                    <div class="col-xs-12 error-container" id="accountEmailErrorContainer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="accountPassword" class="col-xs-12" th:text="#{account.general.password}">Password</label>
+                    <span class="help-block" th:text="#{account.general.password.help}">A strong password helps keep your account more secure</span>
+                </div>
+                <div class="form-group">
+                    <label for="accountPassword" class="col-xs-12" th:text="#{account.general.current.password}">Current Password</label>
+
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control" id="accountPassword" name="password"
+                               value=""/>
+                    </div>
+                    <div class="col-xs-12 error-container" id="accountPasswordErrorContainer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="accountNewPassword" class="col-xs-12" th:text="#{account.general.new.password}">New Password</label>
+
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control" id="accountNewPassword" name="newPassword"
+                               value=""/>
+                    </div>
+                    <div class="col-xs-12 error-container" id="accountNewPasswordErrorContainer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="accountConfirmPassword" class="col-xs-12" th:text="#{account.general.confirm.password}">Confirm Password</label>
+
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control" id="accountConfirmPassword"
+                               name="confirmPassword" value=""/>
+                    </div>
+                    <div class="col-xs-12 error-container" id="accountConfirmPasswordErrorContainer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 text-center">
+                        <button type="submit" class="btn btn-orange btn-account-save" th:text="#{account.general.save}">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade account-update-popup" id="accountUpdateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-xs-1">
+                    </div>
+                    <div class="col-xs-10 form-group account-update-popup-image">
+                    </div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+                <div class="row register-popup-header">
+                    <div class="col-xs-12 text-center">
+                        <h4 th:utext="#{account.update.popup.title}">We’ve just sent you an e-mail with
+                            your new account settings.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initAccountGeneral();
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${false})"></footer>
+
+</body>
+</html>

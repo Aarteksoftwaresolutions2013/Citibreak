@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head>
+    <title>404</title>
+    <style type="text/css">
+        h1, a {
+            color: #bf9000;
+        }
+        .container {
+            width: 700px;
+            margin: 0 auto;
+        }
+        h1 {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        p {
+            margin: 5px 0;
+        }
+        ul {
+            list-style: none;
+        }
+        li {
+            margin: 5px 0;
+        }
+        li:before {
+            content: "• ";
+            color: #bf9000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="/img/404.jpg" width="700" height="535" />
+    <h1 th:text="#{error.404.title}">Page not found !</h1>
+    <p th:text="#{error.404.text}">You may have followed an incorrect link or a mistake in typing the address</p>
+    <p th:text="#{error.404.subtext}">You'll have better luck by clicking on these links :</p>
+    <ul>
+        <li><a th:href="@{/}" th:text="#{error.404.home}">Citibreak | Home Page</a></li>
+        <li><a th:href="@{/assistant/}" th:text="#{error.404.assistant}">Citibreak | Smart Assistant</a></li>
+    </ul>
+</div>
+</body>
+</html>

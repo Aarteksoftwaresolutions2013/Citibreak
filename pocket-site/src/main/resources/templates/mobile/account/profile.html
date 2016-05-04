@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('account')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1 class="account-title" th:text="#{account.menu.profile}">Profile</h1>
+            <form class="form-horizontal account-form validating-form" role="form" id="accountForm" method="post"
+                  th:action="@{/account/profile}">
+                <div class="form-group">
+                    <label class="col-xs-12 control-label" th:text="#{account.profile.picture}">Account Picture</label>
+                    <span class="help-block" th:text="#{account.profile.picture.select}">Select your default account photo</span>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <img th:src="${user.avatarUrl}" src="" class="pull-left account-current-avatar img-circle" id="accountCurrentAvatarImage" width="110" height="110" />
+                        <img src="/img/avatar/default-0.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                        <img src="/img/avatar/default-1.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                        <img src="/img/avatar/default-2.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                        <img src="/img/avatar/default-3.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                        <img src="/img/avatar/default-4.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                        <img th:src="'http://www.gravatar.com/avatar/' + ${user.emailHash} + '.jpg?s=158&amp;d=http%3A%2F%2Fwww.citibreak.fr%2Fimg%2Favatar%2Fempty.jpg'"
+                             src="/img/avatar/default-empty.jpg" class="pull-left account-default-avatar" width="48" height="48" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-account-select-avatar" id="accountSelectAvatarButton"
+                                th:text="#{account.profile.picture.browse}">Browse</button>
+                        <input type="file" class="hidden" id="accountSelectAvatarInput" accept="image/*" name="avatar"/>
+                        <input type="hidden" name="defaultAvatar" id="accountDefaultAvatarInput" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="accountName" class="col-xs-12" th:text="#{account.profile.username}">Username</label>
+
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" id="accountName" name="name" th:value="${user.name}"/>
+                    </div>
+
+                    <div class="col-xs-12 error-container" id="accountNameErrorContainer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profileLanguage" class="col-xs-12" th:text="#{account.profile.language}">Language</label>
+
+                    <div class="col-xs-12">
+                        <select id="profileLanguage" class="form-control" name="lang">
+                            <option value="fr_FR" th:selected="${countryParam.language == 'fr'}" th:text="#{common.language.french}">Français</option>
+                            <option value="en_EN" th:selected="${countryParam.language == 'en'}" th:text="#{common.language.english}">English</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 error-container">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 text-center">
+                        <button type="submit" class="btn btn-orange btn-account-save" th:text="#{account.profile.save}">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-4">
+        </div>
+        <div class="col-xs-1">
+
+        </div>
+    </div>
+
+    <div class="modal fade account-update-popup" id="accountUpdatedModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-xs-1">
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4 th:utext="#{account.update.popup.saved}">Your settings have been saved.</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initAccountProfile();
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${false})"></footer>
+
+</body>
+</html>

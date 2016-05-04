@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:replace="desktop/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:replace="desktop/layout :: header ('account')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <div th:include="desktop/account/menu :: menu ('delete')"></div>
+        </div>
+        <div class="col-xs-9 account-separator">
+            <div class="row">
+                <div class="col-xs-12">
+                    <form class="form-horizontal account-form validating-form" role="form" id="accountForm"
+                          th:action="@{/account/delete}">
+                        <div class="form-group">
+                            <span class="help-block" th:text="#{account.delete.warning}">Are you sure you want to delete your account?</span>
+                        </div>
+                        <div class="form-group account-delete-user">
+                            <div class="col-xs-12">
+                                <img th:src="${user.avatarUrl}" width="70" height="70" class="account-delete-image pull-left img-circle" />
+                                <div>
+                                    <span class="account-delete-username" th:text="${user.name}">Username</span><br />
+                                    <span class="account-delete-email" th:text="${user.email}">user@email.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="accountPassword" class="col-xs-3 control-label" th:text="#{account.delete.current.password}">Current Password</label>
+
+                            <div class="col-xs-4">
+                                <input type="password" class="form-control" id="accountPassword" name="password"/>
+                            </div>
+
+                            <div class="col-xs-5 error-container" id="accountPasswordErrorContainer">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-4">
+                                <button type="submit" class="btn btn-orange btn-account-save" th:text="#{account.delete.submit}">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade account-delete-popup" id="accountDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <a href="javascript:void(0);" class="register-popup-cancel js-account-reload">
+                            <img src="/img/cancel-popup.png"/>
+                        </a>
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="row">
+                            <div class="col-xs-1">
+                            </div>
+                            <div class="col-xs-10 form-group account-delete-popup-image">
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                        <div class="row register-popup-header">
+                            <div class="col-xs-12 text-center form-group">
+                                <h4 th:utext="#{account.delete.popup.title}">We hope you had a good time and we hope
+                                    to see you sometimes soon on citibreak.</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12 text-center">
+                                <button type="button" class="btn btn-orange btn-account-update js-account-reload"
+                                        th:text="#{account.delete.popup.back}">Return
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        initAccountDelete();
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:replace="desktop/layout :: footer (${false})"></footer>
+
+</body>
+</html>

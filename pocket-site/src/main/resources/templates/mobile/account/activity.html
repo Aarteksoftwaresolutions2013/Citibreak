@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('account')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <form class="form-horizontal account-form" role="form">
+            <div class="col-xs-12">
+                <h1 class="account-title" th:text="#{account.menu.activity}">Activity</h1>
+                <div class="form-group">
+                    <label class="col-xs-12 control-label" th:text="#{account.activity.lastSignIn}">Last sign in</label>
+                    <div class="col-xs-12">
+                        <p class="form-control-static"
+                           th:text="${#calendars.format(user.getLastConnectionDateUpdated(searchParams.dateTimeZone), #messages.msg('account.activity.date.format'))}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 control-label" th:text="#{account.activity.lastPasswordUpdate}">Last password update</label>
+
+                    <div class="col-xs-12">
+                        <p class="form-control-static"
+                           th:text="${#calendars.format(user.lastPasswordUpdateDate, #messages.msg('account.activity.date.format'))}"></p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${false})"></footer>
+
+</body>
+</html>

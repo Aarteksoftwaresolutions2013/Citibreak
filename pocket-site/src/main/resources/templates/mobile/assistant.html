@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      th:attr="lang=${countryParam.language}"
+      itemscope="" itemtype="http://schema.org/Other">
+<head th:include="mobile/layout :: head"></head>
+<body>
+
+<div class="container">
+
+    <div th:include="mobile/layout :: header ('assistant')" class="row navbar-citybreak"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div th:replace="mobile/layout :: home-title ('assistant')"></div>
+
+            <div th:replace="mobile/layout :: home-select"></div>
+
+            <div class="row home-tags-list" th:if="${searchParams.city.filled}">
+                <div class="col-xs-4 home-tags home-tags-first">
+                    <div class="show auto-resize-line">
+                        <div>
+                            <span th:text="#{assistant.tags.title}">You Want?</span>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(searchParams.tags)}" class="col-xs-4 home-tags">
+                    <form th:action="@{/tags/delete}" method="post">
+                        <div class="show tag-carrot">
+                            <div>
+                                <span th:text="#{assistant.tags.empty}">No Idea</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div th:each="tag,iter : ${searchParams.tags}" class="col-xs-4 home-tags"
+                        th:with="tagName=${#strings.toLowerCase(tag)}">
+                    <form th:action="@{/tags/delete}" method="post">
+                        <div class="show auto-resize-line" th:classappend="${'tag-' +tagsParams.getColor(tag)}">
+                            <div>
+                                <span th:text="#{${'tags.name.' + tagName}}">Meet Celebrities</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="tag" th:value="${tag}"/>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="home-tags home-tags-more text-center">
+                    <a th:href="@{/tags}">
+                        <img src="/img/home-add-tags.png" width="15" height="15" />
+                    </a>
+                </div>
+            </div>
+            <div class="row" th:unless="${searchParams.city.filled and countDto.total == 0}">
+                <div class="col-xs-12 text-center">
+                    <a th:href="${searchParams.city.filled} ? @{/search/site} : 'javascript:void(0);'" class="home-go"
+                            th:text="#{home.go}">GO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 home-carousel-container" th:if="${searchParams.city.filled}">
+            <div id="home-carousel-less" class="home-carousel-less">
+                <img src="/img/mobile/less.png"/>
+            </div>
+            <div id="homeCarousel" class="home-carousel">
+                <a th:each="type : ${types}" th:href="@{'/browse/' + ${type}}">
+                    <img th:src="${'/img/categories/' + type + '/' + typesParams.getIndex(type) + '.jpg'}"/>
+                    <span class="home-carousel-cover text-center" th:text="#{${'assistant.category.' + type}}">Adventures</span>
+                </a>
+            </div>
+            <div id="home-carousel-more" class="home-carousel-more">
+                <img src="/img/mobile/more.png"/>
+            </div>
+        </div>
+    </div>
+
+    <div th:include="mobile/layout :: select-popup"></div>
+    <div th:replace="mobile/layout :: home-geocoding"></div>
+
+    <script type="text/javascript">
+        // <![CDATA[
+        $(document).ready(function () {
+            initHomeCategories();
+//            initWeatherWidget();
+            initHomePopup();
+        });
+        // ]]>
+    </script>
+</div>
+
+<footer th:include="mobile/layout :: footer (${true})"></footer>
+
+</body>
+</html>
